@@ -1,6 +1,6 @@
 # Physics Simulation with Barnes-Hut Algorithm and Quadtree
 
-This project is a simulation of physics involving multiple bodies implemented in a Vite React TypeScript environment. It utilizes the Barnes-Hut algorithm coupled with a quadtree data structure to efficiently handle calculations for gravitational and collision interactions between the bodies.
+This project is a simulation of physics involving multiple bodies implemented using Vite, React, TypeScript, and Tailwind CSS. It utilizes the Barnes-Hut algorithm coupled with a quadtree data structure to efficiently handle calculations for gravitational and collision interactions between the bodies.
 
 ## Overview
 
