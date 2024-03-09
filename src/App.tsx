@@ -1,8 +1,10 @@
+import SimCanvas from "./CanvasSim/SimCanvas";
+
 function App() {
   return (
     <>
-      <div>
-        <p>Hello World</p>
+      <div className="h-full w-full">
+        <SimCanvas />
       </div>
     </>
   );
