@@ -1,12 +1,30 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ParticleInterface } from "./defs";
 import createParticle from "./createParticle";
+import animate from "./animate";
 
 const SimCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
   const [canvasInitialized, setCanvasInitialized] = useState<boolean>(false);
   const particles = useRef<ParticleInterface[]>([]);
+  const animationFrameRef = useRef<number | null>(null);
+
+  // Define animation loop
+  const animationLoop = useCallback((particles: ParticleInterface[]) => {
+    if (!canvasRef.current || !contextRef.current) return;
+
+    animate({
+      particles,
+      canvasX: canvasRef.current.width,
+      canvasY: canvasRef.current.height,
+      ctx: contextRef.current,
+    });
+
+    animationFrameRef.current = requestAnimationFrame(() => {
+      animationLoop(particles);
+    });
+  }, []);
 
   // Handle clicks by creating a particle with random properties
   const handleClick = (event: React.MouseEvent) => {
@@ -27,7 +45,7 @@ const SimCanvas = () => {
         color: "yellow",
       });
 
-      // Add it to particles array
+      // Add it to particles arraye
       particles.current.push(newParticle);
     }
   };
