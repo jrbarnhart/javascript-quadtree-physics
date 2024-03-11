@@ -6,5 +6,4 @@ export interface ParticleInterface {
   mass: number;
   radius: number;
   color: string;
-  move: (force: { x: number; y: number }) => void;
 }
