@@ -22,3 +22,14 @@ export type PositiveInteger = number extends infer T
       : T
     : never
   : never;
+
+export interface QuadTree {
+  boundary: Rectangle;
+  capacity: PositiveInteger;
+  points: ParticleInterface[];
+  insert: (particle: ParticleInterface) => void;
+  northwest?: QuadTree;
+  northeast?: QuadTree;
+  southeast?: QuadTree;
+  southwest?: QuadTree;
+}
