@@ -13,3 +13,4 @@ The quadtree data structure is used to partition the space containing the partic
 - [N-body Simulation](https://en.wikipedia.org/wiki/N-body_simulation)
 - [Barnes-Hut Simulation](https://en.wikipedia.org/wiki/Barnes%E2%80%93Hut_simulation)
 - [Quadtrees](https://en.wikipedia.org/wiki/Quadtree)
+- [This Helpful Article](http://arborjs.org/docs/barnes-hut)
