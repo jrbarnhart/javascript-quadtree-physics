@@ -14,3 +14,11 @@ export interface Rectangle {
   width: number;
   height: number;
 }
+
+export type PositiveInteger = number extends infer T
+  ? T extends number
+    ? T extends 0
+      ? never
+      : T
+    : never
+  : never;
