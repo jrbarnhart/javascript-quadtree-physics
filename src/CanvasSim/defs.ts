@@ -7,3 +7,10 @@ export interface ParticleInterface {
   radius: number;
   color: string;
 }
+
+export interface Rectangle {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
