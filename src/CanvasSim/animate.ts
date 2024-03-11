@@ -12,7 +12,7 @@ const animate = ({
   canvasY: number;
   ctx: CanvasRenderingContext2D;
 }) => {
-  const maxVelocity = 0.08;
+  const maxVelocity = 0.1;
 
   // For each particle
   particles.forEach((particle) => {
@@ -23,8 +23,14 @@ const animate = ({
     const gravity = calculateGravity(particle, particles);
     // Move particle using force, clamping to min/max values
     // Update velocity based on force
-    particle.vx += Math.min(gravity.x / particle.mass, maxVelocity);
-    particle.vy += Math.min(gravity.y / particle.mass, maxVelocity);
+    particle.vx = Math.max(
+      -maxVelocity,
+      Math.min(particle.vx + gravity.x / particle.mass, maxVelocity)
+    );
+    particle.vy = Math.max(
+      -maxVelocity,
+      Math.min(particle.vy + gravity.y / particle.mass, maxVelocity)
+    );
     // Update position based on velocity
     particle.x += particle.vx;
     particle.y += particle.vy;
