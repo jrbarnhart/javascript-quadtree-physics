@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ParticleInterface } from "./defs";
 import createParticle from "./createParticle";
 import animate from "./animate";
+import useWindowSize from "./useWindowSize";
 
 const SimCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -9,6 +10,7 @@ const SimCanvas = () => {
   const [canvasInitialized, setCanvasInitialized] = useState<boolean>(false);
   const particles = useRef<ParticleInterface[]>([]);
   const animationFrameRef = useRef<number | null>(null);
+  const windowSize = useWindowSize();
 
   // Define animation loop
   const animationLoop = useCallback((particles: ParticleInterface[]) => {
@@ -38,8 +40,8 @@ const SimCanvas = () => {
       const newParticle = createParticle({
         x,
         y,
-        vx: 1,
-        vy: 1,
+        vx: 0,
+        vy: 0,
         mass: 1,
         radius: 2,
         color: "yellow",
@@ -63,14 +65,17 @@ const SimCanvas = () => {
   useEffect(() => {
     if (canvasInitialized) {
       // Start animation loop with requestAnimationFrame
+      animationLoop(particles.current);
       console.log("Animation started.");
     }
-  }, [canvasInitialized]);
+  }, [animationLoop, canvasInitialized]);
 
   return (
     <canvas
       onClick={handleClick}
-      className="bg-black h-full w-full"
+      height={windowSize.height}
+      width={windowSize.width}
+      className="bg-black"
       ref={canvasRef}
     ></canvas>
   );
