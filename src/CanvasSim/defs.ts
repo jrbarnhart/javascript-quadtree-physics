@@ -13,6 +13,10 @@ export interface Rectangle {
   y: number;
   width: number;
   height: number;
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
 }
 
 export type PositiveInteger = number extends infer T
