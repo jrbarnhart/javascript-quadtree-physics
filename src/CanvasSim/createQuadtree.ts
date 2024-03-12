@@ -1,8 +1,8 @@
 import {
   ParticleInterface,
   PositiveInteger,
-  QuadTree as createQuadTree,
   Rectangle,
+  QuadTree,
 } from "./defs";
 import createRectangle from "./createRectangle";
 
@@ -53,6 +53,8 @@ const createQuadTree = (boundary: Rectangle, capacity: PositiveInteger) => {
     quadTree.northeast = createQuadTree(ne, capacity);
     quadTree.southeast = createQuadTree(se, capacity);
     quadTree.southwest = createQuadTree(sw, capacity);
+
+    quadTree.divided = true;
   };
 
   // Method for inserting into tree
@@ -65,12 +67,24 @@ const createQuadTree = (boundary: Rectangle, capacity: PositiveInteger) => {
     if (points.length < capacity) {
       points.push(point);
     } else {
-      subdivide();
+      if (!quadTree.divided) {
+        subdivide();
+      }
+      quadTree.northwest?.insert(point);
+      quadTree.northeast?.insert(point);
+      quadTree.southeast?.insert(point);
+      quadTree.southwest?.insert(point);
     }
   };
 
   // Create and return quadtree object
-  const quadTree: createQuadTree = { boundary, capacity, points, insert };
+  const quadTree: QuadTree = {
+    boundary,
+    capacity,
+    points,
+    divided: false,
+    insert,
+  };
   return quadTree;
 };
 
