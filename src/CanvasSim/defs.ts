@@ -32,6 +32,7 @@ export interface QuadTree {
   capacity: PositiveInteger;
   points: ParticleInterface[];
   insert: (particle: ParticleInterface) => void;
+  divided: boolean;
   northwest?: QuadTree;
   northeast?: QuadTree;
   southeast?: QuadTree;
