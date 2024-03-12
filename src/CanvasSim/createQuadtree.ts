@@ -7,7 +7,7 @@ import {
 import createRectangle from "./createRectangle";
 
 // Fn for checking if rectangle contains a point
-const contains = (rectangle: Rectangle, point: ParticleInterface) => {
+const rectContains = (rectangle: Rectangle, point: ParticleInterface) => {
   return (
     rectangle.left <= point.x &&
     point.x <= rectangle.right &&
@@ -59,7 +59,7 @@ const createQuadTree = (boundary: Rectangle, capacity: PositiveInteger) => {
   const points: ParticleInterface[] = [];
   const insert = (point: ParticleInterface) => {
     // Return if the point is not within boundary
-    if (!contains(boundary, point)) return;
+    if (!rectContains(boundary, point)) return;
 
     // Add point if there is room, else subdivide recursively
     if (points.length < capacity) {
