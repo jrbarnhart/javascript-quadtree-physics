@@ -4,27 +4,7 @@ import {
   QuadTree as createQuadTree,
   Rectangle,
 } from "./defs";
-
-// Fn for creating rectangles
-const createRectangle = (
-  x: number,
-  y: number,
-  height: number,
-  width: number
-) => {
-  const rectangle: Rectangle = {
-    x,
-    y,
-    height,
-    width,
-    top: y - height / 2,
-    bottom: y + height / 2,
-    left: x - width / 2,
-    right: x + width / 2,
-  };
-
-  return rectangle;
-};
+import createRectangle from "./createRectangle";
 
 // Fn for checking if rectangle contains a point
 const contains = (rectangle: Rectangle, point: ParticleInterface) => {
