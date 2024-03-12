@@ -3,8 +3,6 @@ import { ParticleInterface } from "./defs";
 import createParticle from "./createParticle";
 import animate from "./animate";
 import useWindowSize from "./useWindowSize";
-import createRectangle from "./createRectangle";
-import createQuadTree from "./createQuadtree";
 
 const SimCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -20,8 +18,8 @@ const SimCanvas = () => {
 
     animate({
       particles,
-      canvasX: canvasRef.current.width,
-      canvasY: canvasRef.current.height,
+      canvasWidth: canvasRef.current.width,
+      canvasHeight: canvasRef.current.height,
       ctx: contextRef.current,
     });
 
@@ -60,32 +58,6 @@ const SimCanvas = () => {
       contextRef.current = canvasRef.current.getContext("2d");
       setCanvasInitialized(true);
       console.log("Canvas intialized.");
-      // Test createQuadtree
-      const rect = createRectangle(
-        window.innerWidth / 2,
-        window.innerHeight / 2,
-        window.innerHeight,
-        window.innerWidth
-      );
-      const particles = [];
-      for (let i = 0; i < 10; i++) {
-        particles.push(
-          createParticle({
-            x: i * 10,
-            y: i * 10,
-            vx: 0,
-            vy: 0,
-            mass: 1,
-            radius: 1,
-            color: "white",
-          })
-        );
-      }
-      const quadTree = createQuadTree(rect, 1);
-      particles.forEach((particle) => {
-        quadTree.insert(particle);
-      });
-      console.log(particles, quadTree);
     }
   }, []);
 
