@@ -62,14 +62,17 @@ const createQuadTree = (boundary: Rectangle, capacity: PositiveInteger) => {
     // Return if the point is not within boundary
     if (!rectContains(boundary, point)) return false;
 
-    // Add point if there is room and the node is not divided, else subdivide recursively
+    // Add point if there is room and the node is not divided
     if (quadTree.points.length < capacity && !quadTree.divided) {
       quadTree.points.push(point);
       return true;
     } else {
+      // If there isn't room and the quad tree is not divided
       if (!quadTree.divided) {
+        // Subdivide the quadtree, adding child quadtrees
         subdivide();
-        // Recursively add the divided nodes points to new child nodes
+
+        // Recursively add the parent node's points to new child nodes
         quadTree.points.forEach((point) => {
           if (quadTree.northwest?.insert(point)) return true;
           if (quadTree.northeast?.insert(point)) return true;
@@ -78,7 +81,7 @@ const createQuadTree = (boundary: Rectangle, capacity: PositiveInteger) => {
         });
       }
 
-      // Clear points from parent node
+      // Clear points from parent node as it is now a divided node
       quadTree.points = [];
 
       // Add the point to the children nodes
