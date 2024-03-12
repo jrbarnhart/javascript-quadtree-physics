@@ -33,7 +33,7 @@ export interface QuadTree {
   points: ParticleInterface[];
   insert: (particle: ParticleInterface) => boolean;
   divided: boolean;
-  depth: number;
+  depth: number | undefined;
   northwest?: QuadTree;
   northeast?: QuadTree;
   southeast?: QuadTree;
