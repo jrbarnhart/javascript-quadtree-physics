@@ -1,42 +1,42 @@
 import {
   ParticleInterface,
   PositiveInteger,
-  QuadTree,
+  QuadTree as createQuadTree,
   Rectangle,
 } from "./defs";
 
-const QuadTree = (boundary: Rectangle, capacity: PositiveInteger) => {
-  // Fn for creating rectangles
-  const createRectangle = (
-    x: number,
-    y: number,
-    height: number,
-    width: number
-  ) => {
-    const rectangle: Rectangle = {
-      x,
-      y,
-      height,
-      width,
-      top: y - height / 2,
-      bottom: y + height / 2,
-      left: x - width / 2,
-      right: x + width / 2,
-    };
-
-    return rectangle;
+// Fn for creating rectangles
+const createRectangle = (
+  x: number,
+  y: number,
+  height: number,
+  width: number
+) => {
+  const rectangle: Rectangle = {
+    x,
+    y,
+    height,
+    width,
+    top: y - height / 2,
+    bottom: y + height / 2,
+    left: x - width / 2,
+    right: x + width / 2,
   };
 
-  // Fn for checking if rectangle contains a point
-  const contains = (rectangle: Rectangle, point: ParticleInterface) => {
-    return (
-      rectangle.left <= point.x &&
-      point.x <= rectangle.right &&
-      rectangle.top <= point.y &&
-      point.y <= rectangle.bottom
-    );
-  };
+  return rectangle;
+};
 
+// Fn for checking if rectangle contains a point
+const contains = (rectangle: Rectangle, point: ParticleInterface) => {
+  return (
+    rectangle.left <= point.x &&
+    point.x <= rectangle.right &&
+    rectangle.top <= point.y &&
+    point.y <= rectangle.bottom
+  );
+};
+
+const createQuadTree = (boundary: Rectangle, capacity: PositiveInteger) => {
   // Fn for subdividing
   const subdivide = () => {
     // Define new boundaries
@@ -69,10 +69,10 @@ const QuadTree = (boundary: Rectangle, capacity: PositiveInteger) => {
     );
 
     // Create the child nodes
-    quadTree.northwest = QuadTree(nw, capacity);
-    quadTree.northeast = QuadTree(ne, capacity);
-    quadTree.southeast = QuadTree(se, capacity);
-    quadTree.southwest = QuadTree(sw, capacity);
+    quadTree.northwest = createQuadTree(nw, capacity);
+    quadTree.northeast = createQuadTree(ne, capacity);
+    quadTree.southeast = createQuadTree(se, capacity);
+    quadTree.southwest = createQuadTree(sw, capacity);
   };
 
   // Method for inserting into tree
@@ -81,7 +81,7 @@ const QuadTree = (boundary: Rectangle, capacity: PositiveInteger) => {
     // Return if the point is not within boundary
     if (!contains(boundary, point)) return;
 
-    // Add point if there is room, else subdivide
+    // Add point if there is room, else subdivide recursively
     if (points.length < capacity) {
       points.push(point);
     } else {
@@ -89,9 +89,9 @@ const QuadTree = (boundary: Rectangle, capacity: PositiveInteger) => {
     }
   };
 
-  // Initialize quadtree
-  const quadTree: QuadTree = { boundary, capacity, points, insert };
+  // Create and return quadtree object
+  const quadTree: createQuadTree = { boundary, capacity, points, insert };
   return quadTree;
 };
 
-export default QuadTree;
+export default createQuadTree;
