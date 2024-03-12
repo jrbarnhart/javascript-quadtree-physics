@@ -22,7 +22,7 @@ const animate = ({
     canvasWidth
   );
   const quadTree = createQuadTree(boundary, 1);
-
+  window.QuadTree = quadTree;
   // Brute force gravity
   const maxVelocity = 0.1;
   // For each particle
