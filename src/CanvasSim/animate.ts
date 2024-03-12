@@ -1,21 +1,35 @@
-import { ParticleInterface } from "./defs";
+import { ParticleInterface, QuadTree } from "./defs";
 import calculateGravity from "./calculateGravity";
+import createQuadTree from "./createQuadtree";
+import createRectangle from "./createRectangle";
 
 const animate = ({
   particles,
-  canvasX,
-  canvasY,
+  canvasWidth,
+  canvasHeight,
   ctx,
 }: {
   particles: ParticleInterface[];
-  canvasX: number;
-  canvasY: number;
+  canvasWidth: number;
+  canvasHeight: number;
   ctx: CanvasRenderingContext2D;
 }) => {
-  const maxVelocity = 0.1;
+  // Create the quadtree from particles
+  const boundary = createRectangle(
+    canvasWidth / 2,
+    canvasHeight / 2,
+    canvasHeight,
+    canvasWidth
+  );
+  const quadTree = createQuadTree(boundary, 1);
 
+  // Brute force gravity
+  const maxVelocity = 0.1;
   // For each particle
   particles.forEach((particle) => {
+    // Insert particle into quadtree
+    quadTree.insert(particle);
+
     // Add drag to slow particles over time
     particle.vx *= 0.95;
     particle.vy *= 0.95;
@@ -35,16 +49,16 @@ const animate = ({
     particle.x += particle.vx;
     particle.y += particle.vy;
     // Reverse velocity on boundary collision
-    if (particle.x < 0 || particle.x > canvasX) {
+    if (particle.x < 0 || particle.x > canvasWidth) {
       particle.vx *= -1;
     }
-    if (particle.y < 0 || particle.y > canvasY) {
+    if (particle.y < 0 || particle.y > canvasHeight) {
       particle.vy *= -1;
     }
   });
 
   // Erase canvas
-  ctx.clearRect(0, 0, canvasX, canvasY);
+  ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
   // Draw particles using the new state.
   // !!!!Sync/jitter issues from async state updates? Seems fine, but monitor this.!!!!
@@ -54,6 +68,32 @@ const animate = ({
     ctx.fillStyle = particle.color; // Set fill style for the particle
     ctx.fill(); // Fill the particle shape
   });
+
+  // Draw the quadTree cells
+  const drawRects = (quadTree: QuadTree) => {
+    ctx.strokeRect(
+      quadTree.boundary.left,
+      quadTree.boundary.top,
+      quadTree.boundary.width,
+      quadTree.boundary.height
+    );
+    if (quadTree.northwest) {
+      drawRects(quadTree.northwest);
+    }
+    if (quadTree.northeast) {
+      drawRects(quadTree.northeast);
+    }
+    if (quadTree.southeast) {
+      drawRects(quadTree.southeast);
+    }
+    if (quadTree.southwest) {
+      drawRects(quadTree.southwest);
+    }
+  };
+
+  ctx.strokeStyle = "white";
+  drawRects(quadTree);
+  ctx.strokeStyle = "transparent";
 };
 
 export default animate;
