@@ -62,10 +62,10 @@ const SimCanvas = () => {
       console.log("Canvas intialized.");
       // Test createQuadtree
       const rect = createRectangle(
-        canvasRef.current.width / 2,
-        canvasRef.current.height / 2,
-        canvasRef.current.height,
-        canvasRef.current.width
+        window.innerWidth / 2,
+        window.innerHeight / 2,
+        window.innerHeight,
+        window.innerWidth
       );
       const particles = [];
       for (let i = 0; i < 10; i++) {
@@ -85,7 +85,7 @@ const SimCanvas = () => {
       particles.forEach((particle) => {
         quadTree.insert(particle);
       });
-      console.log(quadTree);
+      console.log(particles, quadTree);
     }
   }, []);
 
