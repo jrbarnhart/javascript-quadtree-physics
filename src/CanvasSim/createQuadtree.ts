@@ -21,29 +21,29 @@ const createQuadTree = (boundary: Rectangle, capacity: PositiveInteger) => {
   const subdivide = () => {
     // Define new boundaries
     const nw: Rectangle = createRectangle(
-      boundary.x - boundary.width / 2,
-      boundary.y - boundary.height / 2,
+      boundary.x - boundary.width / 4,
+      boundary.y - boundary.height / 4,
       boundary.height / 2,
       boundary.width / 2
     );
 
     const ne: Rectangle = createRectangle(
-      boundary.x + boundary.width / 2,
-      boundary.y - boundary.height / 2,
+      boundary.x + boundary.width / 4,
+      boundary.y - boundary.height / 4,
       boundary.height / 2,
       boundary.width / 2
     );
 
     const se: Rectangle = createRectangle(
-      boundary.x + boundary.width / 2,
-      boundary.y + boundary.height / 2,
+      boundary.x + boundary.width / 4,
+      boundary.y + boundary.height / 4,
       boundary.height / 2,
       boundary.width / 2
     );
 
     const sw: Rectangle = createRectangle(
-      boundary.x - boundary.width / 2,
-      boundary.y + boundary.height / 2,
+      boundary.x - boundary.width / 4,
+      boundary.y + boundary.height / 4,
       boundary.height / 2,
       boundary.width / 2
     );
@@ -58,17 +58,25 @@ const createQuadTree = (boundary: Rectangle, capacity: PositiveInteger) => {
   };
 
   // Method for inserting into tree
-  const points: ParticleInterface[] = [];
   const insert = (point: ParticleInterface) => {
     // Return if the point is not within boundary
     if (!rectContains(boundary, point)) return;
 
-    // Add point if there is room, else subdivide recursively
-    if (points.length < capacity) {
-      points.push(point);
+    // Add point if there is room and the node is not divided, else subdivide recursively
+    if (quadTree.points.length < capacity && !quadTree.divided) {
+      quadTree.points.push(point);
     } else {
       if (!quadTree.divided) {
         subdivide();
+        // Recursively add the divided nodes points to new child nodes
+        quadTree.points.forEach((point) => {
+          quadTree.northwest?.insert(point);
+          quadTree.northeast?.insert(point);
+          quadTree.southeast?.insert(point);
+          quadTree.southwest?.insert(point);
+          // Clear points from parent node
+          quadTree.points = [];
+        });
       }
       quadTree.northwest?.insert(point);
       quadTree.northeast?.insert(point);
@@ -81,7 +89,7 @@ const createQuadTree = (boundary: Rectangle, capacity: PositiveInteger) => {
   const quadTree: QuadTree = {
     boundary,
     capacity,
-    points,
+    points: [],
     divided: false,
     insert,
   };
