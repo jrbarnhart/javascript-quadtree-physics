@@ -4,6 +4,7 @@ import createParticle from "./createParticle";
 import animate from "./animate";
 import useWindowSize from "./useWindowSize";
 import HeadsUpDisplay from "./HUD";
+import _ from "lodash";
 
 const SimCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -18,10 +19,16 @@ const SimCanvas = () => {
   const [mousePosY, setMousePosY] = useState<number | null>(null);
   const [fps, setFps] = useState<number | null>(null);
 
-  const handleMouseMove = (event: React.MouseEvent) => {
-    setMousePosX(event.clientX);
-    setMousePosY(event.clientY);
-  };
+  const throttleRef = useRef(
+    _.throttle((event: React.MouseEvent) => {
+      setMousePosX(event.clientX);
+      setMousePosY(event.clientY);
+    }, 200)
+  );
+
+  const handleMouseMove = useCallback((event: React.MouseEvent) => {
+    throttleRef.current(event);
+  }, []);
 
   const handleMouseLeave = () => {
     setMousePosX(null);
