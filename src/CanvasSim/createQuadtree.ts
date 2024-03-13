@@ -83,7 +83,7 @@ const createQuadTree = (
     if (!rectContains(boundary, point)) return false;
 
     // Add point if there is room and the node is not divided
-    if (quadTree.points.length < capacity && !quadTree.divided) {
+    if (quadTree.points.length < quadTree.capacity && !quadTree.divided) {
       quadTree.points.push(point);
       return true;
     } else {
