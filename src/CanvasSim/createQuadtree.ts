@@ -19,7 +19,10 @@ const rectContains = (rectangle: Rectangle, point: ParticleInterface) => {
 const createQuadTree = (
   boundary: Rectangle,
   capacity: PositiveInteger,
-  depth?: number | undefined
+  depth?: number | undefined,
+  massTotal?: number | undefined,
+  massCenterX?: number | undefined,
+  massCenterY?: number | undefined
 ) => {
   // Fn for subdividing
   const subdivide = () => {
@@ -128,6 +131,9 @@ const createQuadTree = (
     boundary,
     capacity,
     points: [],
+    massTotal: massTotal ?? 0,
+    massCenterX: massCenterX ?? boundary.x,
+    massCenterY: massCenterY ?? boundary.y,
     divided: false,
     depth: depth ?? 0,
     maxDepth: 8,
