@@ -3,6 +3,7 @@ import { ParticleInterface } from "./defs";
 import createParticle from "./createParticle";
 import animate from "./animate";
 import useWindowSize from "./useWindowSize";
+import HeadsUpDisplay from "./HUD";
 
 const SimCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -71,13 +72,16 @@ const SimCanvas = () => {
   }, [animationLoop, canvasInitialized]);
 
   return (
-    <canvas
-      onClick={handleClick}
-      height={windowSize.height}
-      width={windowSize.width}
-      className="bg-black"
-      ref={canvasRef}
-    ></canvas>
+    <div className="relative">
+      <canvas
+        onClick={handleClick}
+        height={windowSize.height}
+        width={windowSize.width}
+        className="bg-black"
+        ref={canvasRef}
+      ></canvas>
+      <HeadsUpDisplay />
+    </div>
   );
 };
 
