@@ -16,7 +16,11 @@ const rectContains = (rectangle: Rectangle, point: ParticleInterface) => {
   );
 };
 
-const createQuadTree = (boundary: Rectangle, capacity: PositiveInteger) => {
+const createQuadTree = (
+  boundary: Rectangle,
+  capacity: PositiveInteger,
+  depth?: number | undefined
+) => {
   // Fn for subdividing
   const subdivide = () => {
     // Define new boundaries
@@ -49,10 +53,10 @@ const createQuadTree = (boundary: Rectangle, capacity: PositiveInteger) => {
     );
 
     // Create the child nodes
-    quadTree.northwest = createQuadTree(nw, capacity);
-    quadTree.northeast = createQuadTree(ne, capacity);
-    quadTree.southeast = createQuadTree(se, capacity);
-    quadTree.southwest = createQuadTree(sw, capacity);
+    quadTree.northwest = createQuadTree(nw, capacity, quadTree.depth + 1);
+    quadTree.northeast = createQuadTree(ne, capacity, quadTree.depth + 1);
+    quadTree.southeast = createQuadTree(se, capacity, quadTree.depth + 1);
+    quadTree.southwest = createQuadTree(sw, capacity, quadTree.depth + 1);
 
     quadTree.divided = true;
   };
@@ -100,6 +104,7 @@ const createQuadTree = (boundary: Rectangle, capacity: PositiveInteger) => {
     capacity,
     points: [],
     divided: false,
+    depth: depth ?? 0,
     insert,
   };
   return quadTree;
