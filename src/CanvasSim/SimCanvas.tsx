@@ -17,6 +17,7 @@ const SimCanvas = () => {
   // State for HUD stats
   const [mousePosX, setMousePosX] = useState<number | null>(null);
   const [mousePosY, setMousePosY] = useState<number | null>(null);
+  const [totalParticles, setTotalParticles] = useState<number | null>(null);
 
   const throttleRef = useRef(
     _.throttle((event: React.MouseEvent) => {
@@ -71,6 +72,8 @@ const SimCanvas = () => {
 
       // Add it to particles arraye
       particles.current.push(newParticle);
+      // Update total particles state
+      setTotalParticles((prev) => (prev ? prev + 1 : 1));
     }
   };
 
@@ -103,7 +106,11 @@ const SimCanvas = () => {
         className="bg-black"
         ref={canvasRef}
       ></canvas>
-      <HeadsUpDisplay mousePosX={mousePosX} mousePosY={mousePosY} />
+      <HeadsUpDisplay
+        mousePosX={mousePosX}
+        mousePosY={mousePosY}
+        totalParticles={totalParticles}
+      />
     </div>
   );
 };
