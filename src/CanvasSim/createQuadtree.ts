@@ -53,10 +53,26 @@ const createQuadTree = (
     );
 
     // Create the child nodes
-    quadTree.northwest = createQuadTree(nw, capacity, quadTree.depth + 1);
-    quadTree.northeast = createQuadTree(ne, capacity, quadTree.depth + 1);
-    quadTree.southeast = createQuadTree(se, capacity, quadTree.depth + 1);
-    quadTree.southwest = createQuadTree(sw, capacity, quadTree.depth + 1);
+    quadTree.northwest = createQuadTree(
+      nw,
+      quadTree.capacity,
+      quadTree.depth + 1
+    );
+    quadTree.northeast = createQuadTree(
+      ne,
+      quadTree.capacity,
+      quadTree.depth + 1
+    );
+    quadTree.southeast = createQuadTree(
+      se,
+      quadTree.capacity,
+      quadTree.depth + 1
+    );
+    quadTree.southwest = createQuadTree(
+      sw,
+      quadTree.capacity,
+      quadTree.depth + 1
+    );
 
     quadTree.divided = true;
   };
