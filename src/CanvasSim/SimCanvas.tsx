@@ -13,6 +13,21 @@ const SimCanvas = () => {
   const animationFrameRef = useRef<number | null>(null);
   const windowSize = useWindowSize();
 
+  // State for HUD stats
+  const [mousePosX, setMousePosX] = useState<number | null>(null);
+  const [mousePosY, setMousePosY] = useState<number | null>(null);
+  const [fps, setFps] = useState<number | null>(null);
+
+  const handleMouseMove = (event: React.MouseEvent) => {
+    setMousePosX(event.clientX);
+    setMousePosY(event.clientY);
+  };
+
+  const handleMouseLeave = () => {
+    setMousePosX(null);
+    setMousePosY(null);
+  };
+
   // Define animation loop
   const animationLoop = useCallback((particles: ParticleInterface[]) => {
     if (!canvasRef.current || !contextRef.current) return;
@@ -22,6 +37,7 @@ const SimCanvas = () => {
       canvasWidth: canvasRef.current.width,
       canvasHeight: canvasRef.current.height,
       ctx: contextRef.current,
+      setFps,
     });
 
     animationFrameRef.current = requestAnimationFrame(() => {
@@ -75,12 +91,14 @@ const SimCanvas = () => {
     <div className="relative">
       <canvas
         onClick={handleClick}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
         height={windowSize.height}
         width={windowSize.width}
         className="bg-black"
         ref={canvasRef}
       ></canvas>
-      <HeadsUpDisplay />
+      <HeadsUpDisplay mousePosX={mousePosX} mousePosY={mousePosY} fps={fps} />
     </div>
   );
 };
