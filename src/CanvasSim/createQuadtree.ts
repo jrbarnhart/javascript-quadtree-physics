@@ -87,8 +87,8 @@ const createQuadTree = (
       quadTree.points.push(point);
       return true;
     } else {
-      // If there isn't room and the quad tree is not divided
-      if (!quadTree.divided) {
+      // If there isn't room, the quad tree is not divided, and max depth is not yet reached
+      if (!quadTree.divided && quadTree.depth < quadTree.maxDepth) {
         // Subdivide the quadtree, adding child quadtrees
         subdivide();
 
@@ -99,6 +99,13 @@ const createQuadTree = (
           if (quadTree.southeast?.insert(point)) return true;
           if (quadTree.southwest?.insert(point)) return true;
         });
+      }
+
+      // If max depth has been reached
+      if (quadTree.depth >= quadTree.maxDepth) {
+        // Add the point to this quadtree and return true
+        quadTree.points.push(point);
+        return true;
       }
 
       // Clear points from parent node as it is now a divided node
