@@ -29,10 +29,10 @@ const SimCanvas = () => {
     throttleRef.current(event);
   }, []);
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     setMousePosX(null);
     setMousePosY(null);
-  };
+  }, []);
 
   // Define animation loop
   const animationLoop = useCallback((particles: ParticleInterface[]) => {
