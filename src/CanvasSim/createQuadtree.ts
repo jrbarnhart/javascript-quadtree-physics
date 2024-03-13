@@ -94,7 +94,9 @@ const createQuadTree = (
       if (quadTree.southeast?.insert(point)) return true;
       if (quadTree.southwest?.insert(point)) return true;
     }
-    console.log("Default false return. Point not inserted. Duplicate points?");
+    throw new Error(
+      "Default false return should never happen. Point not inserted. Duplicate points?"
+    );
     return false;
   };
 
