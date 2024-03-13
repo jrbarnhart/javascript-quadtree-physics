@@ -107,6 +107,7 @@ const createQuadTree = (
     points: [],
     divided: false,
     depth: depth ?? 0,
+    maxDepth: 8,
     insert,
   };
   return quadTree;
