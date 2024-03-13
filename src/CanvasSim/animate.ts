@@ -3,22 +3,16 @@ import calculateGravity from "./calculateGravity";
 import createQuadTree from "./createQuadtree";
 import createRectangle from "./createRectangle";
 
-// Vars for calculating fps
-let lastFrameTime = performance.now();
-let frameCount = 0;
-
 const animate = ({
   particles,
   canvasWidth,
   canvasHeight,
   ctx,
-  setFps,
 }: {
   particles: ParticleInterface[];
   canvasWidth: number;
   canvasHeight: number;
   ctx: CanvasRenderingContext2D;
-  setFps: (value: number | null) => void;
 }) => {
   // Create the quadtree from particles
   const boundary = createRectangle(
@@ -101,17 +95,6 @@ const animate = ({
   ctx.strokeStyle = "white";
   drawRects(quadTree);
   ctx.strokeStyle = "transparent";
-
-  // Calculate fps
-  const now = performance.now();
-  const elapsed = now - lastFrameTime;
-  frameCount++;
-  if (elapsed > 1000) {
-    const fps = Math.round((frameCount * 1000) / elapsed);
-    setFps(fps);
-    frameCount = 0;
-    lastFrameTime = now;
-  }
 };
 
 export default animate;

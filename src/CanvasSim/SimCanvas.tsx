@@ -17,7 +17,6 @@ const SimCanvas = () => {
   // State for HUD stats
   const [mousePosX, setMousePosX] = useState<number | null>(null);
   const [mousePosY, setMousePosY] = useState<number | null>(null);
-  const [fps, setFps] = useState<number | null>(null);
 
   const throttleRef = useRef(
     _.throttle((event: React.MouseEvent) => {
@@ -44,7 +43,6 @@ const SimCanvas = () => {
       canvasWidth: canvasRef.current.width,
       canvasHeight: canvasRef.current.height,
       ctx: contextRef.current,
-      setFps,
     });
 
     animationFrameRef.current = requestAnimationFrame(() => {
@@ -105,7 +103,7 @@ const SimCanvas = () => {
         className="bg-black"
         ref={canvasRef}
       ></canvas>
-      <HeadsUpDisplay mousePosX={mousePosX} mousePosY={mousePosY} fps={fps} />
+      <HeadsUpDisplay mousePosX={mousePosX} mousePosY={mousePosY} />
     </div>
   );
 };
