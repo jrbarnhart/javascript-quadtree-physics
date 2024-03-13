@@ -32,8 +32,8 @@ export interface QuadTree {
   capacity: PositiveInteger;
   points: ParticleInterface[];
   massTotal: number;
-  massCenterX: number;
-  massCenterY: number;
+  massCenterX: number | null;
+  massCenterY: number | null;
   insert: (particle: ParticleInterface) => boolean;
   divided: boolean;
   depth: number;
