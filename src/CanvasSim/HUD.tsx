@@ -6,7 +6,7 @@ const HeadsUpDisplay = ({
   mousePosY: number | null;
 }) => {
   return (
-    <div className="absolute top-0 text-neutral-50 h-full w-full pointer-events-none">
+    <div className="absolute top-0 grid items-end text-neutral-50 h-full w-full pointer-events-none">
       <div className="p-5">
         <p>MouseX: {mousePosX}</p>
         <p>MouseY: {mousePosY}</p>
