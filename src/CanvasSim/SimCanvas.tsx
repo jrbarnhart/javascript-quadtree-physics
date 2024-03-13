@@ -65,7 +65,7 @@ const SimCanvas = () => {
         y,
         vx: 0,
         vy: 0,
-        mass: 1,
+        mass: 100,
         radius: 2,
         color: "yellow",
       });
