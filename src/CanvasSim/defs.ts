@@ -31,6 +31,9 @@ export interface QuadTree {
   boundary: Rectangle;
   capacity: PositiveInteger;
   points: ParticleInterface[];
+  massTotal: number;
+  massCenterX: number;
+  massCenterY: number;
   insert: (particle: ParticleInterface) => boolean;
   divided: boolean;
   depth: number;
