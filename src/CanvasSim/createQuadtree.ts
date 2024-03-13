@@ -82,10 +82,25 @@ const createQuadTree = (
     // Return if the point is not within boundary
     if (!rectContains(boundary, point)) return false;
 
+    // It is contained by this node so update this nodes total and center of mass
+    quadTree.massTotal += point.mass;
+    // If center of mass is not null
+    if (quadTree.massCenterX && quadTree.massCenterY) {
+      quadTree.massCenterX =
+        (quadTree.massCenterX * quadTree.massTotal + point.x * point.mass) /
+        quadTree.massTotal;
+      quadTree.massCenterY =
+        (quadTree.massCenterY * quadTree.massTotal + point.y * point.mass) /
+        quadTree.massTotal;
+    } else {
+      quadTree.massCenterX = point.x;
+      quadTree.massCenterY = point.y;
+    }
+
     // Add point if there is room and the node is not divided
     if (quadTree.points.length < quadTree.capacity && !quadTree.divided) {
       quadTree.points.push(point);
-      // Update nodes center of and total mass
+      // Update nodes total and center of mass
       return true;
     } else {
       // If there isn't room, the quad tree is not divided, and max depth is not yet reached
@@ -130,8 +145,8 @@ const createQuadTree = (
     capacity,
     points: [],
     massTotal: 0,
-    massCenterX: boundary.x,
-    massCenterY: boundary.y,
+    massCenterX: null,
+    massCenterY: null,
     divided: false,
     depth: depth ?? 0,
     maxDepth: 8,
