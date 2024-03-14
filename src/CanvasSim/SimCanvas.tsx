@@ -30,11 +30,6 @@ const SimCanvas = () => {
     throttleRef.current(event);
   }, []);
 
-  const handleMouseLeave = useCallback(() => {
-    setMousePosX(null);
-    setMousePosY(null);
-  }, []);
-
   // Define animation loop
   const animationLoop = useCallback((particles: ParticleInterface[]) => {
     if (!canvasRef.current || !contextRef.current) return;
@@ -100,7 +95,6 @@ const SimCanvas = () => {
       <canvas
         onClick={handleClick}
         onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
         height={windowSize.height}
         width={windowSize.width}
         className="bg-black"
