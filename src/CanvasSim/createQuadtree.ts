@@ -82,20 +82,21 @@ const createQuadTree = (
     // Return if the point is not within boundary
     if (!rectContains(boundary, point)) return false;
 
-    // It is contained by this node so update this nodes total and center of mass
-    quadTree.massTotal += point.mass;
-    // If center of mass is not null
-    if (quadTree.massCenterX && quadTree.massCenterY) {
+    // If center of mass is not null and therefore node has particle(s)
+    if (quadTree.massCenterX !== null && quadTree.massCenterY !== null) {
+      // Update center of mass
       quadTree.massCenterX =
         (quadTree.massCenterX * quadTree.massTotal + point.x * point.mass) /
-        quadTree.massTotal;
+        (quadTree.massTotal + point.mass);
       quadTree.massCenterY =
         (quadTree.massCenterY * quadTree.massTotal + point.y * point.mass) /
-        quadTree.massTotal;
+        (quadTree.massTotal + point.mass);
     } else {
       quadTree.massCenterX = point.x;
       quadTree.massCenterY = point.y;
     }
+    // Update total mass
+    quadTree.massTotal += point.mass;
 
     // Add point if there is room and the node is not divided
     if (quadTree.points.length < quadTree.capacity && !quadTree.divided) {
