@@ -142,9 +142,37 @@ const createQuadTree = (
 
   // Method for updating particles position based on gravitational attraction
   const gravity = () => {
-    // Find the first left-most edge
-    // Process that node
-    // After processed, delete the node (or maybe delete it after it is found by saving points variable? Higher memory cost for that?)
+    // 1. Fn to find the first left-most edge to use as query node
+    /* if (this node is a leaf node) {
+        empty? remove or ignore
+        not empty then this is the query node
+    } else (this node is an internal node) {
+        restart this check with leftmost child node
+    }
+    */
+    // 2. Process the query node
+    /*
+      if (query node has multiple points) {
+        brute force gravity calcs and updates for these points
+      }
+
+      Apply gravity using Barnes-Hut approach
+      for each (particle in query node) {
+        start at root of quad tree
+        if (node is an internal node) {
+          check distance between particle and nodes center of mass
+          if (distance > threshold) {
+            calc and update force between particle and center of mass
+            apply opposite force to all particles in the node
+          } else if (distance <= threshold) {
+            recursively check child nodes
+          }
+        } else if (node is a leaf node) {
+          calc and update force between particle and particles in leaf node
+        }
+      }
+    */
+    // 3. After processed, delete the node (or maybe delete it after it is found by saving points variable? Higher memory cost for that?)
   };
   // Create and return quadtree object
   const quadTree: QuadTree = {
