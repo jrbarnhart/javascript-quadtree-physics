@@ -140,6 +140,12 @@ const createQuadTree = (
     return false;
   };
 
+  // Method for updating particles position based on gravitational attraction
+  const gravity = () => {
+    // Find the first left-most edge
+    // Process that node
+    // After processed, delete the node (or maybe delete it after it is found by saving points variable? Higher memory cost for that?)
+  };
   // Create and return quadtree object
   const quadTree: QuadTree = {
     boundary,
@@ -152,6 +158,7 @@ const createQuadTree = (
     depth: depth ?? 0,
     maxDepth: 8,
     insert,
+    gravity,
   };
   return quadTree;
 };
