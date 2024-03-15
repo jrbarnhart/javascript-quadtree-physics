@@ -24,6 +24,14 @@ const createQuadTree = (
   capacity: PositiveInteger,
   depth?: number | undefined
 ) => {
+  // Array used to reference child quadrants
+  const quads: ["northwest", "northeast", "southeast", "southwest"] = [
+    "northwest",
+    "northeast",
+    "southeast",
+    "southwest",
+  ];
+
   // Fn for subdividing
   const subdivide = () => {
     // Define new boundaries
@@ -56,12 +64,6 @@ const createQuadTree = (
     );
 
     // Create the child nodes
-    const quads: ["northwest", "northeast", "southeast", "southwest"] = [
-      "northwest",
-      "northeast",
-      "southeast",
-      "southwest",
-    ];
     quads.forEach((quad) => {
       quadTree[quad] = createQuadTree(
         // Assign correct rectangle
@@ -138,9 +140,8 @@ const createQuadTree = (
       if (quadTree.southwest?.insert(point)) return true;
     }
     throw new Error(
-      "Default false return should never happen. Point not inserted. Duplicate points?"
+      "Default false return should never happen. Point not inserted. Check insertion logic."
     );
-    return false;
   };
 
   // Method for finding first edge node
@@ -150,14 +151,10 @@ const createQuadTree = (
       return quadTree;
       // Else if it is an internal node with a northwest child
     } else if (quadTree.divided) {
-      let foundNode = quadTree.northwest?.findFirstLeaf();
-      if (foundNode) return foundNode;
-      foundNode = quadTree.northeast?.findFirstLeaf();
-      if (foundNode) return foundNode;
-      foundNode = quadTree.southeast?.findFirstLeaf();
-      if (foundNode) return foundNode;
-      foundNode = quadTree.southwest?.findFirstLeaf();
-      if (foundNode) return foundNode;
+      for (const quad of quads) {
+        const foundNode = quadTree[quad]?.findFirstLeaf();
+        if (foundNode) return foundNode;
+      }
     }
     // Otherwise no leaf node with a point in it was fonund
     return null;
