@@ -160,9 +160,12 @@ const createQuadTree = (
     return null;
   };
 
-  // Method for updating particles position based on gravitational attraction
+  // Barnes-Hut gravity calculation
   const gravity = () => {
     // 1. Find first leaf with helper fn
+    const queryNode = quadTree.findFirstLeaf();
+    // If there is no queryNode found then the tree has no more nodes to proces so exit
+    if (!queryNode) return;
     // 2. Process the query node
     /*
       if (query node has multiple points) {
