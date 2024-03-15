@@ -7,13 +7,27 @@ import {
 import createRectangle from "./createRectangle";
 
 // Fn for checking if rectangle contains a point
-const rectContains = (rectangle: Rectangle, point: ParticleInterface) => {
+export const rectContains = (
+  rectangle: Rectangle,
+  point: ParticleInterface
+) => {
   return (
     rectangle.left <= point.x &&
     point.x <= rectangle.right &&
     rectangle.top <= point.y &&
     point.y <= rectangle.bottom
   );
+};
+
+// Fn to find the first left-most edge to use as query node
+export const findFirstLeaf = () => {
+  /* if (this node is a leaf node) {
+      empty? remove or ignore
+      not empty then this is the query node
+  } else (this node is an internal node) {
+      restart this check with leftmost child node
+  }
+  */
 };
 
 const createQuadTree = (
@@ -142,14 +156,7 @@ const createQuadTree = (
 
   // Method for updating particles position based on gravitational attraction
   const gravity = () => {
-    // 1. Fn to find the first left-most edge to use as query node
-    /* if (this node is a leaf node) {
-        empty? remove or ignore
-        not empty then this is the query node
-    } else (this node is an internal node) {
-        restart this check with leftmost child node
-    }
-    */
+    // 1. Find first leaf with helper fn
     // 2. Process the query node
     /*
       if (query node has multiple points) {
