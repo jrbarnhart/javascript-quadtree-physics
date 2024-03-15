@@ -1,4 +1,4 @@
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import createQuadtree from "../CanvasSim/createQuadtree";
 import createRectangle from "../CanvasSim/createRectangle";
 import createParticle from "../CanvasSim/createParticle";
@@ -178,7 +178,9 @@ describe("gravity", () => {
     // Mocking a tree for 100x100 space
     const initialBoundary = createRectangle(50, 50, 100, 100);
     const testTree = createQuadtree(initialBoundary, 1);
-
-    expect(testTree.gravity).toHaveReturned;
+    const gravitySpy = vi.spyOn(testTree, "gravity");
+    testTree.gravity();
+    expect(gravitySpy).toHaveReturnedTimes(1);
+    gravitySpy.mockRestore();
   });
 });
