@@ -19,17 +19,6 @@ export const rectContains = (
   );
 };
 
-// Fn to find the first left-most edge to use as query node
-export const findFirstLeaf = () => {
-  /* if (this node is a leaf node) {
-      empty? remove or ignore
-      not empty then this is the query node
-  } else (this node is an internal node) {
-      restart this check with leftmost child node
-  }
-  */
-};
-
 const createQuadTree = (
   boundary: Rectangle,
   capacity: PositiveInteger,
@@ -154,6 +143,19 @@ const createQuadTree = (
     return false;
   };
 
+  // Method for finding first edge node
+  const findFirstLeaf = () => {
+    // If this node a leaf node with points in it
+    if (!quadTree.divided && quadTree.points.length > 0) {
+      return quadTree;
+      // Else if it is an internal node with a northwest child
+    } else if (quadTree.divided && quadTree.northwest) {
+      return quadTree.northwest.findFirstLeaf();
+    }
+    // Otherwise it is a leaf node but has no points (the root node) so just return it
+    return quadTree;
+  };
+
   // Method for updating particles position based on gravitational attraction
   const gravity = () => {
     // 1. Find first leaf with helper fn
@@ -194,6 +196,7 @@ const createQuadTree = (
     depth: depth ?? 0,
     maxDepth: 8,
     insert,
+    findFirstLeaf,
     gravity,
   };
   return quadTree;
