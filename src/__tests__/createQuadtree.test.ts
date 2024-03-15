@@ -4,12 +4,12 @@ import createRectangle from "../CanvasSim/createRectangle";
 import createParticle from "../CanvasSim/createParticle";
 
 describe("findFirstLeaf", () => {
-  test("returns root quadTree if no nodes or points", () => {
+  test("returns null if no points or child nodes", () => {
     // Mocking a tree for 100x100 space
     const initialBoundary = createRectangle(50, 50, 100, 100);
     const testTree = createQuadtree(initialBoundary, 1);
 
-    expect(testTree.findFirstLeaf()).toBe(testTree);
+    expect(testTree.findFirstLeaf()).toBe(null);
   });
 
   test("returns root quadTree if no nodes but does have points", () => {
