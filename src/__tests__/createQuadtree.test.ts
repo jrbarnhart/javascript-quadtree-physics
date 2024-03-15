@@ -96,8 +96,8 @@ describe("findFirstLeaf", () => {
     const initialBoundary = createRectangle(512, 512, 1024, 1024);
     const testTree = createQuadtree(initialBoundary, 1);
     const testParticleA = createParticle({
-      x: 1021,
-      y: 1021,
+      x: 1019,
+      y: 1019,
       vx: 0,
       vy: 0,
       mass: 10,
@@ -105,8 +105,8 @@ describe("findFirstLeaf", () => {
       color: "yellow",
     });
     const testParticleB = createParticle({
-      x: 1023,
-      y: 1023,
+      x: 1020,
+      y: 1020,
       vx: 0,
       vy: 0,
       mass: 10,
