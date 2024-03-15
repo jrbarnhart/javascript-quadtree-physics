@@ -174,7 +174,7 @@ describe("findFirstLeaf", () => {
 });
 
 describe("gravity", () => {
-  test("returns when no leaf nodes remain unprocessed", () => {
+  test("returns when quadtree is empty", () => {
     // Mocking a tree for 100x100 space
     const initialBoundary = createRectangle(50, 50, 100, 100);
     const testTree = createQuadtree(initialBoundary, 1);
