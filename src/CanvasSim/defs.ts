@@ -35,7 +35,7 @@ export interface QuadTree {
   massCenterX: number | null;
   massCenterY: number | null;
   insert: (particle: ParticleInterface) => boolean;
-  findFirstLeaf: () => QuadTree;
+  findFirstLeaf: () => QuadTree | null;
   gravity: () => void;
   divided: boolean;
   depth: number;

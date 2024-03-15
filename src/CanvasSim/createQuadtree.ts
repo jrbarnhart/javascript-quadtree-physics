@@ -152,8 +152,8 @@ const createQuadTree = (
     } else if (quadTree.divided && quadTree.northwest) {
       return quadTree.northwest.findFirstLeaf();
     }
-    // Otherwise it is a leaf node but has no points (the root node) so just return it
-    return quadTree;
+    // Otherwise no leaf node with a point in it was fonund
+    return null;
   };
 
   // Method for updating particles position based on gravitational attraction
