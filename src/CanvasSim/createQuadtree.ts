@@ -190,6 +190,7 @@ const createQuadTree = (
     */
     // 3. After processed, delete the node (or maybe delete it after it is found by saving points variable? Higher memory cost for that?)
     // 4. Find next query node and repeat process
+    quadTree.gravity();
   };
   // Create and return quadtree object
   const quadTree: QuadTree = {
