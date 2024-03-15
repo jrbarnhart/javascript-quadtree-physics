@@ -149,8 +149,15 @@ const createQuadTree = (
     if (!quadTree.divided && quadTree.points.length > 0) {
       return quadTree;
       // Else if it is an internal node with a northwest child
-    } else if (quadTree.divided && quadTree.northwest) {
-      return quadTree.northwest.findFirstLeaf();
+    } else if (quadTree.divided) {
+      let foundNode = quadTree.northwest?.findFirstLeaf();
+      if (foundNode) return foundNode;
+      foundNode = quadTree.northeast?.findFirstLeaf();
+      if (foundNode) return foundNode;
+      foundNode = quadTree.southeast?.findFirstLeaf();
+      if (foundNode) return foundNode;
+      foundNode = quadTree.southwest?.findFirstLeaf();
+      if (foundNode) return foundNode;
     }
     // Otherwise no leaf node with a point in it was fonund
     return null;
