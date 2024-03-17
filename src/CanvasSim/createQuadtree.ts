@@ -230,9 +230,9 @@ const createQuadTree = (
   // Barnes-Hut gravity calculation
   const gravity = () => {
     // 1. Find first leaf with helper fn
-    let queryNode = quadTree.findFirstLeafPoints();
+    let queryNodePoints = quadTree.findFirstLeafPoints();
     // If there is no queryNode found then the tree has no more nodes to proces so exit
-    if (!queryNode) return;
+    if (!queryNodePoints) return;
     // 2. Process the query node
     /*
       Apply gravity using Barnes-Hut approach
@@ -252,14 +252,14 @@ const createQuadTree = (
       }
     */
     // First, apply gravity b/w all of queryNode's own particles
-    if (queryNode.points.length > 1) {
+    if (queryNodePoints.length > 1) {
       // For each point
-      for (let i = 0; i < queryNode.points.length; i++) {
-        const pointA = queryNode.points[i];
+      for (let i = 0; i < queryNodePoints.length; i++) {
+        const pointA = queryNodePoints[i];
 
         // Calculate gravity between A and points w/ higher indicies
-        for (let j = i + 1; j < queryNode.points.length; j++) {
-          const pointB = queryNode.points[j];
+        for (let j = i + 1; j < queryNodePoints.length; j++) {
+          const pointB = queryNodePoints[j];
 
           // Get distance info
           const { distance, distSq, dx, dy } = calculateDistance(
@@ -288,7 +288,7 @@ const createQuadTree = (
     // Apply gravity b/w all of queryNode's particles and other nodes using Barnes-Hut
 
     // 3. After processed, set node to null
-    queryNode = null;
+    queryNodePoints = null;
     // 4. Find next query node and repeat process
     quadTree.gravity();
   };
