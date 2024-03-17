@@ -210,33 +210,31 @@ const createQuadTree = (
   };
 
   // Method for finding first edge node
-  const findFirstLeaf = () => {
+  const findFirstLeafPoints = () => {
     // If this node a leaf node with points in it
     if (!quadTree.divided && quadTree.points.length > 0) {
-      return quadTree;
-      // Else if it is an internal node with a northwest child
+      return quadTree.points;
+      // Else if it is an internal node
     } else if (quadTree.divided) {
       for (const quad of quads) {
-        const foundNode = quadTree[quad]?.findFirstLeaf();
-        if (foundNode) return foundNode;
+        const foundNodePoints = quadTree[quad]?.findFirstLeafPoints();
+        if (foundNodePoints) {
+          return foundNodePoints;
+        }
       }
     }
-    // Otherwise no leaf node with a point in it was fonund
+    // Otherwise no leaf node with a point in it was found
     return null;
   };
 
   // Barnes-Hut gravity calculation
   const gravity = () => {
     // 1. Find first leaf with helper fn
-    const queryNode = quadTree.findFirstLeaf();
+    let queryNode = quadTree.findFirstLeafPoints();
     // If there is no queryNode found then the tree has no more nodes to proces so exit
     if (!queryNode) return;
     // 2. Process the query node
     /*
-      if (query node has multiple points) {
-        brute force gravity calcs and updates for these points
-      }
-
       Apply gravity using Barnes-Hut approach
       for each (particle in query node) {
         start at root of quad tree
@@ -286,7 +284,11 @@ const createQuadTree = (
         }
       }
     }
-    // 3. After processed, set node to undefined
+
+    // Apply gravity b/w all of queryNode's particles and other nodes using Barnes-Hut
+
+    // 3. After processed, set node to null
+    queryNode = null;
     // 4. Find next query node and repeat process
     quadTree.gravity();
   };
@@ -302,7 +304,7 @@ const createQuadTree = (
     depth: depth ?? 0,
     maxDepth: 8,
     insert,
-    findFirstLeaf,
+    findFirstLeafPoints,
     gravity,
   };
   return quadTree;
