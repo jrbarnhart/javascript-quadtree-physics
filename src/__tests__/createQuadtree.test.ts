@@ -12,7 +12,7 @@ describe("findFirstLeafPoints", () => {
     expect(testTree.findFirstLeafPoints()).toBe(null);
   });
 
-  test("returns root quadTree if no nodes but does have points", () => {
+  test("returns root particles if no nodes but does have points", () => {
     // Mocking a tree for 100x100 space
     const initialBoundary = createRectangle(50, 50, 100, 100);
     const testTree = createQuadtree(initialBoundary, 1);
@@ -27,10 +27,10 @@ describe("findFirstLeafPoints", () => {
     });
     testTree.insert(testParticleA);
 
-    expect(testTree.findFirstLeafPoints()).toBe(testTree.points);
+    expect(testTree.findFirstLeafPoints()).toStrictEqual([testParticleA]);
   });
 
-  test("returns first leaf when tree has depth of 1", () => {
+  test("returns first leaf particles when tree has depth of 1", () => {
     // Mocking a tree for 100x100 space
     const initialBoundary = createRectangle(50, 50, 100, 100);
     const testTree = createQuadtree(initialBoundary, 1);
@@ -56,10 +56,10 @@ describe("findFirstLeafPoints", () => {
     testTree.insert(testParticleA);
     testTree.insert(testParticleB);
 
-    expect(testTree.findFirstLeafPoints()).toBe(testTree.northwest?.points);
+    expect(testTree.findFirstLeafPoints()).toStrictEqual([testParticleA]);
   });
 
-  test("returns first leaf when tree has points in multiple quadrants", () => {
+  test("returns first leaf particles when tree has points in multiple quadrants", () => {
     // Mocking a tree for 100x100 space
     const initialBoundary = createRectangle(50, 50, 100, 100);
     const testTree = createQuadtree(initialBoundary, 1);
@@ -105,10 +105,10 @@ describe("findFirstLeafPoints", () => {
     testTree.insert(testParticleC);
     testTree.insert(testParticleD);
 
-    expect(testTree.findFirstLeafPoints()).toBe(testTree.northwest?.points);
+    expect(testTree.findFirstLeafPoints()).toStrictEqual([testParticleA]);
   });
 
-  test("returns first leaf on maximum depth tree", () => {
+  test("returns first leaf particles on maximum depth tree", () => {
     // Mocking a tree for 1024x1024 space for even subdivision size with smallest size being 4x4
     const initialBoundary = createRectangle(512, 512, 1024, 1024);
     const testTree = createQuadtree(initialBoundary, 1);
@@ -134,13 +134,13 @@ describe("findFirstLeafPoints", () => {
     testTree.insert(testParticleA);
     testTree.insert(testParticleB);
 
-    expect(testTree.findFirstLeafPoints()).toBe(
-      testTree.northwest?.northwest?.northwest?.northwest?.northwest?.northwest
-        ?.northwest?.northwest?.points
-    );
+    expect(testTree.findFirstLeafPoints()).toStrictEqual([
+      testParticleA,
+      testParticleB,
+    ]);
   });
 
-  test("returns first leaf on maximum depth tree when node located in SE", () => {
+  test("returns first leaf particles on maximum depth tree when node located in SE", () => {
     // Mocking a tree for 1024x1024 space for even subdivision size with smallest size being 4x4
     const initialBoundary = createRectangle(512, 512, 1024, 1024);
     const testTree = createQuadtree(initialBoundary, 1);
@@ -166,10 +166,10 @@ describe("findFirstLeafPoints", () => {
     testTree.insert(testParticleA);
     testTree.insert(testParticleB);
 
-    expect(testTree.findFirstLeafPoints()).toBe(
-      testTree.southeast?.southeast?.southeast?.southeast?.southeast?.southeast
-        ?.southeast?.northwest?.points
-    );
+    expect(testTree.findFirstLeafPoints()).toStrictEqual([
+      testParticleA,
+      testParticleB,
+    ]);
   });
 });
 
