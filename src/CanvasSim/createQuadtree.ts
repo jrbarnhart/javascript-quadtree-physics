@@ -219,6 +219,8 @@ const createQuadTree = (
       for (const quad of quads) {
         const foundNodePoints = quadTree[quad]?.findFirstLeafPoints();
         if (foundNodePoints) {
+          // Set the
+          quadTree[quad] = undefined;
           return foundNodePoints;
         }
       }
