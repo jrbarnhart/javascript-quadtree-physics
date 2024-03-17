@@ -19,6 +19,26 @@ export const rectContains = (
   );
 };
 
+// Fn for calculating gravity between two bodies
+export const calculateAttraction = (
+  b1x: number,
+  b1y: number,
+  b1mass: number,
+  b2x: number,
+  b2y: number,
+  b2mass: number,
+  G: number
+) => {
+  const dx = b1x - b2x;
+  const dy = b1y - b2y;
+  const distSq = dx * dx + dy * dy;
+  const dist = Math.sqrt(distSq);
+  const force = (G * b1mass * b2mass) / distSq;
+  const fx = -(force * (dx / dist));
+  const fy = -(force * (dy / dist));
+  return { x: fx, y: fy };
+};
+
 const createQuadTree = (
   boundary: Rectangle,
   capacity: PositiveInteger,
