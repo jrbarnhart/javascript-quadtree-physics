@@ -215,12 +215,12 @@ describe("gravity", () => {
     testTree.insert(testParticleB);
 
     // Apply gravity to quad tree particles
-    // testTree.gravity();
+    testTree.gravity();
 
     // Expect particles to have moved closer together
-    /*     expect(testParticleA.x).toBeGreaterThan(p1x);
+    expect(testParticleA.x).toBeGreaterThan(p1x);
     expect(testParticleA.y).toBeGreaterThan(p1y);
     expect(testParticleB.x).toBeLessThan(p2x);
-    expect(testParticleB.y).toBeLessThan(p2y); */
+    expect(testParticleB.y).toBeLessThan(p2y);
   });
 });
