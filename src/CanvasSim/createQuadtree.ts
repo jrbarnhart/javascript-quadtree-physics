@@ -6,6 +6,10 @@ import {
 } from "./defs";
 import createRectangle from "./createRectangle";
 
+// Constants for tuning gravitational attraction and movement
+const G = 3;
+const MAX_VELOCITY = 0.1;
+
 // Fn for checking if rectangle contains a point
 export const rectContains = (
   rectangle: Rectangle,
@@ -47,6 +51,37 @@ export const calculateAttraction = (
   const fx = -(force * (dx / distance));
   const fy = -(force * (dy / distance));
   return { x: fx, y: fy };
+};
+
+// Updates particle positions given gravForce from A to B
+export const updatePositions = (
+  pointA: ParticleInterface,
+  pointB: ParticleInterface,
+  gravForce: { x: number; y: number }
+) => {
+  pointA.vx = Math.max(
+    -MAX_VELOCITY,
+    Math.min(pointA.vx + gravForce.x / pointA.mass, MAX_VELOCITY)
+  );
+  pointA.vy = Math.max(
+    -MAX_VELOCITY,
+    Math.min(pointA.vy + gravForce.y / pointA.mass, MAX_VELOCITY)
+  );
+  // Use inverse force to update pointB
+  pointB.vx = Math.max(
+    -MAX_VELOCITY,
+    Math.min(pointB.vx - gravForce.x / pointB.mass, MAX_VELOCITY)
+  );
+  pointB.vy = Math.max(
+    -MAX_VELOCITY,
+    Math.min(pointB.vy - gravForce.y / pointB.mass, MAX_VELOCITY)
+  );
+
+  // Update positions of particles based on new velocity
+  pointA.x += pointA.vx;
+  pointA.y += pointA.vy;
+  pointB.x += pointB.vx;
+  pointB.y += pointB.vy;
 };
 
 const createQuadTree = (
@@ -218,6 +253,39 @@ const createQuadTree = (
         }
       }
     */
+    // First, apply gravity b/w all of queryNode's own particles
+    if (queryNode.points.length > 1) {
+      // For each point
+      for (let i = 0; i < queryNode.points.length; i++) {
+        const pointA = queryNode.points[i];
+
+        // Calculate gravity between A and points w/ higher indicies
+        for (let j = i + 1; j < queryNode.points.length; j++) {
+          const pointB = queryNode.points[j];
+
+          // Get distance info
+          const { distance, distSq, dx, dy } = calculateDistance(
+            pointA.x,
+            pointA.y,
+            pointB.x,
+            pointB.y
+          );
+
+          const gravForce = calculateAttraction(
+            dx,
+            dy,
+            distSq,
+            distance,
+            pointA.mass,
+            pointB.mass,
+            G
+          );
+
+          // Use this force to update pointA velocity
+          updatePositions(pointA, pointB, gravForce);
+        }
+      }
+    }
     // 3. After processed, set node to undefined
     // 4. Find next query node and repeat process
     quadTree.gravity();
