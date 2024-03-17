@@ -19,23 +19,33 @@ export const rectContains = (
   );
 };
 
-// Fn for calculating gravity between two bodies
+// Calculates distance between two points
+export const calculateDistance = (
+  p1x: number,
+  p1y: number,
+  p2x: number,
+  p2y: number
+) => {
+  const dx = p1x - p2x;
+  const dy = p1y - p2y;
+  const distSq = dx * dx + dy * dy;
+  const distance = Math.sqrt(distSq);
+  return { distance, distSq, dx, dy };
+};
+
+// Calculates gravity between two bodies
 export const calculateAttraction = (
-  b1x: number,
-  b1y: number,
+  dx: number,
+  dy: number,
+  distSq: number,
+  distance: number,
   b1mass: number,
-  b2x: number,
-  b2y: number,
   b2mass: number,
   G: number
 ) => {
-  const dx = b1x - b2x;
-  const dy = b1y - b2y;
-  const distSq = dx * dx + dy * dy;
-  const dist = Math.sqrt(distSq);
   const force = (G * b1mass * b2mass) / distSq;
-  const fx = -(force * (dx / dist));
-  const fy = -(force * (dy / dist));
+  const fx = -(force * (dx / distance));
+  const fy = -(force * (dy / distance));
   return { x: fx, y: fy };
 };
 
