@@ -3,13 +3,13 @@ import createQuadtree from "../CanvasSim/createQuadtree";
 import createRectangle from "../CanvasSim/createRectangle";
 import createParticle from "../CanvasSim/createParticle";
 
-describe("findFirstLeaf", () => {
+describe("findFirstLeafPoints", () => {
   test("returns null if no points or child nodes", () => {
     // Mocking a tree for 100x100 space
     const initialBoundary = createRectangle(50, 50, 100, 100);
     const testTree = createQuadtree(initialBoundary, 1);
 
-    expect(testTree.findFirstLeaf()).toBe(null);
+    expect(testTree.findFirstLeafPoints()).toBe(null);
   });
 
   test("returns root quadTree if no nodes but does have points", () => {
@@ -27,7 +27,7 @@ describe("findFirstLeaf", () => {
     });
     testTree.insert(testParticleA);
 
-    expect(testTree.findFirstLeaf()).toBe(testTree);
+    expect(testTree.findFirstLeafPoints()).toBe(testTree.points);
   });
 
   test("returns first leaf when tree has depth of 1", () => {
@@ -56,7 +56,7 @@ describe("findFirstLeaf", () => {
     testTree.insert(testParticleA);
     testTree.insert(testParticleB);
 
-    expect(testTree.findFirstLeaf()).toBe(testTree.northwest);
+    expect(testTree.findFirstLeafPoints()).toBe(testTree.northwest?.points);
   });
 
   test("returns first leaf when tree has points in multiple quadrants", () => {
@@ -105,7 +105,7 @@ describe("findFirstLeaf", () => {
     testTree.insert(testParticleC);
     testTree.insert(testParticleD);
 
-    expect(testTree.findFirstLeaf()).toBe(testTree.northwest);
+    expect(testTree.findFirstLeafPoints()).toBe(testTree.northwest?.points);
   });
 
   test("returns first leaf on maximum depth tree", () => {
@@ -134,9 +134,9 @@ describe("findFirstLeaf", () => {
     testTree.insert(testParticleA);
     testTree.insert(testParticleB);
 
-    expect(testTree.findFirstLeaf()).toBe(
+    expect(testTree.findFirstLeafPoints()).toBe(
       testTree.northwest?.northwest?.northwest?.northwest?.northwest?.northwest
-        ?.northwest?.northwest
+        ?.northwest?.northwest?.points
     );
   });
 
@@ -166,9 +166,9 @@ describe("findFirstLeaf", () => {
     testTree.insert(testParticleA);
     testTree.insert(testParticleB);
 
-    expect(testTree.findFirstLeaf()).toBe(
+    expect(testTree.findFirstLeafPoints()).toBe(
       testTree.southeast?.southeast?.southeast?.southeast?.southeast?.southeast
-        ?.southeast?.northwest
+        ?.southeast?.northwest?.points
     );
   });
 });
