@@ -184,7 +184,7 @@ describe("gravity", () => {
     gravitySpy.mockRestore();
   });
 
-  test("applies gravity between queryNode's own particles", () => {
+  test("applies gravity between queryNode's own particles in the right direction", () => {
     // Mocking a tree for 1024x1024 space for even subdivision size with smallest size being 4x4
     const initialBoundary = createRectangle(512, 512, 1024, 1024);
     const testTree = createQuadtree(initialBoundary, 1);
