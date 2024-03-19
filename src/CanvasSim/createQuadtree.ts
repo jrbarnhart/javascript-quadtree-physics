@@ -96,6 +96,8 @@ export const updateParticles = (
       -MAX_VELOCITY,
       Math.min(pointBOrTree.vy - gravForce.y / pointBOrTree.mass, MAX_VELOCITY)
     );
+    pointBOrTree.x += pointBOrTree.vx;
+    pointBOrTree.y += pointBOrTree.vy;
   }
 };
 
@@ -230,6 +232,9 @@ const createQuadTree = (
     if (!quadTree.divided && quadTree.points.length > 0) {
       const foundNodePoints = quadTree.points;
       quadTree.points = [];
+      quadTree.massCenterX = null;
+      quadTree.massCenterY = null;
+      quadTree.massTotal = 0;
       return foundNodePoints;
     } else if (quadTree.divided) {
       // Else if it is an internal node
@@ -254,6 +259,7 @@ const createQuadTree = (
     // 2. Process the query node
     // First, apply gravity b/w all of queryNode's own particles
     if (queryNodePoints.length > 1) {
+      console.log("Updating queryNode's own particles");
       // For each point
       for (let i = 0; i < queryNodePoints.length; i++) {
         const pointA = queryNodePoints[i];
@@ -282,6 +288,7 @@ const createQuadTree = (
 
           // Use this force to update pointA velocity
           updateParticles(pointA, pointB, gravForce);
+          console.log("Particles updated:", pointA, pointB);
         }
       }
     }
@@ -290,6 +297,7 @@ const createQuadTree = (
     queryNodePoints.forEach((pointA) => {
       // If the quadtree node compared against point (starting with root) is external
       if (!quadTree.divided) {
+        console.log("FOUND an external node with particles. Checking it.");
         // Calculate gravity between point and points in edge node
         quadTree.points.forEach((pointB) => {
           const { distance, distSq, dx, dy } = calculateDistance(
@@ -313,10 +321,15 @@ const createQuadTree = (
       // If the quadtree node compared against point (starting with root) is internal and contains points
       if (
         quadTree.divided &&
-        quadTree.massTotal > 0 &&
+        quadTree.points.length > 0 &&
         quadTree.massCenterX !== null &&
         quadTree.massCenterY !== null
       ) {
+        console.log(
+          "FOUND internal node. Checking distance to its center.",
+          quadTree.points,
+          quadTree.massTotal
+        );
         const { distance, distSq, dx, dy } = calculateDistance(
           pointA.x,
           pointA.y,
@@ -326,8 +339,10 @@ const createQuadTree = (
         // If s/d < theta approximate gravity using center of mass
         const s = (quadTree.boundary.width + quadTree.boundary.height) / 2;
         if (s / distance < THETA) {
+          console.log("Internal node cmass far enough to approximate.");
           // Approximate gravity
         } else {
+          console.log("Internal node cmass too close. Recursing.");
           // Else recurse through children
         }
       }
