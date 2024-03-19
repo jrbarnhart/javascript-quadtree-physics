@@ -226,17 +226,18 @@ const createQuadTree = (
 
   // Method for finding first edge node
   const findFirstLeafPoints = () => {
-    // If this node a leaf node with points in it
+    // If this node is a leaf node with points in it
     if (!quadTree.divided && quadTree.points.length > 0) {
-      return quadTree.points;
-      // Else if it is an internal node
+      const foundNodePoints = quadTree.points;
+      quadTree.points = [];
+      return foundNodePoints;
     } else if (quadTree.divided) {
+      // Else if it is an internal node
       for (const quad of quads) {
-        const foundNodePoints = quadTree[quad]?.findFirstLeafPoints();
-        if (foundNodePoints) {
-          // Set the
-          quadTree[quad] = undefined;
-          return foundNodePoints;
+        const childNode = quadTree[quad];
+        if (childNode) {
+          const foundNodePoints = childNode.findFirstLeafPoints();
+          if (foundNodePoints) return foundNodePoints;
         }
       }
     }
@@ -247,7 +248,7 @@ const createQuadTree = (
   // Barnes-Hut gravity calculation
   const gravity = () => {
     // 1. Find first leaf with helper fn
-    let queryNodePoints = quadTree.findFirstLeafPoints();
+    const queryNodePoints = quadTree.findFirstLeafPoints();
     // If there is no queryNode found then the tree has no more nodes to proces so exit
     if (!queryNodePoints) return;
     // 2. Process the query node
@@ -287,25 +288,8 @@ const createQuadTree = (
 
     // Apply gravity b/w all of queryNode's particles and other nodes using Barnes-Hut
     queryNodePoints.forEach((pointA) => {
-      /*
-      Apply gravity using Barnes-Hut approach
-      for each (particle in query node) {
-        start at root of quad tree
-        if (node is an internal node) {
-          check distance between particle and nodes center of mass
-          if (distance > threshold) {
-            calc and update force between particle and center of mass
-            apply opposite force to all particles in the node
-          } else if (distance <= threshold) {
-            recursively check child nodes
-          }
-        } else if (node is a leaf node) {
-          calc and update force between particle and particles in leaf node
-        }
-      }
-    */
       // If the quadtree node compared against point (starting with root) is external
-      if (quadTree.points !== queryNodePoints && !quadTree.divided) {
+      if (!quadTree.divided) {
         // Calculate gravity between point and points in edge node
         quadTree.points.forEach((pointB) => {
           const { distance, distSq, dx, dy } = calculateDistance(
@@ -339,49 +323,17 @@ const createQuadTree = (
           quadTree.massCenterX,
           quadTree.massCenterY
         );
-        // If within threshold calulate point to point
+        // If s/d < theta approximate gravity using center of mass
         const s = (quadTree.boundary.width + quadTree.boundary.height) / 2;
         if (s / distance < THETA) {
-          // Brute force
-          // Calculate gravity between point and points in edge node
-          quadTree.points.forEach((pointB) => {
-            const { distance, distSq, dx, dy } = calculateDistance(
-              pointA.x,
-              pointA.y,
-              pointB.x,
-              pointB.y
-            );
-            const gravForce = calculateAttraction(
-              dx,
-              dy,
-              distSq,
-              distance,
-              pointA.mass,
-              pointB.mass,
-              G
-            );
-            updateParticles(pointA, pointB, gravForce);
-          });
+          // Approximate gravity
         } else {
-          // Else calculate point to node mass center
-          const gravForce = calculateAttraction(
-            dx,
-            dy,
-            distSq,
-            distance,
-            pointA.mass,
-            quadTree.massTotal,
-            G
-          );
-          // Update positions for particleA and particles in quadtree
-          updateParticles(pointA, quadTree, gravForce);
+          // Else recurse through children
         }
       }
     });
 
-    // 3. After processed, set node to null
-    queryNodePoints = null;
-    // 4. Find next query node and repeat process
+    // 3. Find next query node and repeat process
     quadTree.gravity();
   };
   // Create and return quadtree object
