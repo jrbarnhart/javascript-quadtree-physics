@@ -11,6 +11,14 @@ const G = 3;
 const MAX_VELOCITY = 0.1;
 const THETA = 0.5;
 
+// Array used to reference child quadrants
+const quads: ["northwest", "northeast", "southeast", "southwest"] = [
+  "northwest",
+  "northeast",
+  "southeast",
+  "southwest",
+];
+
 // Fn for checking if rectangle contains a point
 export const rectContains = (
   rectangle: Rectangle,
@@ -101,19 +109,82 @@ export const updateParticles = (
   }
 };
 
+const barnesHutCalculation = (
+  queryNodePoints: ParticleInterface[],
+  quadTree: QuadTree
+) => {
+  queryNodePoints.forEach((pointA) => {
+    // If the quadtree node compared against point (starting with root) is external
+    if (!quadTree.divided) {
+      console.log("FOUND an external node with particles. Checking it.");
+      // Calculate gravity between point and points in edge node
+      quadTree.points.forEach((pointB) => {
+        const { distance, distSq, dx, dy } = calculateDistance(
+          pointA.x,
+          pointA.y,
+          pointB.x,
+          pointB.y
+        );
+        const gravForce = calculateAttraction(
+          dx,
+          dy,
+          distSq,
+          distance,
+          pointA.mass,
+          pointB.mass,
+          G
+        );
+        updateParticles(pointA, pointB, gravForce);
+      });
+    }
+    // If the quadtree node compared against point (starting with root) is internal and contains points
+    if (
+      quadTree.divided &&
+      quadTree.points.length > 0 &&
+      quadTree.massCenterX !== null &&
+      quadTree.massCenterY !== null
+    ) {
+      console.log("FOUND internal node. Checking distance to its center.");
+      const { distance, distSq, dx, dy } = calculateDistance(
+        pointA.x,
+        pointA.y,
+        quadTree.massCenterX,
+        quadTree.massCenterY
+      );
+      // If s/d < theta approximate gravity using center of mass
+      const s = (quadTree.boundary.width + quadTree.boundary.height) / 2;
+      if (s / distance < THETA) {
+        console.log("Internal node cmass far enough to approximate.");
+        // Approximate gravity
+        const gravForce = calculateAttraction(
+          dx,
+          dy,
+          distSq,
+          distance,
+          pointA.mass,
+          quadTree.massTotal,
+          G
+        );
+        updateParticles(pointA, quadTree, gravForce);
+      } else {
+        console.log("Internal node cmass too close. Recursing.");
+        // Else recurse through existing children
+        for (const quad of quads) {
+          const childNode = quadTree[quad];
+          if (childNode) {
+            barnesHutCalculation(queryNodePoints, childNode);
+          }
+        }
+      }
+    }
+  });
+};
+
 const createQuadTree = (
   boundary: Rectangle,
   capacity: PositiveInteger,
   depth?: number | undefined
 ) => {
-  // Array used to reference child quadrants
-  const quads: ["northwest", "northeast", "southeast", "southwest"] = [
-    "northwest",
-    "northeast",
-    "southeast",
-    "southwest",
-  ];
-
   // Fn for subdividing
   const subdivide = () => {
     // Define new boundaries
@@ -290,59 +361,7 @@ const createQuadTree = (
     }
 
     // Apply gravity b/w all of queryNode's particles and other nodes using Barnes-Hut
-    queryNodePoints.forEach((pointA) => {
-      // If the quadtree node compared against point (starting with root) is external
-      if (!quadTree.divided) {
-        console.log("FOUND an external node with particles. Checking it.");
-        // Calculate gravity between point and points in edge node
-        quadTree.points.forEach((pointB) => {
-          const { distance, distSq, dx, dy } = calculateDistance(
-            pointA.x,
-            pointA.y,
-            pointB.x,
-            pointB.y
-          );
-          const gravForce = calculateAttraction(
-            dx,
-            dy,
-            distSq,
-            distance,
-            pointA.mass,
-            pointB.mass,
-            G
-          );
-          updateParticles(pointA, pointB, gravForce);
-        });
-      }
-      // If the quadtree node compared against point (starting with root) is internal and contains points
-      if (
-        quadTree.divided &&
-        quadTree.points.length > 0 &&
-        quadTree.massCenterX !== null &&
-        quadTree.massCenterY !== null
-      ) {
-        console.log(
-          "FOUND internal node. Checking distance to its center.",
-          quadTree.points,
-          quadTree.massTotal
-        );
-        const { distance, distSq, dx, dy } = calculateDistance(
-          pointA.x,
-          pointA.y,
-          quadTree.massCenterX,
-          quadTree.massCenterY
-        );
-        // If s/d < theta approximate gravity using center of mass
-        const s = (quadTree.boundary.width + quadTree.boundary.height) / 2;
-        if (s / distance < THETA) {
-          console.log("Internal node cmass far enough to approximate.");
-          // Approximate gravity
-        } else {
-          console.log("Internal node cmass too close. Recursing.");
-          // Else recurse through children
-        }
-      }
-    });
+    barnesHutCalculation(queryNodePoints, quadTree);
 
     // 3. Find next query node and repeat process
     quadTree.gravity();
