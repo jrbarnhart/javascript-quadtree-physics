@@ -232,9 +232,6 @@ const createQuadTree = (
     if (!quadTree.divided && quadTree.points.length > 0) {
       const foundNodePoints = quadTree.points;
       quadTree.points = [];
-      quadTree.massCenterX = null;
-      quadTree.massCenterY = null;
-      quadTree.massTotal = 0;
       return foundNodePoints;
     } else if (quadTree.divided) {
       // Else if it is an internal node
@@ -288,7 +285,6 @@ const createQuadTree = (
 
           // Use this force to update pointA velocity
           updateParticles(pointA, pointB, gravForce);
-          console.log("Particles updated:", pointA, pointB);
         }
       }
     }
