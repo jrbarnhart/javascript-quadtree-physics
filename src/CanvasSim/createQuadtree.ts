@@ -9,6 +9,7 @@ import createRectangle from "./createRectangle";
 // Constants for tuning gravitational attraction and movement
 const G = 3;
 const MAX_VELOCITY = 0.1;
+const THETA = 0.5;
 
 // Fn for checking if rectangle contains a point
 export const rectContains = (
@@ -53,12 +54,13 @@ export const calculateAttraction = (
   return { x: fx, y: fy };
 };
 
-// Updates particle positions given gravForce from A to B
-export const updatePositions = (
+// Updates particle positions given gravForce from A to B or A to all points B in quadTree
+export const updateParticles = (
   pointA: ParticleInterface,
-  pointB: ParticleInterface,
+  pointBOrTree: ParticleInterface | QuadTree,
   gravForce: { x: number; y: number }
 ) => {
+  // Update pointA
   pointA.vx = Math.max(
     -MAX_VELOCITY,
     Math.min(pointA.vx + gravForce.x / pointA.mass, MAX_VELOCITY)
@@ -67,21 +69,34 @@ export const updatePositions = (
     -MAX_VELOCITY,
     Math.min(pointA.vy + gravForce.y / pointA.mass, MAX_VELOCITY)
   );
-  // Use inverse force to update pointB
-  pointB.vx = Math.max(
-    -MAX_VELOCITY,
-    Math.min(pointB.vx - gravForce.x / pointB.mass, MAX_VELOCITY)
-  );
-  pointB.vy = Math.max(
-    -MAX_VELOCITY,
-    Math.min(pointB.vy - gravForce.y / pointB.mass, MAX_VELOCITY)
-  );
-
-  // Update positions of particles based on new velocity
   pointA.x += pointA.vx;
   pointA.y += pointA.vy;
-  pointB.x += pointB.vx;
-  pointB.y += pointB.vy;
+  // If B is a quadtree update all points B it contains
+  if ("points" in pointBOrTree) {
+    pointBOrTree.points.forEach((pointB) => {
+      // Use inverse force to update pointB
+      pointB.vx = Math.max(
+        -MAX_VELOCITY,
+        Math.min(pointB.vx - gravForce.x / pointB.mass, MAX_VELOCITY)
+      );
+      pointB.vy = Math.max(
+        -MAX_VELOCITY,
+        Math.min(pointB.vy - gravForce.y / pointB.mass, MAX_VELOCITY)
+      );
+      pointB.x += pointB.vx;
+      pointB.y += pointB.vy;
+    });
+  } else {
+    // Just update the passed particle
+    pointBOrTree.vx = Math.max(
+      -MAX_VELOCITY,
+      Math.min(pointBOrTree.vx - gravForce.x / pointBOrTree.mass, MAX_VELOCITY)
+    );
+    pointBOrTree.vy = Math.max(
+      -MAX_VELOCITY,
+      Math.min(pointBOrTree.vy - gravForce.y / pointBOrTree.mass, MAX_VELOCITY)
+    );
+  }
 };
 
 const createQuadTree = (
@@ -236,23 +251,6 @@ const createQuadTree = (
     // If there is no queryNode found then the tree has no more nodes to proces so exit
     if (!queryNodePoints) return;
     // 2. Process the query node
-    /*
-      Apply gravity using Barnes-Hut approach
-      for each (particle in query node) {
-        start at root of quad tree
-        if (node is an internal node) {
-          check distance between particle and nodes center of mass
-          if (distance > threshold) {
-            calc and update force between particle and center of mass
-            apply opposite force to all particles in the node
-          } else if (distance <= threshold) {
-            recursively check child nodes
-          }
-        } else if (node is a leaf node) {
-          calc and update force between particle and particles in leaf node
-        }
-      }
-    */
     // First, apply gravity b/w all of queryNode's own particles
     if (queryNodePoints.length > 1) {
       // For each point
@@ -282,12 +280,104 @@ const createQuadTree = (
           );
 
           // Use this force to update pointA velocity
-          updatePositions(pointA, pointB, gravForce);
+          updateParticles(pointA, pointB, gravForce);
         }
       }
     }
 
     // Apply gravity b/w all of queryNode's particles and other nodes using Barnes-Hut
+    queryNodePoints.forEach((pointA) => {
+      /*
+      Apply gravity using Barnes-Hut approach
+      for each (particle in query node) {
+        start at root of quad tree
+        if (node is an internal node) {
+          check distance between particle and nodes center of mass
+          if (distance > threshold) {
+            calc and update force between particle and center of mass
+            apply opposite force to all particles in the node
+          } else if (distance <= threshold) {
+            recursively check child nodes
+          }
+        } else if (node is a leaf node) {
+          calc and update force between particle and particles in leaf node
+        }
+      }
+    */
+      // If the quadtree node compared against point (starting with root) is external
+      if (quadTree.points !== queryNodePoints && !quadTree.divided) {
+        // Calculate gravity between point and points in edge node
+        quadTree.points.forEach((pointB) => {
+          const { distance, distSq, dx, dy } = calculateDistance(
+            pointA.x,
+            pointA.y,
+            pointB.x,
+            pointB.y
+          );
+          const gravForce = calculateAttraction(
+            dx,
+            dy,
+            distSq,
+            distance,
+            pointA.mass,
+            pointB.mass,
+            G
+          );
+          updateParticles(pointA, pointB, gravForce);
+        });
+      }
+      // If the quadtree node compared against point (starting with root) is internal and contains points
+      if (
+        quadTree.divided &&
+        quadTree.massTotal > 0 &&
+        quadTree.massCenterX !== null &&
+        quadTree.massCenterY !== null
+      ) {
+        const { distance, distSq, dx, dy } = calculateDistance(
+          pointA.x,
+          pointA.y,
+          quadTree.massCenterX,
+          quadTree.massCenterY
+        );
+        // If within threshold calulate point to point
+        const s = (quadTree.boundary.width + quadTree.boundary.height) / 2;
+        if (s / distance < THETA) {
+          // Brute force
+          // Calculate gravity between point and points in edge node
+          quadTree.points.forEach((pointB) => {
+            const { distance, distSq, dx, dy } = calculateDistance(
+              pointA.x,
+              pointA.y,
+              pointB.x,
+              pointB.y
+            );
+            const gravForce = calculateAttraction(
+              dx,
+              dy,
+              distSq,
+              distance,
+              pointA.mass,
+              pointB.mass,
+              G
+            );
+            updateParticles(pointA, pointB, gravForce);
+          });
+        } else {
+          // Else calculate point to node mass center
+          const gravForce = calculateAttraction(
+            dx,
+            dy,
+            distSq,
+            distance,
+            pointA.mass,
+            quadTree.massTotal,
+            G
+          );
+          // Update positions for particleA and particles in quadtree
+          updateParticles(pointA, quadTree, gravForce);
+        }
+      }
+    });
 
     // 3. After processed, set node to null
     queryNodePoints = null;
