@@ -223,4 +223,44 @@ describe("gravity", () => {
     expect(testParticleB.x).toBeLessThan(p2x);
     expect(testParticleB.y).toBeLessThan(p2y);
   });
+
+  test("applies gravity between particles in two close nodes", () => {
+    // Mocking a tree for 1024x1024 space for even subdivision size with smallest size being 4x4
+    const initialBoundary = createRectangle(512, 512, 1024, 1024);
+    const testTree = createQuadtree(initialBoundary, 1);
+    // Create and insert particles that will be placed in same smallest subdivision
+    const p1x = 1;
+    const p1y = 1;
+    const p2x = 5;
+    const p2y = 5;
+    const testParticleA = createParticle({
+      x: p1x,
+      y: p1y,
+      vx: 0,
+      vy: 0,
+      mass: 10,
+      radius: 2,
+      color: "yellow",
+    });
+    const testParticleB = createParticle({
+      x: p2x,
+      y: p2y,
+      vx: 0,
+      vy: 0,
+      mass: 10,
+      radius: 2,
+      color: "yellow",
+    });
+    testTree.insert(testParticleA);
+    testTree.insert(testParticleB);
+
+    // Apply gravity to quad tree particles
+    testTree.gravity();
+
+    // Expect particles to have moved closer together
+    expect(testParticleA.x).toBeGreaterThan(p1x);
+    expect(testParticleA.y).toBeGreaterThan(p1y);
+    expect(testParticleB.x).toBeLessThan(p2x);
+    expect(testParticleB.y).toBeLessThan(p2y);
+  });
 });
