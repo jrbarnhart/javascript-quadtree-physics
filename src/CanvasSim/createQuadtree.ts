@@ -115,8 +115,8 @@ const barnesHutCalculation = (
 ) => {
   queryNodePoints.forEach((pointA) => {
     // If the quadtree node compared against point (starting with root) is external
-    if (!quadTree.divided) {
-      console.log("FOUND an external node with particles. Checking it.");
+    if (!quadTree.divided && quadTree.points.length > 0) {
+      console.log("FOUND an external node with particles. UPDATING PARTICLES!");
       // Calculate gravity between point and points in edge node
       quadTree.points.forEach((pointB) => {
         const { distance, distSq, dx, dy } = calculateDistance(
@@ -137,10 +137,9 @@ const barnesHutCalculation = (
         updateParticles(pointA, pointB, gravForce);
       });
     }
-    // If the quadtree node compared against point (starting with root) is internal and contains points
+    // If the quadtree node compared against point (starting with root) is internal and has points in a child node (has center of mass)
     if (
       quadTree.divided &&
-      quadTree.points.length > 0 &&
       quadTree.massCenterX !== null &&
       quadTree.massCenterY !== null
     ) {
