@@ -228,36 +228,37 @@ describe("pruneEmptyNodes", () => {
       height: 100,
     };
     // Mock quadtree and children
-    const testChildNW: Quadtree = {
+    const testTree: Quadtree = {
       particles: [],
       children: [],
       boundary: testRect,
       parent: undefined,
+    };
+    const testChildNW: Quadtree = {
+      particles: [],
+      children: [],
+      boundary: testRect,
+      parent: testTree,
     };
     const testChildNE: Quadtree = {
       particles: [],
       children: [],
       boundary: testRect,
-      parent: undefined,
+      parent: testTree,
     };
     const testChildSE: Quadtree = {
       particles: [],
       children: [],
       boundary: testRect,
-      parent: undefined,
+      parent: testTree,
     };
     const testChildSW: Quadtree = {
       particles: [],
       children: [],
       boundary: testRect,
-      parent: undefined,
+      parent: testTree,
     };
-    const testTree: Quadtree = {
-      particles: [],
-      children: [testChildNW, testChildNE, testChildSE, testChildSW],
-      boundary: testRect,
-      parent: undefined,
-    };
+    testTree.children = [testChildNW, testChildNE, testChildSE, testChildSW];
 
     pruneEmptyNodes(testTree);
 
