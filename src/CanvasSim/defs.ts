@@ -19,6 +19,13 @@ export interface Rectangle {
   right: number;
 }
 
+export interface QuadtreeBoundary {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 export type PositiveInteger = number extends infer T
   ? T extends number
     ? T extends 0
@@ -30,7 +37,7 @@ export type PositiveInteger = number extends infer T
 export interface Quadtree {
   particles: ParticleInterface[];
   children: Quadtree[];
-  boundary: Rectangle;
+  boundary: QuadtreeBoundary;
 }
 
 // ###OLD INTERFACE###
