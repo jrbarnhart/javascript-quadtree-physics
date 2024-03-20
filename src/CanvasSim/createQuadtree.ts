@@ -56,10 +56,14 @@ export const calculateAttraction = (
   b2mass: number,
   G: number
 ) => {
-  const force = (G * b1mass * b2mass) / distSq;
-  const fx = -(force * (dx / distance));
-  const fy = -(force * (dy / distance));
-  return { x: fx, y: fy };
+  const gravityDeadzone = 1;
+  if (distance > gravityDeadzone) {
+    const force = (G * b1mass * b2mass) / distSq;
+    const fx = -(force * (dx / distance));
+    const fy = -(force * (dy / distance));
+    return { x: fx, y: fy };
+  }
+  return { x: 0, y: 0 };
 };
 
 // Updates particle positions given gravForce from A to B or A to all points B in quadTree
