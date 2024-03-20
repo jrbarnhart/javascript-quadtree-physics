@@ -19,6 +19,9 @@ const SimCanvas = () => {
   const [mousePosY, setMousePosY] = useState<number | null>(null);
   const [totalParticles, setTotalParticles] = useState<number | null>(null);
 
+  // State for toggling rect draws
+  const [drawQuadtree, setDrawQuadtree] = useState<boolean>(false);
+
   const throttleRef = useRef(
     _.throttle((event: React.MouseEvent) => {
       setMousePosX(event.clientX);
@@ -31,20 +34,24 @@ const SimCanvas = () => {
   }, []);
 
   // Define animation loop
-  const animationLoop = useCallback((particles: ParticleInterface[]) => {
-    if (!canvasRef.current || !contextRef.current) return;
+  const animationLoop = useCallback(
+    (particles: ParticleInterface[]) => {
+      if (!canvasRef.current || !contextRef.current) return;
 
-    animate({
-      particles,
-      canvasWidth: canvasRef.current.width,
-      canvasHeight: canvasRef.current.height,
-      ctx: contextRef.current,
-    });
+      animate({
+        particles,
+        canvasWidth: canvasRef.current.width,
+        canvasHeight: canvasRef.current.height,
+        ctx: contextRef.current,
+        drawQuadtree,
+      });
 
-    animationFrameRef.current = requestAnimationFrame(() => {
-      animationLoop(particles);
-    });
-  }, []);
+      animationFrameRef.current = requestAnimationFrame(() => {
+        animationLoop(particles);
+      });
+    },
+    [drawQuadtree]
+  );
 
   // Handle clicks by creating a particle with random properties
   const handleClick = (event: React.MouseEvent) => {
@@ -104,6 +111,7 @@ const SimCanvas = () => {
         mousePosX={mousePosX}
         mousePosY={mousePosY}
         totalParticles={totalParticles}
+        setDrawQuadtree={setDrawQuadtree}
       />
     </div>
   );
