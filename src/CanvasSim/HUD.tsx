@@ -8,13 +8,18 @@ const HeadsUpDisplay = ({
   totalParticles: number | null;
 }) => {
   return (
-    <div className="absolute top-0 grid items-end text-neutral-50 h-full w-full pointer-events-none">
-      <div className="p-5">
-        <p>MouseX: {mousePosX}</p>
-        <p>MouseY: {mousePosY}</p>
-        <p>Particles: {totalParticles}</p>
+    <>
+      <div className="absolute top-0 grid items-end text-neutral-50 h-full w-full pointer-events-none">
+        <div className="p-5">
+          <p>MouseX: {mousePosX}</p>
+          <p>MouseY: {mousePosY}</p>
+          <p>Particles: {totalParticles}</p>
+        </div>
       </div>
-    </div>
+      <button className="absolute bottom-0 right-0 text-neutral-950 p-2 m-5 bg-neutral-50 rounded-md active:bg-neutral-400">
+        Show Quadtree
+      </button>
+    </>
   );
 };
 
