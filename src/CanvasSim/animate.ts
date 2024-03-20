@@ -1,5 +1,4 @@
 import { ParticleInterface, QuadTree } from "./defs";
-import calculateGravity from "./calculateGravity";
 import createQuadTree from "./createQuadtree";
 import createRectangle from "./createRectangle";
 
@@ -23,16 +22,13 @@ const animate = ({
   );
   const quadTree = createQuadTree(boundary, 1);
 
-  // Brute force gravity
+  /*   // Brute force gravity
   const maxVelocity = 0.1;
   // For each particle
   particles.forEach((particle) => {
     // Insert particle into quadtree
     quadTree.insert(particle);
 
-    // Add drag to slow particles over time
-    particle.vx *= 0.95;
-    particle.vy *= 0.95;
     // Calc gravitational force
     const gravity = calculateGravity(particle, particles);
     // Move particle using force, clamping to min/max values
@@ -55,7 +51,11 @@ const animate = ({
     if (particle.y < 0 || particle.y > canvasHeight) {
       particle.vy *= -1;
     }
+  }); */
+  particles.forEach((particle) => {
+    quadTree.insert(particle);
   });
+  quadTree.gravity();
 
   // Erase canvas
   ctx.clearRect(0, 0, canvasWidth, canvasHeight);
