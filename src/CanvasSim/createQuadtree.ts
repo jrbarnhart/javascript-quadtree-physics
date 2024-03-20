@@ -116,7 +116,6 @@ const barnesHutCalculation = (
   queryNodePoints.forEach((pointA) => {
     // If the quadtree node is external and has points apply gravity b/w pointA and all of QT's points
     if (!quadTree.divided && quadTree.points.length > 0) {
-      console.log("FOUND an external node with particles. UPDATING PARTICLES!");
       // Calculate gravity between point and points in edge node
       quadTree.points.forEach((pointB) => {
         const { distance, distSq, dx, dy } = calculateDistance(
@@ -143,11 +142,6 @@ const barnesHutCalculation = (
       quadTree.massCenterX !== null &&
       quadTree.massCenterY !== null
     ) {
-      console.log(
-        "FOUND internal node. Checking distance to its center.",
-        quadTree.depth,
-        quadTree.massTotal
-      );
       const { distance, distSq, dx, dy } = calculateDistance(
         pointA.x,
         pointA.y,
@@ -157,9 +151,6 @@ const barnesHutCalculation = (
       // If s/d < theta approximate gravity using center of mass
       const s = (quadTree.boundary.width + quadTree.boundary.height) / 2;
       if (s / distance < THETA) {
-        console.log(
-          "Internal node cmass far enough to approximate. UPDATING APPROXIMATE PARTICLES!"
-        );
         // Approximate gravity
         const gravForce = calculateAttraction(
           dx,
@@ -172,7 +163,6 @@ const barnesHutCalculation = (
         );
         updateParticles(pointA, quadTree, gravForce);
       } else {
-        console.log("Internal node cmass too close. Recursing.");
         // Else recurse through existing children
         for (const quad of quads) {
           const childNode = quadTree[quad];
@@ -332,7 +322,6 @@ const createQuadTree = (
     // 2. Process the query node
     // First, apply gravity b/w all of queryNode's own particles
     if (queryNodePoints.length > 1) {
-      console.log("Updating queryNode's own particles");
       // For each point
       for (let i = 0; i < queryNodePoints.length; i++) {
         const pointA = queryNodePoints[i];
@@ -371,7 +360,6 @@ const createQuadTree = (
       queryNodePointsMass += point.mass;
     });
     if (quadTree.massTotal > queryNodePointsMass) {
-      console.log("Calling BH algorithm....");
       barnesHutCalculation(queryNodePoints, quadTree);
     }
 
