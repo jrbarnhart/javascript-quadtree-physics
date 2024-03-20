@@ -16,7 +16,11 @@ export const pruneEmptyNodes = (quadtree: Quadtree) => {
 
     // Delete node from parent if it is empty
     if (node.children.length === 0 && node.particles.length === 0) {
-      // Delete node
+      // Delete the node
+      const index = node.parent?.children.indexOf(node);
+      if (index !== undefined && index !== -1) {
+        node.parent?.children.splice(index, 1);
+      }
     }
 
     // Add nodes unqueued children to queue
