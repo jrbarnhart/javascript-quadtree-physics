@@ -1,6 +1,10 @@
 import { describe, expect, test } from "vitest";
 import { getChildForParticle } from "../CanvasSim/createQuadtree";
-import { ParticleInterface, Quadtree, Rectangle } from "../CanvasSim/defs";
+import {
+  ParticleInterface,
+  Quadtree,
+  QuadtreeBoundary,
+} from "../CanvasSim/defs";
 
 describe("getChildForParticle", () => {
   // Children are counted in this order: NW, NE, SE, SW
@@ -8,15 +12,11 @@ describe("getChildForParticle", () => {
   // 3 2
   test("Returns proper child corresponding to the quadrant of parent the point is in", () => {
     // testRect is also used for child bounaries as they are irrelevant to test
-    const testRect: Rectangle = {
+    const testRect: QuadtreeBoundary = {
       x: 0,
       y: 0,
       width: 100,
       height: 100,
-      top: 0,
-      bottom: 100,
-      left: 0,
-      right: 100,
     };
     // Mock quadtree and children
     const testChildNW: Quadtree = {
