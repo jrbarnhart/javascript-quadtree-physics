@@ -366,6 +366,7 @@ const createQuadTree = (
     }
 
     // Apply gravity b/w all of queryNode's particles and other nodes using Barnes-Hut
+    console.log("Calling BH algorithm....");
     barnesHutCalculation(queryNodePoints, quadTree);
 
     // 3. Find next query node and repeat process
