@@ -9,7 +9,7 @@ import createRectangle from "./createRectangle";
 // Constants for tuning gravitational attraction and movement
 const G = 3;
 const MAX_VELOCITY = 0.1;
-const THETA = 0.5;
+const THETA = 0;
 
 // Array used to reference child quadrants
 const quads: ["northwest", "northeast", "southeast", "southwest"] = [
@@ -141,7 +141,7 @@ const barnesHutCalculation = (
       });
     }
     // If the quadtree node compared against point (starting with root) is internal and has points in a child node (has center of mass)
-    if (
+    else if (
       quadTree.divided &&
       quadTree.massCenterX !== null &&
       quadTree.massCenterY !== null
