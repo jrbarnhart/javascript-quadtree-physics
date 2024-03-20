@@ -38,6 +38,7 @@ export interface Quadtree {
   particles: ParticleInterface[];
   children: Quadtree[];
   boundary: QuadtreeBoundary;
+  parent: Quadtree | undefined;
 }
 
 // ###OLD INTERFACE###
