@@ -17,13 +17,16 @@ const buildTree = (particles: ParticleInterface[], quadtree: Quadtree) => {
   pruneEmptyNodes(quadtree);
 };
 
-const getChildForParticle = (particle: ParticleInterface, node: Quadtree) => {
+export const getChildForParticle = (
+  particle: ParticleInterface,
+  node: Quadtree
+) => {
   const centerX = node.boundary.x + node.boundary.width / 2;
   const centerY = node.boundary.y + node.boundary.height / 2;
 
   // Children are counted in this order: NW, NE, SE, SW
-  // 1 2
-  // 4 3
+  // 0 1
+  // 3 2
 
   // Left half
   if (particle.x <= centerX) {
@@ -33,17 +36,17 @@ const getChildForParticle = (particle: ParticleInterface, node: Quadtree) => {
     }
     // Bottom left
     else {
-      return node.children[4];
+      return node.children[3];
     }
     // Right half
   } else {
     // Top right
     if (particle.y <= centerY) {
-      return node.children[2];
+      return node.children[1];
     }
     // Bottom right
     else {
-      return node.children[3];
+      return node.children[2];
     }
   }
 };
