@@ -25,9 +25,6 @@ export const getChildForParticle = (
   const centerY = node.boundary.y + node.boundary.height / 2;
 
   // Children are counted in this order: NW, NE, SE, SW
-  // 0 1
-  // 3 2
-
   // Left half
   if (particle.x <= centerX) {
     // Top left
@@ -52,12 +49,10 @@ export const getChildForParticle = (
 };
 
 const insertParticle = (particle: ParticleInterface, node: Quadtree) => {
-  // If quadtree contains more than 1 particle
+  // If quadtree contains more than 1 particle insert to proper child
   if (node.particles.length > 1) {
-    // Determine which child of node to insert to
-    // const child = determineChild?(node, particle)
-    // Insert to that node
-    // insertParticle(particle, child)
+    const targetChild = getChildForParticle(particle, node);
+    insertParticle(particle, targetChild);
   }
   // Else if it contains just one particle it is a leaf
   else if (node.particles.length === 1) {
