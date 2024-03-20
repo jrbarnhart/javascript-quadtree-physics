@@ -309,62 +309,66 @@ describe("gravity", () => {
     const initialBoundary = createRectangle(512, 512, 1024, 1024);
     const testTree = createQuadtree(initialBoundary, 1);
     // Create and insert particles that will be placed in same smallest subdivision
-    const p1x = 1;
-    const p1y = 1;
-    const p2x = 1023;
-    const p2y = 1;
-    const p3x = 1023;
-    const p3y = 1023;
-    const p4y = 1023;
-    const p4x = 1;
-    const testParticle1 = createParticle({
-      x: p1x,
-      y: p1y,
+    const pxNW = 1;
+    const pyNW = 1;
+    const pxNE = 1023;
+    const pyNE = 1;
+    const pxSE = 1023;
+    const pySE = 1023;
+    const pxSW = 1;
+    const pySW = 1023;
+    const testParticleNW = createParticle({
+      x: pxNW,
+      y: pyNW,
       vx: 0,
       vy: 0,
       mass: 10,
       radius: 2,
       color: "yellow",
     });
-    const testParticle2 = createParticle({
-      x: p2x,
-      y: p2y,
+    const testParticleNE = createParticle({
+      x: pxNE,
+      y: pyNE,
       vx: 0,
       vy: 0,
       mass: 10,
       radius: 2,
       color: "yellow",
     });
-    const testParticle3 = createParticle({
-      x: p3x,
-      y: p3y,
+    const testParticleSE = createParticle({
+      x: pxSE,
+      y: pySE,
       vx: 0,
       vy: 0,
       mass: 10,
       radius: 2,
       color: "yellow",
     });
-    const testParticle4 = createParticle({
-      x: p4x,
-      y: p4y,
+    const testParticleSW = createParticle({
+      x: pxSW,
+      y: pySW,
       vx: 0,
       vy: 0,
       mass: 10,
       radius: 2,
       color: "yellow",
     });
-    testTree.insert(testParticle1);
-    testTree.insert(testParticle2);
-    testTree.insert(testParticle3);
-    testTree.insert(testParticle4);
+    testTree.insert(testParticleNW);
+    testTree.insert(testParticleNE);
+    testTree.insert(testParticleSE);
+    testTree.insert(testParticleSW);
 
     // Apply gravity to quad tree particles
     testTree.gravity();
 
     // Expect particles to have moved closer together
-    expect(testParticle1.x).toBeGreaterThan(p1x);
-    expect(testParticle1.y).toBeGreaterThan(p1y);
-    expect(testParticle2.x).toBeLessThan(p2x);
-    expect(testParticle2.y).toBeLessThan(p2y);
+    expect(testParticleNW.x).toBeGreaterThan(pxNW);
+    expect(testParticleNW.y).toBeGreaterThan(pyNW);
+    expect(testParticleNE.x).toBeLessThan(pxNE);
+    expect(testParticleNE.y).toBeGreaterThan(pyNE);
+    expect(testParticleSE.x).toBeLessThan(pxSE);
+    expect(testParticleSE.y).toBeLessThan(pySE);
+    expect(testParticleSW.x).toBeGreaterThan(pxSW);
+    expect(testParticleSW.y).toBeLessThan(pySW);
   });
 });
