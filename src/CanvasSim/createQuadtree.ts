@@ -9,7 +9,7 @@ import createRectangle from "./createRectangle";
 // Constants for tuning gravitational attraction and movement
 const G = 0.6;
 const MAX_VELOCITY = 0.05;
-const THETA = 0.5;
+const THETA = 0;
 
 // Array used to reference child quadrants
 const quads: ["northwest", "northeast", "southeast", "southwest"] = [
@@ -325,49 +325,7 @@ const createQuadTree = (
     // If there is no queryNode found then the tree has no more nodes to proces so exit
     if (!queryNodePoints) return;
     // 2. Process the query node
-    // First, apply gravity b/w all of queryNode's own particles
-    if (queryNodePoints.length > 1) {
-      // For each point
-      for (let i = 0; i < queryNodePoints.length; i++) {
-        const pointA = queryNodePoints[i];
-
-        // Calculate gravity between A and points w/ higher indicies
-        for (let j = i + 1; j < queryNodePoints.length; j++) {
-          const pointB = queryNodePoints[j];
-
-          // Get distance info
-          const { distance, distSq, dx, dy } = calculateDistance(
-            pointA.x,
-            pointA.y,
-            pointB.x,
-            pointB.y
-          );
-
-          const gravForce = calculateAttraction(
-            dx,
-            dy,
-            distSq,
-            distance,
-            pointA.mass,
-            pointB.mass,
-            G
-          );
-
-          // Use this force to update pointA velocity
-          updateParticles(pointA, pointB, gravForce);
-        }
-      }
-    }
-
-    // Prevent BH calc when all points exist in same node. If points in other nodes then BHC will be called.
-    let queryNodePointsMass = 0;
-    queryNodePoints.forEach((point) => {
-      queryNodePointsMass += point.mass;
-    });
-    if (quadTree.massTotal > queryNodePointsMass) {
-      barnesHutCalculation(queryNodePoints, quadTree);
-    }
-
+    barnesHutCalculation(queryNodePoints, quadTree);
     // 3. Find next query node and repeat process
     quadTree.gravity();
   };
