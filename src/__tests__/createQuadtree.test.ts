@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
 import {
   getChildForParticle,
+  pruneEmptyNodes,
   subdivideNode,
 } from "../CanvasSim/createQuadtree";
 import {
@@ -202,5 +203,47 @@ describe("subdivideNode", () => {
       width: 50,
       height: 100,
     });
+  });
+});
+
+describe("pruneEmptyNodes", () => {
+  test("Removes empty direct children of node", () => {
+    // testRect is also used for child bounaries as they are irrelevant to test
+    const testRect: QuadtreeBoundary = {
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+    };
+    // Mock quadtree and children
+    const testChildNW: Quadtree = {
+      particles: [],
+      children: [],
+      boundary: testRect,
+    };
+    const testChildNE: Quadtree = {
+      particles: [],
+      children: [],
+      boundary: testRect,
+    };
+    const testChildSE: Quadtree = {
+      particles: [],
+      children: [],
+      boundary: testRect,
+    };
+    const testChildSW: Quadtree = {
+      particles: [],
+      children: [],
+      boundary: testRect,
+    };
+    const testTree: Quadtree = {
+      particles: [],
+      children: [testChildNW, testChildNE, testChildSE, testChildSW],
+      boundary: testRect,
+    };
+
+    pruneEmptyNodes(testTree);
+
+    expect(testTree.children.length).toBe(0);
   });
 });
