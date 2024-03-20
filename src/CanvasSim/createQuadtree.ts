@@ -172,7 +172,7 @@ const barnesHutCalculation = (
         for (const quad of quads) {
           const childNode = quadTree[quad];
           if (childNode) {
-            barnesHutCalculation(queryNodePoints, childNode);
+            barnesHutCalculation([pointA], childNode);
           }
         }
       }
