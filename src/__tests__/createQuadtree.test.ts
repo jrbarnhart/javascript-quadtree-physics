@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import createQuadtree from "../CanvasSim/createQuadtree";
+import createQuadtree from "../CanvasSim/createQuadtreeOld";
 import createRectangle from "../CanvasSim/createRectangle";
 import createParticle from "../CanvasSim/createParticle";
 

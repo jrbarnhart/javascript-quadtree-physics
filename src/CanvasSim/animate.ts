@@ -1,5 +1,5 @@
 import { ParticleInterface, QuadTree } from "./defs";
-import createQuadTree from "./createQuadtree";
+import createQuadTree from "./createQuadtreeOld";
 import createRectangle from "./createRectangle";
 
 const animate = ({
