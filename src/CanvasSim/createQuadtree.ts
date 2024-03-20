@@ -365,9 +365,15 @@ const createQuadTree = (
       }
     }
 
-    // Apply gravity b/w all of queryNode's particles and other nodes using Barnes-Hut
-    console.log("Calling BH algorithm....");
-    barnesHutCalculation(queryNodePoints, quadTree);
+    // Prevent BH calc when all points exist in same node. If points in other nodes then BHC will be called.
+    let queryNodePointsMass = 0;
+    queryNodePoints.forEach((point) => {
+      queryNodePointsMass += point.mass;
+    });
+    if (quadTree.massTotal > queryNodePointsMass) {
+      console.log("Calling BH algorithm....");
+      barnesHutCalculation(queryNodePoints, quadTree);
+    }
 
     // 3. Find next query node and repeat process
     quadTree.gravity();
