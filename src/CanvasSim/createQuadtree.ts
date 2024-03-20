@@ -6,15 +6,46 @@
 import { ParticleInterface, Quadtree, Rectangle } from "./defs";
 
 const pruneEmptyNodes = (quadtree: Quadtree) => {
+  // ##TODO##
   // Prune the empty nodes with breadth first search
 };
 
-// Loop over particles and insert them
 const buildTree = (particles: ParticleInterface[], quadtree: Quadtree) => {
   for (const particle of particles) {
     insertParticle(particle, quadtree);
   }
   pruneEmptyNodes(quadtree);
+};
+
+const getChildForParticle = (particle: ParticleInterface, node: Quadtree) => {
+  const centerX = node.boundary.x + node.boundary.width / 2;
+  const centerY = node.boundary.y + node.boundary.height / 2;
+
+  // Children are counted in this order: NW, NE, SE, SW
+  // 1 2
+  // 4 3
+
+  // Left half
+  if (particle.x <= centerX) {
+    // Top left
+    if (particle.y <= centerY) {
+      return node.children[0];
+    }
+    // Bottom left
+    else {
+      return node.children[4];
+    }
+    // Right half
+  } else {
+    // Top right
+    if (particle.y <= centerY) {
+      return node.children[2];
+    }
+    // Bottom right
+    else {
+      return node.children[3];
+    }
+  }
 };
 
 const insertParticle = (particle: ParticleInterface, node: Quadtree) => {
@@ -30,7 +61,7 @@ const insertParticle = (particle: ParticleInterface, node: Quadtree) => {
     // Add node's four children
     // subdivide(node)
     // Move particle already here to proper child
-    // const existingP = node.points[0]
+    // const existingP = node.particles[0]
     // const existingPChild = determineChild?(node, existingP)
     // insertParticle(existingP, existingPChild)
     // insert new particle into proper child
