@@ -67,10 +67,10 @@ export const subdivideNode = (node: Quadtree) => {
     height: halfHeight,
   };
 
-  node.children[0] = createQuadtree({ boundary: nwBoundary });
-  node.children[1] = createQuadtree({ boundary: neBoundary });
-  node.children[2] = createQuadtree({ boundary: seBoundary });
-  node.children[3] = createQuadtree({ boundary: swBoundary });
+  node.children[0] = createQuadtree({ boundary: nwBoundary, parent: node });
+  node.children[1] = createQuadtree({ boundary: neBoundary, parent: node });
+  node.children[2] = createQuadtree({ boundary: seBoundary, parent: node });
+  node.children[3] = createQuadtree({ boundary: swBoundary, parent: node });
 };
 
 export const getChildForParticle = (
