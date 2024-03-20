@@ -7,9 +7,9 @@ import {
 import createRectangle from "./createRectangle";
 
 // Constants for tuning gravitational attraction and movement
-const G = 3;
-const MAX_VELOCITY = 0.1;
-const THETA = 0;
+const G = 0.6;
+const MAX_VELOCITY = 0.05;
+const THETA = 0.5;
 
 // Array used to reference child quadrants
 const quads: ["northwest", "northeast", "southeast", "southwest"] = [
