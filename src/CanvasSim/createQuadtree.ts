@@ -17,6 +17,10 @@ const buildTree = (particles: ParticleInterface[], quadtree: Quadtree) => {
   pruneEmptyNodes(quadtree);
 };
 
+export const subdivideNode = (node: Quadtree) => {
+  if (node.children.length > 0) return;
+};
+
 export const getChildForParticle = (
   particle: ParticleInterface,
   node: Quadtree
@@ -74,11 +78,13 @@ const insertParticle = (particle: ParticleInterface, node: Quadtree) => {
 };
 
 const createQuadtree = (
-  particles: ParticleInterface[],
-  boundary: Rectangle
+  boundary: Rectangle,
+  particles?: ParticleInterface[]
 ) => {
   const quadtree: Quadtree = { particles: [], children: [], boundary };
-  buildTree(particles, quadtree);
+  if (particles) {
+    buildTree(particles, quadtree);
+  }
 
   return quadtree;
 };
