@@ -5,9 +5,27 @@
 
 import { ParticleInterface, Quadtree, QuadtreeBoundary } from "./defs";
 
-const pruneEmptyNodes = (quadtree: Quadtree) => {
-  // ##TODO##
+export const pruneEmptyNodes = (quadtree: Quadtree) => {
   // Prune the empty nodes with breadth first search
+  const queue: Quadtree[] = [quadtree];
+
+  // Shift out the next queue item and process it until queue empty
+  while (queue.length > 0) {
+    const node = queue.shift();
+    if (!node) continue;
+
+    // Delete node from parent if it is empty
+    if (node.children.length === 0 && node.particles.length === 0) {
+      // Delete node
+    }
+
+    // Add nodes unqueued children to queue
+    for (const child of node.children) {
+      if (!queue.includes(child)) {
+        queue.push(child);
+      }
+    }
+  }
 };
 
 const buildTree = (particles: ParticleInterface[], quadtree: Quadtree) => {
@@ -49,10 +67,10 @@ export const subdivideNode = (node: Quadtree) => {
     height: halfHeight,
   };
 
-  node.children[0] = createQuadtree(nwBoundary);
-  node.children[1] = createQuadtree(neBoundary);
-  node.children[2] = createQuadtree(seBoundary);
-  node.children[3] = createQuadtree(swBoundary);
+  node.children[0] = createQuadtree({ boundary: nwBoundary });
+  node.children[1] = createQuadtree({ boundary: neBoundary });
+  node.children[2] = createQuadtree({ boundary: seBoundary });
+  node.children[3] = createQuadtree({ boundary: swBoundary });
 };
 
 export const getChildForParticle = (
@@ -111,11 +129,16 @@ const insertParticle = (particle: ParticleInterface, node: Quadtree) => {
   }
 };
 
-const createQuadtree = (
-  boundary: QuadtreeBoundary,
-  particles?: ParticleInterface[]
-) => {
-  const quadtree: Quadtree = { particles: [], children: [], boundary };
+const createQuadtree = ({
+  boundary,
+  particles,
+  parent,
+}: {
+  boundary: QuadtreeBoundary;
+  particles?: ParticleInterface[];
+  parent?: Quadtree;
+}) => {
+  const quadtree: Quadtree = { particles: [], children: [], boundary, parent };
   if (particles) {
     buildTree(particles, quadtree);
   }
