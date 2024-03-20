@@ -3,7 +3,7 @@
 
 // Implementation based on: https://people.eecs.berkeley.edu/~demmel/cs267/lecture26/lecture26.html
 
-import { ParticleInterface, Quadtree, Rectangle } from "./defs";
+import { ParticleInterface, Quadtree, QuadtreeBoundary } from "./defs";
 
 const pruneEmptyNodes = (quadtree: Quadtree) => {
   // ##TODO##
@@ -19,6 +19,40 @@ const buildTree = (particles: ParticleInterface[], quadtree: Quadtree) => {
 
 export const subdivideNode = (node: Quadtree) => {
   if (node.children.length > 0) return;
+
+  const { x, y, width, height } = node.boundary;
+  const halfWidth = width / 2;
+  const halfHeight = height / 2;
+
+  const nwBoundary: QuadtreeBoundary = {
+    x,
+    y,
+    width: halfWidth,
+    height: halfHeight,
+  };
+  const neBoundary: QuadtreeBoundary = {
+    x: x + halfWidth,
+    y,
+    width: halfWidth,
+    height: halfHeight,
+  };
+  const seBoundary: QuadtreeBoundary = {
+    x: x + halfWidth,
+    y: y + halfHeight,
+    width: halfWidth,
+    height: halfHeight,
+  };
+  const swBoundary: QuadtreeBoundary = {
+    x,
+    y: y + halfHeight,
+    width: halfWidth,
+    height: halfHeight,
+  };
+
+  node.children[0] = createQuadtree(nwBoundary);
+  node.children[1] = createQuadtree(neBoundary);
+  node.children[2] = createQuadtree(seBoundary);
+  node.children[3] = createQuadtree(swBoundary);
 };
 
 export const getChildForParticle = (
@@ -78,7 +112,7 @@ const insertParticle = (particle: ParticleInterface, node: Quadtree) => {
 };
 
 const createQuadtree = (
-  boundary: Rectangle,
+  boundary: QuadtreeBoundary,
   particles?: ParticleInterface[]
 ) => {
   const quadtree: Quadtree = { particles: [], children: [], boundary };
