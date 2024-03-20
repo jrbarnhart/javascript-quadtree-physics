@@ -30,6 +30,7 @@ export type PositiveInteger = number extends infer T
 export interface Quadtree {
   particles: ParticleInterface[];
   children: Quadtree[];
+  boundary: Rectangle;
 }
 
 // ###OLD INTERFACE###
