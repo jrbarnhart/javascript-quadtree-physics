@@ -7,11 +7,13 @@ const animate = ({
   canvasWidth,
   canvasHeight,
   ctx,
+  drawQuadtree,
 }: {
   particles: ParticleInterface[];
   canvasWidth: number;
   canvasHeight: number;
   ctx: CanvasRenderingContext2D;
+  drawQuadtree: boolean;
 }) => {
   // Create the quadtree from particles
   const boundary = createRectangle(
@@ -91,9 +93,11 @@ const animate = ({
     }
   };
 
-  ctx.strokeStyle = "white";
-  drawRects(quadTree);
-  ctx.strokeStyle = "transparent";
+  if (drawQuadtree) {
+    ctx.strokeStyle = "white";
+    drawRects(quadTree);
+    ctx.strokeStyle = "transparent";
+  }
 };
 
 export default animate;
