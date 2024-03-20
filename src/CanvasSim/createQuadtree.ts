@@ -1,38 +1,56 @@
-import { ParticleInterface } from "./defs";
+// This is a factory function that will return a quadtree built using a provided
+// particles array and boundary rectangle.
 
-const createQuadtree = (particles: ParticleInterface[]) => {
-  const quadtree = {};
-  /*
-   procedure QuadtreeBuild
-     Quadtree = {empty}
-       For i = 1 to n          ... loop over all particles
-         QuadInsert(i, root)   ... insert particle i in quadtree
-       end for
-       ... at this point, the quadtree may have some empty 
-       ... leaves, whose siblings are not empty
-       Traverse the tree (via, say, breadth first search), 
-         eliminating empty leaves
-    */
-  /*
-   procedure QuadInsert(i,n)   
-     ... Try to insert particle i at node n in quadtree
-     ... By construction, each leaf will contain either 
-     ... 1 or 0 particles
-     if the subtree rooted at n contains more than 1 particle
-        determine which child c of node n particle i lies in
-          QuadInsert(i,c)
-     else if the subtree rooted at n contains one particle 
-        ... n is a leaf
-        add n's four children to the Quadtree
-        move the particle already in n into the child 
-           in which it lies
-        let c be child in which particle i lies
-        QuadInsert(i,c)
-     else if the subtree rooted at n is empty        
-        ... n is a leaf 
-        store particle i in node n
-     endif
-   */
+// Implementation based on: https://people.eecs.berkeley.edu/~demmel/cs267/lecture26/lecture26.html
+
+import { ParticleInterface, Quadtree, Rectangle } from "./defs";
+
+const pruneEmptyNodes = (quadtree: Quadtree) => {
+  // Prune the empty nodes with breadth first search
+};
+
+// Loop over particles and insert them
+const buildTree = (particles: ParticleInterface[], quadtree: Quadtree) => {
+  for (const particle of particles) {
+    insertParticle(particle, quadtree);
+  }
+  pruneEmptyNodes(quadtree);
+};
+
+const insertParticle = (particle: ParticleInterface, node: Quadtree) => {
+  // If quadtree contains more than 1 particle
+  if (node.particles.length > 1) {
+    // Determine which child of node to insert to
+    // const child = determineChild?(node, particle)
+    // Insert to that node
+    // insertParticle(particle, child)
+  }
+  // Else if it contains just one particle it is a leaf
+  else if (node.particles.length === 1) {
+    // Add node's four children
+    // subdivide(node)
+    // Move particle already here to proper child
+    // const existingP = node.points[0]
+    // const existingPChild = determineChild?(node, existingP)
+    // insertParticle(existingP, existingPChild)
+    // insert new particle into proper child
+    // const newPChild = determineChild?(node, newPChild)
+    // insertParticle(particle, newPChild)
+  }
+  // It is an empty leaf
+  else if (node.particles.length === 0) {
+    // Store the particle in this node
+    node.particles.push(particle);
+  }
+};
+
+const createQuadtree = (
+  particles: ParticleInterface[],
+  boundary: Rectangle
+) => {
+  const quadtree: Quadtree = { particles: [], children: [], boundary };
+  buildTree(particles, quadtree);
+
   return quadtree;
 };
 
