@@ -16,7 +16,7 @@ describe("findFirstLeafPoints", () => {
     // Mocking a tree for 100x100 space
     const initialBoundary = createRectangle(50, 50, 100, 100);
     const testTree = createQuadtree(initialBoundary, 1);
-    const testParticleA = createParticle({
+    const testParticle1 = createParticle({
       x: 25,
       y: 25,
       vx: 0,
@@ -25,16 +25,16 @@ describe("findFirstLeafPoints", () => {
       radius: 2,
       color: "yellow",
     });
-    testTree.insert(testParticleA);
+    testTree.insert(testParticle1);
 
-    expect(testTree.findFirstLeafPoints()).toStrictEqual([testParticleA]);
+    expect(testTree.findFirstLeafPoints()).toStrictEqual([testParticle1]);
   });
 
   test("returns first leaf particles when tree has depth of 1", () => {
     // Mocking a tree for 100x100 space
     const initialBoundary = createRectangle(50, 50, 100, 100);
     const testTree = createQuadtree(initialBoundary, 1);
-    const testParticleA = createParticle({
+    const testParticle1 = createParticle({
       x: 25,
       y: 25,
       vx: 0,
@@ -43,7 +43,7 @@ describe("findFirstLeafPoints", () => {
       radius: 2,
       color: "yellow",
     });
-    const testParticleB = createParticle({
+    const testParticle2 = createParticle({
       x: 75,
       y: 75,
       vx: 0,
@@ -53,17 +53,17 @@ describe("findFirstLeafPoints", () => {
       color: "yellow",
     });
     // Put particles in NW and SE quadrants to cause one subdivision
-    testTree.insert(testParticleA);
-    testTree.insert(testParticleB);
+    testTree.insert(testParticle1);
+    testTree.insert(testParticle2);
 
-    expect(testTree.findFirstLeafPoints()).toStrictEqual([testParticleA]);
+    expect(testTree.findFirstLeafPoints()).toStrictEqual([testParticle1]);
   });
 
   test("returns first leaf particles when tree has points in multiple quadrants", () => {
     // Mocking a tree for 100x100 space
     const initialBoundary = createRectangle(50, 50, 100, 100);
     const testTree = createQuadtree(initialBoundary, 1);
-    const testParticleA = createParticle({
+    const testParticle1 = createParticle({
       x: 25,
       y: 25,
       vx: 0,
@@ -72,7 +72,7 @@ describe("findFirstLeafPoints", () => {
       radius: 2,
       color: "yellow",
     });
-    const testParticleB = createParticle({
+    const testParticle2 = createParticle({
       x: 75,
       y: 25,
       vx: 0,
@@ -81,7 +81,7 @@ describe("findFirstLeafPoints", () => {
       radius: 2,
       color: "yellow",
     });
-    const testParticleC = createParticle({
+    const testParticle3 = createParticle({
       x: 75,
       y: 75,
       vx: 0,
@@ -90,7 +90,7 @@ describe("findFirstLeafPoints", () => {
       radius: 2,
       color: "yellow",
     });
-    const testParticleD = createParticle({
+    const testParticle4 = createParticle({
       x: 25,
       y: 75,
       vx: 0,
@@ -100,19 +100,19 @@ describe("findFirstLeafPoints", () => {
       color: "yellow",
     });
     // Put particles in NW and SE quadrants to cause one subdivision
-    testTree.insert(testParticleA);
-    testTree.insert(testParticleB);
-    testTree.insert(testParticleC);
-    testTree.insert(testParticleD);
+    testTree.insert(testParticle1);
+    testTree.insert(testParticle2);
+    testTree.insert(testParticle3);
+    testTree.insert(testParticle4);
 
-    expect(testTree.findFirstLeafPoints()).toStrictEqual([testParticleA]);
+    expect(testTree.findFirstLeafPoints()).toStrictEqual([testParticle1]);
   });
 
   test("returns first leaf particles on maximum depth tree", () => {
     // Mocking a tree for 1024x1024 space for even subdivision size with smallest size being 4x4
     const initialBoundary = createRectangle(512, 512, 1024, 1024);
     const testTree = createQuadtree(initialBoundary, 1);
-    const testParticleA = createParticle({
+    const testParticle1 = createParticle({
       x: 1,
       y: 1,
       vx: 0,
@@ -121,7 +121,7 @@ describe("findFirstLeafPoints", () => {
       radius: 2,
       color: "yellow",
     });
-    const testParticleB = createParticle({
+    const testParticle2 = createParticle({
       x: 3,
       y: 3,
       vx: 0,
@@ -131,12 +131,12 @@ describe("findFirstLeafPoints", () => {
       color: "yellow",
     });
     // Put particles in NW and SE quadrants to cause one subdivision
-    testTree.insert(testParticleA);
-    testTree.insert(testParticleB);
+    testTree.insert(testParticle1);
+    testTree.insert(testParticle2);
 
     expect(testTree.findFirstLeafPoints()).toStrictEqual([
-      testParticleA,
-      testParticleB,
+      testParticle1,
+      testParticle2,
     ]);
   });
 
@@ -144,7 +144,7 @@ describe("findFirstLeafPoints", () => {
     // Mocking a tree for 1024x1024 space for even subdivision size with smallest size being 4x4
     const initialBoundary = createRectangle(512, 512, 1024, 1024);
     const testTree = createQuadtree(initialBoundary, 1);
-    const testParticleA = createParticle({
+    const testParticle1 = createParticle({
       x: 1019,
       y: 1019,
       vx: 0,
@@ -153,7 +153,7 @@ describe("findFirstLeafPoints", () => {
       radius: 2,
       color: "yellow",
     });
-    const testParticleB = createParticle({
+    const testParticle2 = createParticle({
       x: 1020,
       y: 1020,
       vx: 0,
@@ -163,12 +163,12 @@ describe("findFirstLeafPoints", () => {
       color: "yellow",
     });
     // Put particles in NW and SE quadrants to cause one subdivision
-    testTree.insert(testParticleA);
-    testTree.insert(testParticleB);
+    testTree.insert(testParticle1);
+    testTree.insert(testParticle2);
 
     expect(testTree.findFirstLeafPoints()).toStrictEqual([
-      testParticleA,
-      testParticleB,
+      testParticle1,
+      testParticle2,
     ]);
   });
 });
@@ -193,7 +193,7 @@ describe("gravity", () => {
     const p1y = 1;
     const p2x = 3;
     const p2y = 3;
-    const testParticleA = createParticle({
+    const testParticle1 = createParticle({
       x: p1x,
       y: p1y,
       vx: 0,
@@ -202,7 +202,7 @@ describe("gravity", () => {
       radius: 2,
       color: "yellow",
     });
-    const testParticleB = createParticle({
+    const testParticle2 = createParticle({
       x: p2x,
       y: p2y,
       vx: 0,
@@ -211,17 +211,57 @@ describe("gravity", () => {
       radius: 2,
       color: "yellow",
     });
-    testTree.insert(testParticleA);
-    testTree.insert(testParticleB);
+    testTree.insert(testParticle1);
+    testTree.insert(testParticle2);
 
     // Apply gravity to quad tree particles
     testTree.gravity();
 
     // Expect particles to have moved closer together
-    expect(testParticleA.x).toBeGreaterThan(p1x);
-    expect(testParticleA.y).toBeGreaterThan(p1y);
-    expect(testParticleB.x).toBeLessThan(p2x);
-    expect(testParticleB.y).toBeLessThan(p2y);
+    expect(testParticle1.x).toBeGreaterThan(p1x);
+    expect(testParticle1.y).toBeGreaterThan(p1y);
+    expect(testParticle2.x).toBeLessThan(p2x);
+    expect(testParticle2.y).toBeLessThan(p2y);
+  });
+
+  test("applies gravity between particles in two far nodes", () => {
+    // Mocking a tree for 1024x1024 space for even subdivision size with smallest size being 4x4
+    const initialBoundary = createRectangle(512, 512, 1024, 1024);
+    const testTree = createQuadtree(initialBoundary, 1);
+    // Create and insert particles that will be placed in same smallest subdivision
+    const p1x = 1;
+    const p1y = 1;
+    const p2x = 1023;
+    const p2y = 1023;
+    const testParticle1 = createParticle({
+      x: p1x,
+      y: p1y,
+      vx: 0,
+      vy: 0,
+      mass: 10,
+      radius: 2,
+      color: "yellow",
+    });
+    const testParticle2 = createParticle({
+      x: p2x,
+      y: p2y,
+      vx: 0,
+      vy: 0,
+      mass: 10,
+      radius: 2,
+      color: "yellow",
+    });
+    testTree.insert(testParticle1);
+    testTree.insert(testParticle2);
+
+    // Apply gravity to quad tree particles
+    testTree.gravity();
+
+    // Expect particles to have moved closer together
+    expect(testParticle1.x).toBeGreaterThan(p1x);
+    expect(testParticle1.y).toBeGreaterThan(p1y);
+    expect(testParticle2.x).toBeLessThan(p2x);
+    expect(testParticle2.y).toBeLessThan(p2y);
   });
 
   test("applies gravity between particles in two close nodes", () => {
@@ -233,7 +273,7 @@ describe("gravity", () => {
     const p1y = 1;
     const p2x = 5;
     const p2y = 5;
-    const testParticleA = createParticle({
+    const testParticle1 = createParticle({
       x: p1x,
       y: p1y,
       vx: 0,
@@ -242,7 +282,7 @@ describe("gravity", () => {
       radius: 2,
       color: "yellow",
     });
-    const testParticleB = createParticle({
+    const testParticle2 = createParticle({
       x: p2x,
       y: p2y,
       vx: 0,
@@ -251,16 +291,80 @@ describe("gravity", () => {
       radius: 2,
       color: "yellow",
     });
-    testTree.insert(testParticleA);
-    testTree.insert(testParticleB);
+    testTree.insert(testParticle1);
+    testTree.insert(testParticle2);
 
     // Apply gravity to quad tree particles
     testTree.gravity();
 
     // Expect particles to have moved closer together
-    expect(testParticleA.x).toBeGreaterThan(p1x);
-    expect(testParticleA.y).toBeGreaterThan(p1y);
-    expect(testParticleB.x).toBeLessThan(p2x);
-    expect(testParticleB.y).toBeLessThan(p2y);
+    expect(testParticle1.x).toBeGreaterThan(p1x);
+    expect(testParticle1.y).toBeGreaterThan(p1y);
+    expect(testParticle2.x).toBeLessThan(p2x);
+    expect(testParticle2.y).toBeLessThan(p2y);
+  });
+
+  test("applies gravity between particles in four close nodes", () => {
+    // Mocking a tree for 1024x1024 space for even subdivision size with smallest size being 4x4
+    const initialBoundary = createRectangle(512, 512, 1024, 1024);
+    const testTree = createQuadtree(initialBoundary, 1);
+    // Create and insert particles that will be placed in same smallest subdivision
+    const p1x = 1;
+    const p1y = 1;
+    const p2x = 1023;
+    const p2y = 1;
+    const p3x = 1023;
+    const p3y = 1023;
+    const p4y = 1023;
+    const p4x = 1;
+    const testParticle1 = createParticle({
+      x: p1x,
+      y: p1y,
+      vx: 0,
+      vy: 0,
+      mass: 10,
+      radius: 2,
+      color: "yellow",
+    });
+    const testParticle2 = createParticle({
+      x: p2x,
+      y: p2y,
+      vx: 0,
+      vy: 0,
+      mass: 10,
+      radius: 2,
+      color: "yellow",
+    });
+    const testParticle3 = createParticle({
+      x: p3x,
+      y: p3y,
+      vx: 0,
+      vy: 0,
+      mass: 10,
+      radius: 2,
+      color: "yellow",
+    });
+    const testParticle4 = createParticle({
+      x: p4x,
+      y: p4y,
+      vx: 0,
+      vy: 0,
+      mass: 10,
+      radius: 2,
+      color: "yellow",
+    });
+    testTree.insert(testParticle1);
+    testTree.insert(testParticle2);
+    testTree.insert(testParticle3);
+    testTree.insert(testParticle4);
+
+    // Apply gravity to quad tree particles
+    testTree.gravity();
+
+    // Expect particles to have moved closer together
+    expect(testParticle1.x).toBeGreaterThan(p1x);
+    expect(testParticle1.y).toBeGreaterThan(p1y);
+    expect(testParticle2.x).toBeLessThan(p2x);
+    expect(testParticle2.y).toBeLessThan(p2y);
   });
 });
