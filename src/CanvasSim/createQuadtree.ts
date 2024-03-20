@@ -118,10 +118,11 @@ const barnesHutCalculation = (
   quadTree: QuadTree
 ) => {
   queryNodePoints.forEach((pointA) => {
-    // If the quadtree node is external and has points apply gravity b/w pointA and all of QT's points
+    // If the quadtree node is leaf and has points
     if (!quadTree.divided && quadTree.points.length > 0) {
       // Calculate gravity between point and points in edge node
-      quadTree.points.forEach((pointB) => {
+      for (const pointB of quadTree.points) {
+        if (pointA === pointB) continue;
         const { distance, distSq, dx, dy } = calculateDistance(
           pointA.x,
           pointA.y,
@@ -138,7 +139,7 @@ const barnesHutCalculation = (
           G
         );
         updateParticles(pointA, pointB, gravForce);
-      });
+      }
     }
     // If the quadtree node compared against point (starting with root) is internal and has points in a child node (has center of mass)
     else if (
