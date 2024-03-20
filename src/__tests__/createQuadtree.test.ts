@@ -304,7 +304,7 @@ describe("gravity", () => {
     expect(testParticle2.y).toBeLessThan(p2y);
   });
 
-  test("applies gravity between particles in four close nodes", () => {
+  test("applies gravity between particles in four far nodes", () => {
     // Mocking a tree for 1024x1024 space for even subdivision size with smallest size being 4x4
     const initialBoundary = createRectangle(512, 512, 1024, 1024);
     const testTree = createQuadtree(initialBoundary, 1);
