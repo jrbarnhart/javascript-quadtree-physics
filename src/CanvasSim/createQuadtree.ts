@@ -6,7 +6,6 @@
 import { ParticleInterface, Quadtree, QuadtreeBoundary } from "./defs";
 
 export const pruneEmptyNodes = (quadtree: Quadtree) => {
-  // Prune the empty nodes with breadth first search
   // !###! Eventually change this to a set for better performance !###!
   const queue: Quadtree[] = [quadtree];
 
@@ -100,28 +99,33 @@ export const getChildForParticle = (
   }
 };
 
-const insertParticle = (particle: ParticleInterface, node: Quadtree) => {
+export const insertParticle = (
+  newParticle: ParticleInterface,
+  node: Quadtree
+) => {
   // If quadtree contains more than 1 particle insert to proper child
   if (node.particles.length > 1) {
-    const targetChild = getChildForParticle(particle, node);
-    insertParticle(particle, targetChild);
+    const targetChild = getChildForParticle(newParticle, node);
+    insertParticle(newParticle, targetChild);
   }
   // Else if it contains just one particle it is a leaf
   else if (node.particles.length === 1) {
     // Add node's four children
-    // subdivide(node)
+    subdivideNode(node);
+
     // Move particle already here to proper child
-    // const existingP = node.particles[0]
-    // const existingPChild = determineChild?(node, existingP)
-    // insertParticle(existingP, existingPChild)
+    const existingParticle = node.particles[0];
+    const existingPChild = getChildForParticle(existingParticle, node);
+    insertParticle(existingParticle, existingPChild);
+
     // insert new particle into proper child
-    // const newPChild = determineChild?(node, newPChild)
-    // insertParticle(particle, newPChild)
+    const newPChild = getChildForParticle(newParticle, node);
+    insertParticle(newParticle, newPChild);
   }
   // It is an empty leaf
   else if (node.particles.length === 0) {
     // Store the particle in this node
-    node.particles.push(particle);
+    node.particles.push(newParticle);
   }
 };
 
