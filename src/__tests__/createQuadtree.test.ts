@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
 import {
   getChildForParticle,
+  insertParticle,
   pruneEmptyNodes,
   subdivideNode,
 } from "../CanvasSim/createQuadtree";
@@ -410,5 +411,35 @@ describe("pruneEmptyNodes", () => {
 
     expect(testTree.children.length).toBe(1);
     expect(testTree.children[0].children.length).toBe(1);
+  });
+});
+
+describe("insertParticle", () => {
+  test("Inserting particle to root correctly places particle in root", () => {
+    const testRect: QuadtreeBoundary = {
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+    };
+    const testTree: Quadtree = {
+      particles: [],
+      children: [],
+      boundary: testRect,
+      parent: undefined,
+    };
+    const testParticle: ParticleInterface = {
+      x: 25,
+      y: 25,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+
+    insertParticle(testParticle, testTree);
+
+    expect(testTree.particles.length).toBe(1);
   });
 });
