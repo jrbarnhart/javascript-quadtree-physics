@@ -442,4 +442,112 @@ describe("insertParticle", () => {
 
     expect(testTree.particles.length).toBe(1);
   });
+
+  test("Inserting 2 particles to root correctly places particles in children", () => {
+    const testRect: QuadtreeBoundary = {
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+    };
+    const testTree: Quadtree = {
+      particles: [],
+      children: [],
+      boundary: testRect,
+      parent: undefined,
+    };
+    const testParticle1: ParticleInterface = {
+      x: 25,
+      y: 25,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testParticle2: ParticleInterface = {
+      x: 75,
+      y: 75,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+
+    insertParticle(testParticle1, testTree);
+    insertParticle(testParticle2, testTree);
+
+    expect(testTree.children[0].particles.length).toBe(1);
+    expect(testTree.children[2].particles.length).toBe(1);
+  });
+
+  test("Inserting particles to root correctly places particles in children and grandchildren", () => {
+    const testRect: QuadtreeBoundary = {
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+    };
+    const testTree: Quadtree = {
+      particles: [],
+      children: [],
+      boundary: testRect,
+      parent: undefined,
+    };
+    const testParticle1: ParticleInterface = {
+      x: 3,
+      y: 3,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testParticle2: ParticleInterface = {
+      x: 9,
+      y: 3,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testParticle3: ParticleInterface = {
+      x: 9,
+      y: 9,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testParticle4: ParticleInterface = {
+      x: 3,
+      y: 9,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+
+    insertParticle(testParticle1, testTree);
+    insertParticle(testParticle2, testTree);
+    insertParticle(testParticle3, testTree);
+    insertParticle(testParticle4, testTree);
+
+    expect(
+      testTree.children[0].children[0].children[0].children[0].particles.length
+    ).toBe(1);
+    expect(
+      testTree.children[0].children[0].children[0].children[1].particles.length
+    ).toBe(1);
+    expect(
+      testTree.children[0].children[0].children[0].children[2].particles.length
+    ).toBe(1);
+    expect(
+      testTree.children[0].children[0].children[0].children[3].particles.length
+    ).toBe(1);
+  });
 });
