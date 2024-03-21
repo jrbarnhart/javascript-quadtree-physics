@@ -6,7 +6,6 @@
 import { ParticleInterface, Quadtree, QuadtreeBoundary } from "./defs";
 
 export const pruneEmptyNodes = (quadtree: Quadtree) => {
-  // !###! Eventually change this to a set for better performance !###!
   const queue = new Set<Quadtree>([quadtree]);
 
   // Shift out the next queue item and process it until queue empty
@@ -131,6 +130,34 @@ export const insertParticle = (
     // Store the particle in this node
     node.particles.push(newParticle);
   }
+};
+
+export const computeMass = () => {
+  /*
+   function ( mass, cm ) = Compute_Mass(n)    
+       ... Compute the mass and center of mass (cm) of 
+       ... all the particles in the subtree rooted at n
+       if n contains 1 particle
+            ... the mass and cm of n are identical to 
+            ... the particle's mass and position
+            store ( mass, cm ) at n
+            return ( mass, cm )
+       else
+            for all four children c(i) of n (i=1,2,3,4)
+                ( mass(i), cm(i) ) = Compute_Mass(c(i))
+            end for
+            mass = mass(1) + mass(2) + mass(3) + mass(4) 
+                 ... the mass of a node is the sum of 
+                 ... the masses of the children
+            cm = (  mass(1)*cm(1) + mass(2)*cm(2) 
+                  + mass(3)*cm(3) + mass(4)*cm(4)) / mass
+                 ... the cm of a node is a weighted sum of 
+                 ... the cm's of the children
+            store ( mass, cm ) at n
+            return ( mass, cm )
+       end
+
+  */
 };
 
 const createQuadtree = ({
