@@ -264,4 +264,151 @@ describe("pruneEmptyNodes", () => {
 
     expect(testTree.children.length).toBe(0);
   });
+
+  test("Does not remove nodes with particles or children", () => {
+    // testRect is also used for child bounaries as they are irrelevant to test
+    const testRect: QuadtreeBoundary = {
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+    };
+    // Mock quadtree and children
+    const testTree: Quadtree = {
+      particles: [],
+      children: [],
+      boundary: testRect,
+      parent: undefined,
+    };
+    const testGrandchild: Quadtree = {
+      particles: [],
+      children: [],
+      boundary: testRect,
+      parent: testTree,
+    };
+    const testParticle: ParticleInterface = {
+      x: 25,
+      y: 25,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testChildNW: Quadtree = {
+      particles: [testParticle],
+      children: [],
+      boundary: testRect,
+      parent: testTree,
+    };
+    const testChildNE: Quadtree = {
+      particles: [],
+      children: [],
+      boundary: testRect,
+      parent: testTree,
+    };
+    const testChildSE: Quadtree = {
+      particles: [],
+      children: [],
+      boundary: testRect,
+      parent: testTree,
+    };
+    const testChildSW: Quadtree = {
+      particles: [],
+      children: [testGrandchild],
+      boundary: testRect,
+      parent: testTree,
+    };
+    testTree.children = [testChildNW, testChildNE, testChildSE, testChildSW];
+
+    pruneEmptyNodes(testTree);
+
+    expect(testTree.children.length).toBe(2);
+  });
+
+  test("Removes all empty descendants", () => {
+    // testRect is also used for child bounaries as they are irrelevant to test
+    const testRect: QuadtreeBoundary = {
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+    };
+    // Mock quadtree and children
+    const testTree: Quadtree = {
+      particles: [],
+      children: [],
+      boundary: testRect,
+      parent: undefined,
+    };
+    const testParticle: ParticleInterface = {
+      x: 25,
+      y: 25,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testChild1: Quadtree = {
+      particles: [],
+      children: [],
+      boundary: testRect,
+      parent: testTree,
+    };
+    const testChild2: Quadtree = {
+      particles: [],
+      children: [],
+      boundary: testRect,
+      parent: testTree,
+    };
+    const testChild3: Quadtree = {
+      particles: [],
+      children: [],
+      boundary: testRect,
+      parent: testTree,
+    };
+    const testChild4: Quadtree = {
+      particles: [],
+      children: [],
+      boundary: testRect,
+      parent: testTree,
+    };
+    const testGrandchild1: Quadtree = {
+      particles: [testParticle],
+      children: [],
+      boundary: testRect,
+      parent: testChild1,
+    };
+    const testGrandchild2: Quadtree = {
+      particles: [],
+      children: [],
+      boundary: testRect,
+      parent: testChild1,
+    };
+    const testGrandchild3: Quadtree = {
+      particles: [],
+      children: [],
+      boundary: testRect,
+      parent: testChild1,
+    };
+    const testGrandchild4: Quadtree = {
+      particles: [],
+      children: [],
+      boundary: testRect,
+      parent: testChild1,
+    };
+    testTree.children = [testChild1, testChild2, testChild3, testChild4];
+    testChild1.children = [
+      testGrandchild1,
+      testGrandchild2,
+      testGrandchild3,
+      testGrandchild4,
+    ];
+
+    pruneEmptyNodes(testTree);
+
+    expect(testTree.children.length).toBe(1);
+    expect(testTree.children[0].children.length).toBe(1);
+  });
 });
