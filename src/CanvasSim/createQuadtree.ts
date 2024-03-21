@@ -7,12 +7,15 @@ import { ParticleInterface, Quadtree, QuadtreeBoundary } from "./defs";
 
 export const pruneEmptyNodes = (quadtree: Quadtree) => {
   // !###! Eventually change this to a set for better performance !###!
-  const queue: Quadtree[] = [quadtree];
+  const queue = new Set<Quadtree>([quadtree]);
 
   // Shift out the next queue item and process it until queue empty
-  while (queue.length > 0) {
-    const node = queue.shift();
-    if (!node) continue;
+  while (queue.size > 0) {
+    const iteratorResult = queue.entries().next();
+    if (!iteratorResult.value) continue;
+
+    const [, node] = iteratorResult.value as [unknown, Quadtree];
+    queue.delete(node);
 
     // Delete node from parent if it is empty
     if (node.children.length === 0 && node.particles.length === 0) {
@@ -24,8 +27,8 @@ export const pruneEmptyNodes = (quadtree: Quadtree) => {
 
     // Add node's unqueued children to queue
     for (const child of node.children) {
-      if (!queue.includes(child)) {
-        queue.push(child);
+      if (!queue.has(child)) {
+        queue.add(child);
       }
     }
   }
