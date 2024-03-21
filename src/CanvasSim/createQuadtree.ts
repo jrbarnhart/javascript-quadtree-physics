@@ -117,6 +117,7 @@ export const insertParticle = (
     const existingParticle = node.particles[0];
     const existingPChild = getChildForParticle(existingParticle, node);
     insertParticle(existingParticle, existingPChild);
+    node.particles = [];
 
     // insert new particle into proper child
     const newPChild = getChildForParticle(newParticle, node);
