@@ -1023,6 +1023,57 @@ describe("createQuadtree", () => {
     expect(testTree.children[3].particles[0]).toStrictEqual(testParticle4);
   });
 
+  test("All nodes have mass and massCenter computed", () => {
+    const testRect: QuadtreeBoundary = {
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+    };
+
+    const particles = [];
+
+    for (let i = 0; i < 100; i++) {
+      const newParticle = {
+        x: i,
+        y: i,
+        vx: 0,
+        vy: 0,
+        mass: 100,
+        radius: 2,
+        color: "yellow",
+      };
+
+      // Add it to particles arraye
+      particles.push(newParticle);
+    }
+
+    const testTree = createQuadtree({ boundary: testRect, particles });
+
+    let nodesWithMassCount = 0;
+
+    const checkMass = (node: Quadtree) => {
+      // If edge node
+      if (node.particles.length === 1) {
+        if (
+          node.mass !== 0 &&
+          node.massCenter.x !== null &&
+          node.massCenter.y !== null
+        ) {
+          nodesWithMassCount++;
+        }
+      } else {
+        // If edge node
+        for (const child of node.children) {
+          checkMass(child);
+        }
+      }
+    };
+    checkMass(testTree);
+
+    expect(nodesWithMassCount).toBe(100);
+  });
+
   test("treeForce properly updates particles positions", () => {
     const x1 = 25;
     const y1 = 25;
