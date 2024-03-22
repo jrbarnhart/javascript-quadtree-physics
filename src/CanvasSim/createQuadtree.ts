@@ -160,6 +160,8 @@ export const computeMass = (node: Quadtree) => {
   */
   if (node.particles.length === 1) {
     // Mass and cMass are the same as the particle
+    node.mass = node.particles[0].mass;
+    node.massCenter.x = node.particles[0].x;
   }
 };
 
@@ -178,7 +180,7 @@ const createQuadtree = ({
     boundary,
     parent,
     mass: 0,
-    massCenter: null,
+    massCenter: { x: null, y: null },
   };
   if (particles) {
     buildTree(particles, quadtree);
