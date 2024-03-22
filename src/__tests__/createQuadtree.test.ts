@@ -656,4 +656,97 @@ describe("computeMass", () => {
     expect(testTree.mass).toBe(1);
     expect(testTree.massCenter).toStrictEqual({ x: 25, y: 25 });
   });
+
+  test("Node mass and massTotal is total/weighted total of children's", () => {
+    const testRect: QuadtreeBoundary = {
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+    };
+    const testParticle1: ParticleInterface = {
+      x: 25,
+      y: 25,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testParticle2: ParticleInterface = {
+      x: 75,
+      y: 25,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testParticle3: ParticleInterface = {
+      x: 75,
+      y: 75,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testParticle4: ParticleInterface = {
+      x: 25,
+      y: 75,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testTree: Quadtree = {
+      particles: [],
+      children: [],
+      boundary: testRect,
+      parent: undefined,
+      mass: 0,
+      massCenter: { x: null, y: null },
+    };
+    const testChild1: Quadtree = {
+      particles: [testParticle1],
+      children: [],
+      boundary: testRect,
+      parent: testTree,
+      mass: 0,
+      massCenter: { x: null, y: null },
+    };
+    const testChild2: Quadtree = {
+      particles: [testParticle2],
+      children: [],
+      boundary: testRect,
+      parent: testTree,
+      mass: 0,
+      massCenter: { x: null, y: null },
+    };
+    const testChild3: Quadtree = {
+      particles: [testParticle3],
+      children: [],
+      boundary: testRect,
+      parent: testTree,
+      mass: 0,
+      massCenter: { x: null, y: null },
+    };
+    const testChild4: Quadtree = {
+      particles: [testParticle4],
+      children: [],
+      boundary: testRect,
+      parent: testTree,
+      mass: 0,
+      massCenter: { x: null, y: null },
+    };
+    testTree.children = [testChild1, testChild2, testChild3, testChild4];
+
+    const { mass, massCenter } = computeMass(testTree);
+    testTree.mass = mass;
+    testTree.massCenter = massCenter;
+
+    expect(testTree.mass).toBe(4);
+    expect(testTree.massCenter).toStrictEqual({ x: 50, y: 50 });
+  });
 });
