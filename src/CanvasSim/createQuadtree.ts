@@ -165,6 +165,34 @@ export const computeMass = (node: Quadtree) => {
   }
 };
 
+/*
+      ... For each particle, traverse the tree 
+      ... to compute the force on it.
+      For i = 1 to n
+          f(i) = TreeForce(i,root)   
+      end for
+
+      function f = TreeForce(i,n)
+          ... Compute gravitational force on particle i 
+          ... due to all particles in the box at n
+          f = 0
+          if n contains one particle
+              f = force computed using formula (*) above
+          else 
+              r = distance from particle i to 
+                     center of mass of particles in n
+              D = size of box n
+              if D/r < theta
+                  compute f using formula (*) above
+              else
+                  for all children c of n
+                      f = f + TreeForce(i,c)
+                  end for
+              end if
+          end if
+*/
+const treeForceInternal = (particle: ParticleInterface, node: Quadtree) => {};
+
 const createQuadtree = ({
   boundary,
   particles,
@@ -174,6 +202,13 @@ const createQuadtree = ({
   particles?: ParticleInterface[];
   parent?: Quadtree;
 }) => {
+  // Method for computing force using Barnes-Hut algorithm
+  const treeForce = (particles: ParticleInterface[]) => {
+    for (const particle of particles) {
+      treeForceInternal(particle, quadtree);
+    }
+  };
+
   const quadtree: Quadtree = {
     particles: [],
     children: [],
@@ -181,7 +216,10 @@ const createQuadtree = ({
     parent,
     mass: 0,
     massCenter: { x: null, y: null },
+    treeForce,
   };
+
+  // Build the tree and compute mass properties
   if (particles) {
     buildTree(particles, quadtree);
     const { mass, massCenter } = computeMass(quadtree);
