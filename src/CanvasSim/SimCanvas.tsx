@@ -61,21 +61,24 @@ const SimCanvas = () => {
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
 
-      // Create random particle with x and y
-      const newParticle = createParticle({
-        x,
-        y,
-        vx: 0,
-        vy: 0,
-        mass: 100,
-        radius: 2,
-        color: "yellow",
-      });
+      for (let i = 0; i <= 10; i++) {
+        // Create random particle with x and y
+        const newParticle = createParticle({
+          x: x + Math.random() * 30,
+          y: y + Math.random() * 30,
+          vx: 0,
+          vy: 0,
+          mass: 100,
+          radius: 2,
+          color: "yellow",
+        });
 
-      // Add it to particles arraye
-      particles.current.push(newParticle);
+        // Add it to particles arraye
+        particles.current.push(newParticle);
+      }
+
       // Update total particles state
-      setTotalParticles((prev) => (prev ? prev + 1 : 1));
+      setTotalParticles((prev) => (prev ? prev + 10 : 10));
     }
   };
 
