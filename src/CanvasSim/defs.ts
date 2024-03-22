@@ -39,6 +39,8 @@ export interface Quadtree {
   children: Quadtree[];
   boundary: QuadtreeBoundary;
   parent: Quadtree | undefined;
+  mass: number;
+  massCenter: { x: number; y: number };
 }
 
 // ###OLD INTERFACE###
