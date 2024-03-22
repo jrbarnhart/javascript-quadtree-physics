@@ -649,9 +649,11 @@ describe("computeMass", () => {
       massCenter: { x: null, y: null },
     };
 
-    computeMass(testTree);
+    const { mass, massCenter } = computeMass(testTree);
+    testTree.mass = mass;
+    testTree.massCenter = massCenter;
 
     expect(testTree.mass).toBe(1);
-    expect(testTree.massCenter).toBe({ x: 25, y: 25 });
+    expect(testTree.massCenter).toStrictEqual({ x: 25, y: 25 });
   });
 });
