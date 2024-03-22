@@ -32,6 +32,7 @@ describe("getChildForParticle", () => {
       parent: undefined,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChildNE: Quadtree = {
       particles: [],
@@ -40,6 +41,7 @@ describe("getChildForParticle", () => {
       parent: undefined,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChildSE: Quadtree = {
       particles: [],
@@ -48,6 +50,7 @@ describe("getChildForParticle", () => {
       parent: undefined,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChildSW: Quadtree = {
       particles: [],
@@ -56,6 +59,7 @@ describe("getChildForParticle", () => {
       parent: undefined,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testTree: Quadtree = {
       particles: [],
@@ -64,6 +68,7 @@ describe("getChildForParticle", () => {
       parent: undefined,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     // Mock particle
     const testParticleNW: ParticleInterface = {
@@ -132,6 +137,7 @@ describe("subdivideNode", () => {
       parent: undefined,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChildNE: Quadtree = {
       particles: [],
@@ -140,6 +146,7 @@ describe("subdivideNode", () => {
       parent: undefined,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChildSE: Quadtree = {
       particles: [],
@@ -148,6 +155,7 @@ describe("subdivideNode", () => {
       parent: undefined,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChildSW: Quadtree = {
       particles: [],
@@ -156,6 +164,7 @@ describe("subdivideNode", () => {
       parent: undefined,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testTree: Quadtree = {
       particles: [],
@@ -164,6 +173,7 @@ describe("subdivideNode", () => {
       parent: undefined,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
 
     subdivideNode(testTree);
@@ -188,6 +198,7 @@ describe("subdivideNode", () => {
       parent: undefined,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
 
     subdivideNode(testTree);
@@ -213,6 +224,7 @@ describe("subdivideNode", () => {
       parent: undefined,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
 
     subdivideNode(testTree);
@@ -261,6 +273,7 @@ describe("pruneEmptyNodes", () => {
       parent: undefined,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChildNW: Quadtree = {
       particles: [],
@@ -269,6 +282,7 @@ describe("pruneEmptyNodes", () => {
       parent: testTree,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChildNE: Quadtree = {
       particles: [],
@@ -277,6 +291,7 @@ describe("pruneEmptyNodes", () => {
       parent: testTree,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChildSE: Quadtree = {
       particles: [],
@@ -285,6 +300,7 @@ describe("pruneEmptyNodes", () => {
       parent: testTree,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChildSW: Quadtree = {
       particles: [],
@@ -293,6 +309,7 @@ describe("pruneEmptyNodes", () => {
       parent: testTree,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     testTree.children = [testChildNW, testChildNE, testChildSE, testChildSW];
 
@@ -317,6 +334,7 @@ describe("pruneEmptyNodes", () => {
       parent: undefined,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testGrandchild: Quadtree = {
       particles: [],
@@ -325,6 +343,7 @@ describe("pruneEmptyNodes", () => {
       parent: testTree,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testParticle: ParticleInterface = {
       x: 25,
@@ -342,6 +361,7 @@ describe("pruneEmptyNodes", () => {
       parent: testTree,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChildNE: Quadtree = {
       particles: [],
@@ -350,6 +370,7 @@ describe("pruneEmptyNodes", () => {
       parent: testTree,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChildSE: Quadtree = {
       particles: [],
@@ -358,6 +379,7 @@ describe("pruneEmptyNodes", () => {
       parent: testTree,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChildSW: Quadtree = {
       particles: [],
@@ -366,6 +388,7 @@ describe("pruneEmptyNodes", () => {
       parent: testTree,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     testTree.children = [testChildNW, testChildNE, testChildSE, testChildSW];
 
@@ -390,6 +413,7 @@ describe("pruneEmptyNodes", () => {
       parent: undefined,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testParticle: ParticleInterface = {
       x: 25,
@@ -407,6 +431,7 @@ describe("pruneEmptyNodes", () => {
       parent: testTree,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChild2: Quadtree = {
       particles: [],
@@ -415,6 +440,7 @@ describe("pruneEmptyNodes", () => {
       parent: testTree,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChild3: Quadtree = {
       particles: [],
@@ -423,6 +449,7 @@ describe("pruneEmptyNodes", () => {
       parent: testTree,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChild4: Quadtree = {
       particles: [],
@@ -431,6 +458,7 @@ describe("pruneEmptyNodes", () => {
       parent: testTree,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testGrandchild1: Quadtree = {
       particles: [testParticle],
@@ -439,6 +467,7 @@ describe("pruneEmptyNodes", () => {
       parent: testChild1,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testGrandchild2: Quadtree = {
       particles: [],
@@ -447,6 +476,7 @@ describe("pruneEmptyNodes", () => {
       parent: testChild1,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testGrandchild3: Quadtree = {
       particles: [],
@@ -455,6 +485,7 @@ describe("pruneEmptyNodes", () => {
       parent: testChild1,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testGrandchild4: Quadtree = {
       particles: [],
@@ -463,6 +494,7 @@ describe("pruneEmptyNodes", () => {
       parent: testChild1,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     testTree.children = [testChild1, testChild2, testChild3, testChild4];
     testChild1.children = [
@@ -494,6 +526,7 @@ describe("insertParticle", () => {
       parent: undefined,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testParticle: ParticleInterface = {
       x: 25,
@@ -524,6 +557,7 @@ describe("insertParticle", () => {
       parent: undefined,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testParticle1: ParticleInterface = {
       x: 25,
@@ -565,6 +599,7 @@ describe("insertParticle", () => {
       parent: undefined,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testParticle1: ParticleInterface = {
       x: 3,
@@ -647,6 +682,7 @@ describe("computeMass", () => {
       parent: undefined,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
 
     const { mass, massCenter } = computeMass(testTree);
@@ -707,6 +743,7 @@ describe("computeMass", () => {
       parent: undefined,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChild1: Quadtree = {
       particles: [testParticle1],
@@ -715,6 +752,7 @@ describe("computeMass", () => {
       parent: testTree,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChild2: Quadtree = {
       particles: [testParticle2],
@@ -723,6 +761,7 @@ describe("computeMass", () => {
       parent: testTree,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChild3: Quadtree = {
       particles: [testParticle3],
@@ -731,6 +770,7 @@ describe("computeMass", () => {
       parent: testTree,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChild4: Quadtree = {
       particles: [testParticle4],
@@ -739,6 +779,7 @@ describe("computeMass", () => {
       parent: testTree,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     testTree.children = [testChild1, testChild2, testChild3, testChild4];
 
@@ -809,6 +850,7 @@ describe("computeMass", () => {
       parent: undefined,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChild1: Quadtree = {
       particles: [],
@@ -817,6 +859,7 @@ describe("computeMass", () => {
       parent: testTree,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChild2: Quadtree = {
       particles: [testParticle2],
@@ -825,6 +868,7 @@ describe("computeMass", () => {
       parent: testTree,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChild3: Quadtree = {
       particles: [testParticle3],
@@ -833,6 +877,7 @@ describe("computeMass", () => {
       parent: testTree,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testChild4: Quadtree = {
       particles: [testParticle4],
@@ -841,6 +886,7 @@ describe("computeMass", () => {
       parent: testTree,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testGrandchild1: Quadtree = {
       particles: [testParticle1],
@@ -849,6 +895,7 @@ describe("computeMass", () => {
       parent: testChild1,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     const testGrandchild2: Quadtree = {
       particles: [testParticle5],
@@ -857,6 +904,7 @@ describe("computeMass", () => {
       parent: testChild1,
       mass: 0,
       massCenter: { x: null, y: null },
+      treeForce: () => undefined,
     };
     testTree.children = [testChild1, testChild2, testChild3, testChild4];
     testChild1.children = [testGrandchild1, testGrandchild2];
