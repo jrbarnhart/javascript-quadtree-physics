@@ -29,30 +29,40 @@ describe("getChildForParticle", () => {
       children: [],
       boundary: testRect,
       parent: undefined,
+      mass: 0,
+      massCenter: null,
     };
     const testChildNE: Quadtree = {
       particles: [],
       children: [],
       boundary: testRect,
       parent: undefined,
+      mass: 0,
+      massCenter: null,
     };
     const testChildSE: Quadtree = {
       particles: [],
       children: [],
       boundary: testRect,
       parent: undefined,
+      mass: 0,
+      massCenter: null,
     };
     const testChildSW: Quadtree = {
       particles: [],
       children: [],
       boundary: testRect,
       parent: undefined,
+      mass: 0,
+      massCenter: null,
     };
     const testTree: Quadtree = {
       particles: [],
       children: [testChildNW, testChildNE, testChildSE, testChildSW],
       boundary: testRect,
       parent: undefined,
+      mass: 0,
+      massCenter: null,
     };
     // Mock particle
     const testParticleNW: ParticleInterface = {
@@ -119,30 +129,40 @@ describe("subdivideNode", () => {
       children: [],
       boundary: testRect,
       parent: undefined,
+      mass: 0,
+      massCenter: null,
     };
     const testChildNE: Quadtree = {
       particles: [],
       children: [],
       boundary: testRect,
       parent: undefined,
+      mass: 0,
+      massCenter: null,
     };
     const testChildSE: Quadtree = {
       particles: [],
       children: [],
       boundary: testRect,
       parent: undefined,
+      mass: 0,
+      massCenter: null,
     };
     const testChildSW: Quadtree = {
       particles: [],
       children: [],
       boundary: testRect,
       parent: undefined,
+      mass: 0,
+      massCenter: null,
     };
     const testTree: Quadtree = {
       particles: [],
       children: [testChildNW, testChildNE, testChildSE, testChildSW],
       boundary: testRect,
       parent: undefined,
+      mass: 0,
+      massCenter: null,
     };
 
     subdivideNode(testTree);
@@ -165,6 +185,8 @@ describe("subdivideNode", () => {
       children: [],
       boundary: testRect,
       parent: undefined,
+      mass: 0,
+      massCenter: null,
     };
 
     subdivideNode(testTree);
@@ -188,6 +210,8 @@ describe("subdivideNode", () => {
       children: [],
       boundary: testRect,
       parent: undefined,
+      mass: 0,
+      massCenter: null,
     };
 
     subdivideNode(testTree);
@@ -234,30 +258,40 @@ describe("pruneEmptyNodes", () => {
       children: [],
       boundary: testRect,
       parent: undefined,
+      mass: 0,
+      massCenter: null,
     };
     const testChildNW: Quadtree = {
       particles: [],
       children: [],
       boundary: testRect,
       parent: testTree,
+      mass: 0,
+      massCenter: null,
     };
     const testChildNE: Quadtree = {
       particles: [],
       children: [],
       boundary: testRect,
       parent: testTree,
+      mass: 0,
+      massCenter: null,
     };
     const testChildSE: Quadtree = {
       particles: [],
       children: [],
       boundary: testRect,
       parent: testTree,
+      mass: 0,
+      massCenter: null,
     };
     const testChildSW: Quadtree = {
       particles: [],
       children: [],
       boundary: testRect,
       parent: testTree,
+      mass: 0,
+      massCenter: null,
     };
     testTree.children = [testChildNW, testChildNE, testChildSE, testChildSW];
 
@@ -280,12 +314,16 @@ describe("pruneEmptyNodes", () => {
       children: [],
       boundary: testRect,
       parent: undefined,
+      mass: 0,
+      massCenter: null,
     };
     const testGrandchild: Quadtree = {
       particles: [],
       children: [],
       boundary: testRect,
       parent: testTree,
+      mass: 0,
+      massCenter: null,
     };
     const testParticle: ParticleInterface = {
       x: 25,
@@ -301,24 +339,32 @@ describe("pruneEmptyNodes", () => {
       children: [],
       boundary: testRect,
       parent: testTree,
+      mass: 0,
+      massCenter: null,
     };
     const testChildNE: Quadtree = {
       particles: [],
       children: [],
       boundary: testRect,
       parent: testTree,
+      mass: 0,
+      massCenter: null,
     };
     const testChildSE: Quadtree = {
       particles: [],
       children: [],
       boundary: testRect,
       parent: testTree,
+      mass: 0,
+      massCenter: null,
     };
     const testChildSW: Quadtree = {
       particles: [],
       children: [testGrandchild],
       boundary: testRect,
       parent: testTree,
+      mass: 0,
+      massCenter: null,
     };
     testTree.children = [testChildNW, testChildNE, testChildSE, testChildSW];
 
@@ -341,6 +387,8 @@ describe("pruneEmptyNodes", () => {
       children: [],
       boundary: testRect,
       parent: undefined,
+      mass: 0,
+      massCenter: null,
     };
     const testParticle: ParticleInterface = {
       x: 25,
@@ -356,48 +404,64 @@ describe("pruneEmptyNodes", () => {
       children: [],
       boundary: testRect,
       parent: testTree,
+      mass: 0,
+      massCenter: null,
     };
     const testChild2: Quadtree = {
       particles: [],
       children: [],
       boundary: testRect,
       parent: testTree,
+      mass: 0,
+      massCenter: null,
     };
     const testChild3: Quadtree = {
       particles: [],
       children: [],
       boundary: testRect,
       parent: testTree,
+      mass: 0,
+      massCenter: null,
     };
     const testChild4: Quadtree = {
       particles: [],
       children: [],
       boundary: testRect,
       parent: testTree,
+      mass: 0,
+      massCenter: null,
     };
     const testGrandchild1: Quadtree = {
       particles: [testParticle],
       children: [],
       boundary: testRect,
       parent: testChild1,
+      mass: 0,
+      massCenter: null,
     };
     const testGrandchild2: Quadtree = {
       particles: [],
       children: [],
       boundary: testRect,
       parent: testChild1,
+      mass: 0,
+      massCenter: null,
     };
     const testGrandchild3: Quadtree = {
       particles: [],
       children: [],
       boundary: testRect,
       parent: testChild1,
+      mass: 0,
+      massCenter: null,
     };
     const testGrandchild4: Quadtree = {
       particles: [],
       children: [],
       boundary: testRect,
       parent: testChild1,
+      mass: 0,
+      massCenter: null,
     };
     testTree.children = [testChild1, testChild2, testChild3, testChild4];
     testChild1.children = [
@@ -427,6 +491,8 @@ describe("insertParticle", () => {
       children: [],
       boundary: testRect,
       parent: undefined,
+      mass: 0,
+      massCenter: null,
     };
     const testParticle: ParticleInterface = {
       x: 25,
@@ -455,6 +521,8 @@ describe("insertParticle", () => {
       children: [],
       boundary: testRect,
       parent: undefined,
+      mass: 0,
+      massCenter: null,
     };
     const testParticle1: ParticleInterface = {
       x: 25,
@@ -494,6 +562,8 @@ describe("insertParticle", () => {
       children: [],
       boundary: testRect,
       parent: undefined,
+      mass: 0,
+      massCenter: null,
     };
     const testParticle1: ParticleInterface = {
       x: 3,
