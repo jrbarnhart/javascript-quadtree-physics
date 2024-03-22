@@ -133,35 +133,37 @@ export const insertParticle = (
 };
 
 export const computeMass = (node: Quadtree) => {
-  /*
-   function ( mass, cm ) = Compute_Mass(n)    
-       ... Compute the mass and center of mass (cm) of 
-       ... all the particles in the subtree rooted at n
-       if n contains 1 particle
-            ... the mass and cm of n are identical to 
-            ... the particle's mass and position
-            store ( mass, cm ) at n
-            return ( mass, cm )
-       else
-            for all four children c(i) of n (i=1,2,3,4)
-                ( mass(i), cm(i) ) = Compute_Mass(c(i))
-            end for
-            mass = mass(1) + mass(2) + mass(3) + mass(4) 
-                 ... the mass of a node is the sum of 
-                 ... the masses of the children
-            cm = (  mass(1)*cm(1) + mass(2)*cm(2) 
-                  + mass(3)*cm(3) + mass(4)*cm(4)) / mass
-                 ... the cm of a node is a weighted sum of 
-                 ... the cm's of the children
-            store ( mass, cm ) at n
-            return ( mass, cm )
-       end
-
-  */
+  // Node only has one particle
   if (node.particles.length === 1) {
     // Mass and cMass are the same as the particle
-    node.mass = node.particles[0].mass;
-    node.massCenter.x = node.particles[0].x;
+    const mass = node.particles[0].mass;
+    const massCenter = { x: node.particles[0].x, y: node.particles[0].y };
+    return { mass, massCenter };
+  } else {
+    // Else it is an internal node b/c empty nodes should have been removed before computing mass
+    for (const child of node.children) {
+      const { mass, massCenter } = computeMass(child);
+      child.mass = mass;
+      child.massCenter = massCenter;
+    }
+
+    const totalMass =
+      node.children[0].mass +
+      node.children[1].mass +
+      node.children[2].mass +
+      node.children[3].mass;
+    const totalMassCenter = {
+      x: node.children.reduce(
+        (sum, child) => sum + child.mass * (child.massCenter.x ?? 0),
+        0
+      ),
+      y: node.children.reduce(
+        (sum, child) => sum + child.mass * (child.massCenter.y ?? 0),
+        0
+      ),
+    };
+
+    return { mass: totalMass, massCenter: totalMassCenter };
   }
 };
 
