@@ -8,17 +8,6 @@ export interface ParticleInterface {
   color: string;
 }
 
-export interface Rectangle {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  top: number;
-  bottom: number;
-  left: number;
-  right: number;
-}
-
 export interface QuadtreeBoundary {
   x: number;
   y: number;
