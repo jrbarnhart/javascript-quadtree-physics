@@ -950,6 +950,79 @@ describe("createQuadtree", () => {
     expect(testTree).toHaveProperty("treeForce");
   });
 
+  test("Quadtree points inserted in correct nodes and tree is pruned", () => {
+    const testRect: QuadtreeBoundary = {
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+    };
+    const testParticle1: ParticleInterface = {
+      x: 25,
+      y: 25,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testParticle2: ParticleInterface = {
+      x: 75,
+      y: 25,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testParticle3: ParticleInterface = {
+      x: 75,
+      y: 75,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testParticle4: ParticleInterface = {
+      x: 25,
+      y: 75,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testParticle5: ParticleInterface = {
+      x: 50,
+      y: 50,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const particles = [
+      testParticle1,
+      testParticle2,
+      testParticle3,
+      testParticle4,
+      testParticle5,
+    ];
+
+    const testTree = createQuadtree({ boundary: testRect, particles });
+
+    expect(testTree.children[0].children[0].particles[0]).toStrictEqual(
+      testParticle1
+    );
+    expect(testTree.children[0].children[1].particles[0]).toStrictEqual(
+      testParticle5
+    );
+    expect(testTree.children[1].particles[0]).toStrictEqual(testParticle2);
+    expect(testTree.children[2].particles[0]).toStrictEqual(testParticle3);
+    expect(testTree.children[3].particles[0]).toStrictEqual(testParticle4);
+  });
+
   test("treeForce properly updates particles positions", () => {
     const x1 = 25;
     const y1 = 25;
@@ -1023,8 +1096,6 @@ describe("createQuadtree", () => {
 
     const testTree = createQuadtree({ boundary: testRect, particles });
     testTree.treeForce(particles);
-
-    console.log(testTree.children[0]);
 
     expect(testParticle1.x).toBeGreaterThan(x1);
     expect(testParticle1.y).toBeGreaterThan(y1);
