@@ -43,23 +43,3 @@ export interface Quadtree {
   massCenter: { x: number | null; y: number | null };
   treeForce: (particles: ParticleInterface[]) => void;
 }
-
-// ###OLD INTERFACE###
-export interface QuadTree {
-  boundary: Rectangle;
-  capacity: PositiveInteger;
-  points: ParticleInterface[];
-  massTotal: number;
-  massCenterX: number | null;
-  massCenterY: number | null;
-  insert: (particle: ParticleInterface) => boolean;
-  findFirstLeafPoints: () => ParticleInterface[] | null;
-  gravity: () => void;
-  divided: boolean;
-  depth: number;
-  maxDepth: number;
-  northwest?: QuadTree;
-  northeast?: QuadTree;
-  southeast?: QuadTree;
-  southwest?: QuadTree;
-}
