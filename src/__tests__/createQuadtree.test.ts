@@ -749,4 +749,135 @@ describe("computeMass", () => {
     expect(testTree.mass).toBe(4);
     expect(testTree.massCenter).toStrictEqual({ x: 50, y: 50 });
   });
+
+  test("Mass and massCenter calculated properly for root and all children", () => {
+    const testRect: QuadtreeBoundary = {
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+    };
+    const testParticle1: ParticleInterface = {
+      x: 25,
+      y: 25,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testParticle2: ParticleInterface = {
+      x: 75,
+      y: 25,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testParticle3: ParticleInterface = {
+      x: 75,
+      y: 75,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testParticle4: ParticleInterface = {
+      x: 25,
+      y: 75,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testParticle5: ParticleInterface = {
+      x: 50,
+      y: 50,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testTree: Quadtree = {
+      particles: [],
+      children: [],
+      boundary: testRect,
+      parent: undefined,
+      mass: 0,
+      massCenter: { x: null, y: null },
+    };
+    const testChild1: Quadtree = {
+      particles: [],
+      children: [],
+      boundary: testRect,
+      parent: testTree,
+      mass: 0,
+      massCenter: { x: null, y: null },
+    };
+    const testChild2: Quadtree = {
+      particles: [testParticle2],
+      children: [],
+      boundary: testRect,
+      parent: testTree,
+      mass: 0,
+      massCenter: { x: null, y: null },
+    };
+    const testChild3: Quadtree = {
+      particles: [testParticle3],
+      children: [],
+      boundary: testRect,
+      parent: testTree,
+      mass: 0,
+      massCenter: { x: null, y: null },
+    };
+    const testChild4: Quadtree = {
+      particles: [testParticle4],
+      children: [],
+      boundary: testRect,
+      parent: testTree,
+      mass: 0,
+      massCenter: { x: null, y: null },
+    };
+    const testGrandchild1: Quadtree = {
+      particles: [testParticle1],
+      children: [],
+      boundary: testRect,
+      parent: testChild1,
+      mass: 0,
+      massCenter: { x: null, y: null },
+    };
+    const testGrandchild2: Quadtree = {
+      particles: [testParticle5],
+      children: [],
+      boundary: testRect,
+      parent: testChild1,
+      mass: 0,
+      massCenter: { x: null, y: null },
+    };
+    testTree.children = [testChild1, testChild2, testChild3, testChild4];
+    testChild1.children = [testGrandchild1, testGrandchild2];
+
+    const { mass, massCenter } = computeMass(testTree);
+    testTree.mass = mass;
+    testTree.massCenter = massCenter;
+
+    expect(testTree.mass).toBe(5);
+    expect(testTree.massCenter).toStrictEqual({ x: 50, y: 50 });
+    expect(testChild1.mass).toBe(2);
+    expect(testChild1.massCenter).toStrictEqual({ x: 37.5, y: 37.5 });
+    expect(testChild2.mass).toBe(1);
+    expect(testChild2.massCenter).toStrictEqual({ x: 75, y: 25 });
+    expect(testChild3.mass).toBe(1);
+    expect(testChild3.massCenter).toStrictEqual({ x: 75, y: 75 });
+    expect(testChild4.mass).toBe(1);
+    expect(testChild4.massCenter).toStrictEqual({ x: 25, y: 75 });
+    expect(testGrandchild1.mass).toBe(1);
+    expect(testGrandchild1.massCenter).toStrictEqual({ x: 25, y: 25 });
+    expect(testGrandchild2.mass).toBe(1);
+    expect(testGrandchild2.massCenter).toStrictEqual({ x: 50, y: 50 });
+  });
 });
