@@ -223,12 +223,25 @@ const computeForce = (
           end if
 */
 const treeForceInternal = (particle: ParticleInterface, node: Quadtree) => {
-  const force = { x: 0, y: 0 };
-  if (node.particles === 1) {
+  const THETA = 0.5;
+  let force = { x: 0, y: 0 };
+  if (node.particles.length === 1) {
     const { dx, dy, rSquared, r } = computeDistance(particle, node);
     force = computeForce(particle, node, dx, dy, rSquared, r);
   } else {
+    const { dx, dy, rSquared, r } = computeDistance(particle, node);
+    const D = (node.boundary.width + node.boundary.height) / 2;
+    if (D / r < THETA) {
+      force = computeForce(particle, node, dx, dy, rSquared, r);
+    } else {
+      for (const child of node.children) {
+        const childForce = treeForceInternal(particle, child);
+        force.x += childForce.x;
+        force.y += childForce.y;
+      }
+    }
   }
+  return force;
 };
 
 const createQuadtree = ({
