@@ -173,6 +173,7 @@ const computeDistance = (particle: ParticleInterface, node: Quadtree) => {
     const r = Math.sqrt(rSquared);
     return { dx, dy, rSquared, r };
   }
+  return { dx: 0, dy: 0, rSquared: 0, r: 0 };
 };
 
 const computeForce = (
