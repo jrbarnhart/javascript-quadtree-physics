@@ -106,7 +106,7 @@ export const insertParticle = (
   node: Quadtree
 ) => {
   // If quadtree contains more than 1 particle insert to proper child
-  if (node.particles.length > 1) {
+  if (node.children.length > 0) {
     const targetChild = getChildForParticle(newParticle, node);
     insertParticle(newParticle, targetChild);
   }
