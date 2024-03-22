@@ -40,7 +40,7 @@ export interface Quadtree {
   boundary: QuadtreeBoundary;
   parent: Quadtree | undefined;
   mass: number;
-  massCenter: { x: number; y: number };
+  massCenter: { x: number; y: number } | null;
 }
 
 // ###OLD INTERFACE###
