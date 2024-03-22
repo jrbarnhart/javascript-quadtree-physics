@@ -150,11 +150,13 @@ export const computeMass = (node: Quadtree) => {
     const totalMass = node.children.reduce((sum, child) => sum + child.mass, 0);
     const totalMassCenter = {
       x: node.children.reduce(
-        (sum, child) => sum + child.mass * (child.massCenter.x ?? 0),
+        (sum, child) =>
+          sum + (child.mass * (child.massCenter.x ?? 0)) / totalMass,
         0
       ),
       y: node.children.reduce(
-        (sum, child) => sum + child.mass * (child.massCenter.y ?? 0),
+        (sum, child) =>
+          sum + (child.mass * (child.massCenter.y ?? 0)) / totalMass,
         0
       ),
     };
