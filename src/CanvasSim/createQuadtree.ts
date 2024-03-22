@@ -184,6 +184,9 @@ const createQuadtree = ({
   };
   if (particles) {
     buildTree(particles, quadtree);
+    const { mass, massCenter } = computeMass(quadtree);
+    quadtree.mass = mass;
+    quadtree.massCenter = massCenter;
   }
 
   return quadtree;
