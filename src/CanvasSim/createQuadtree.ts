@@ -112,6 +112,15 @@ export const insertParticle = (
   }
   // Else if it contains just one particle it is a leaf
   else if (node.particles.length === 1) {
+    // Check for duplicate locations
+    if (
+      newParticle.x === node.particles[0].x &&
+      newParticle.y === node.particles[0].y
+    ) {
+      newParticle.x += 0.1;
+      newParticle.y += 0.1;
+    }
+
     // Add node's four children
     subdivideNode(node);
 
