@@ -41,6 +41,7 @@ export interface Quadtree {
   parent: Quadtree | undefined;
   mass: number;
   massCenter: { x: number | null; y: number | null };
+  treeForce: (particles: ParticleInterface[]) => void;
 }
 
 // ###OLD INTERFACE###
