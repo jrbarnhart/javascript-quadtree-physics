@@ -132,7 +132,7 @@ export const insertParticle = (
   }
 };
 
-export const computeMass = () => {
+export const computeMass = (node: Quadtree) => {
   /*
    function ( mass, cm ) = Compute_Mass(n)    
        ... Compute the mass and center of mass (cm) of 
@@ -158,6 +158,9 @@ export const computeMass = () => {
        end
 
   */
+  if (node.particles.length === 1) {
+    // Mass and cMass are the same as the particle
+  }
 };
 
 const createQuadtree = ({
@@ -169,7 +172,14 @@ const createQuadtree = ({
   particles?: ParticleInterface[];
   parent?: Quadtree;
 }) => {
-  const quadtree: Quadtree = { particles: [], children: [], boundary, parent };
+  const quadtree: Quadtree = {
+    particles: [],
+    children: [],
+    boundary,
+    parent,
+    mass: 0,
+    massCenter: null,
+  };
   if (particles) {
     buildTree(particles, quadtree);
   }
