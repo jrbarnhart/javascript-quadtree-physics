@@ -165,24 +165,34 @@ export const computeMass = (node: Quadtree) => {
   }
 };
 
-const computeForce = (particle: ParticleInterface, node: Quadtree) => {
+const computeDistance = (particle: ParticleInterface, node: Quadtree) => {
   if (node.massCenter.x !== null && node.massCenter.y !== null) {
-    const G = 0.6;
-    const force = { x: 0, y: 0 };
     const dx = node.massCenter.x - particle.x;
     const dy = node.massCenter.y - particle.y;
     const rSquared = dx * dx + dy * dy;
     const r = Math.sqrt(rSquared);
-
-    if (r !== 0) {
-      const forceMagnitude = (G * particle.mass * node.mass) / rSquared;
-      force.x = forceMagnitude * (dx / r);
-      force.y = forceMagnitude * (dy / r);
-    }
-
-    return force;
+    return { dx, dy, rSquared, r };
   }
-  return { x: 0, y: 0 };
+};
+
+const computeForce = (
+  particle: ParticleInterface,
+  node: Quadtree,
+  dx: number,
+  dy: number,
+  rSquared: number,
+  r: number
+) => {
+  const G = 0.6;
+  const force = { x: 0, y: 0 };
+
+  if (r !== 0) {
+    const forceMagnitude = (G * particle.mass * node.mass) / rSquared;
+    force.x = forceMagnitude * (dx / r);
+    force.y = forceMagnitude * (dy / r);
+  }
+
+  return force;
 };
 
 /*
@@ -214,7 +224,9 @@ const computeForce = (particle: ParticleInterface, node: Quadtree) => {
 const treeForceInternal = (particle: ParticleInterface, node: Quadtree) => {
   const force = { x: 0, y: 0 };
   if (node.particles === 1) {
-    force = computeForce(particle, node);
+    const { dx, dy, rSquared, r } = computeDistance(particle, node);
+    force = computeForce(particle, node, dx, dy, rSquared, r);
+  } else {
   }
 };
 
