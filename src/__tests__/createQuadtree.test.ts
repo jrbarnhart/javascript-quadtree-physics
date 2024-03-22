@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import {
+import createQuadtree, {
   computeMass,
   getChildForParticle,
   insertParticle,
@@ -927,5 +927,114 @@ describe("computeMass", () => {
     expect(testGrandchild1.massCenter).toStrictEqual({ x: 25, y: 25 });
     expect(testGrandchild2.mass).toBe(1);
     expect(testGrandchild2.massCenter).toStrictEqual({ x: 50, y: 50 });
+  });
+});
+
+describe("createQuadtree", () => {
+  test("Returns an object with correct properties", () => {
+    const testRect: QuadtreeBoundary = {
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+    };
+
+    const testTree = createQuadtree({ boundary: testRect });
+
+    expect(testTree).toHaveProperty("particles");
+    expect(testTree).toHaveProperty("children");
+    expect(testTree).toHaveProperty("boundary");
+    expect(testTree).toHaveProperty("parent");
+    expect(testTree).toHaveProperty("mass");
+    expect(testTree).toHaveProperty("massCenter");
+    expect(testTree).toHaveProperty("treeForce");
+  });
+
+  test("treeForce properly updates particles positions", () => {
+    const x1 = 25;
+    const y1 = 25;
+    const x2 = 75;
+    const y2 = 25;
+    const x3 = 75;
+    const y3 = 75;
+    const x4 = 25;
+    const y4 = 75;
+    const x5 = 50;
+    const y5 = 50;
+
+    const testRect: QuadtreeBoundary = {
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+    };
+    const testParticle1: ParticleInterface = {
+      x: x1,
+      y: y1,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testParticle2: ParticleInterface = {
+      x: x2,
+      y: y2,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testParticle3: ParticleInterface = {
+      x: x3,
+      y: y3,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testParticle4: ParticleInterface = {
+      x: x4,
+      y: y4,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testParticle5: ParticleInterface = {
+      x: x5,
+      y: y5,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const particles = [
+      testParticle1,
+      testParticle2,
+      testParticle3,
+      testParticle4,
+      testParticle5,
+    ];
+
+    const testTree = createQuadtree({ boundary: testRect, particles });
+    testTree.treeForce(particles);
+
+    console.log(testTree.children[0]);
+
+    expect(testParticle1.x).toBeGreaterThan(x1);
+    expect(testParticle1.y).toBeGreaterThan(y1);
+    expect(testParticle2.x).toBeLessThan(x2);
+    expect(testParticle2.y).toBeGreaterThan(y2);
+    expect(testParticle3.x).toBeLessThan(x3);
+    expect(testParticle3.y).toBeLessThan(y3);
+    expect(testParticle4.x).toBeGreaterThan(x4);
+    expect(testParticle4.y).toBeLessThan(y4);
+    expect(testParticle5.x).toBe(x5);
+    expect(testParticle5.y).toBe(y5);
   });
 });
