@@ -193,7 +193,7 @@ const computeForce = (
   rSquared: number,
   r: number
 ) => {
-  const G = 0.6;
+  const G = 6;
   const force = { x: 0, y: 0 };
 
   if (r !== 0) {
