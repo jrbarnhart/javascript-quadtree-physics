@@ -240,9 +240,16 @@ const createQuadtree = ({
   // Method for computing force using Barnes-Hut algorithm
   const treeForce = (particles: ParticleInterface[]) => {
     for (const particle of particles) {
+      const maxAcceleration = 0.1;
       const force = treeForceInternal(particle, quadtree);
-      const accelerationX = force.x / particle.mass;
-      const accelerationY = force.y / particle.mass;
+      const accelerationX = Math.min(
+        Math.max(force.x / particle.mass, -maxAcceleration),
+        maxAcceleration
+      );
+      const accelerationY = Math.min(
+        Math.max(force.y / particle.mass, -maxAcceleration),
+        maxAcceleration
+      );
       particle.x += accelerationX;
       particle.y += accelerationY;
     }
