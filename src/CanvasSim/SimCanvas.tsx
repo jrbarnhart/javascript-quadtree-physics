@@ -64,8 +64,8 @@ const SimCanvas = () => {
       for (let i = 0; i <= 10; i++) {
         // Create random particle with x and y
         const newParticle = createParticle({
-          x: x + Math.random() * 30,
-          y: y + Math.random() * 30,
+          x: x + Math.random() * 100,
+          y: y + Math.random() * 100,
           vx: 0,
           vy: 0,
           mass: 100,
