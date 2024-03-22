@@ -196,32 +196,7 @@ const computeForce = (
   return force;
 };
 
-/*
-      ... For each particle, traverse the tree 
-      ... to compute the force on it.
-      For i = 1 to n
-          f(i) = TreeForce(i,root)   
-      end for
-
-      function f = TreeForce(i,n)
-          ... Compute gravitational force on particle i 
-          ... due to all particles in the box at n
-          f = 0
-          if n contains one particle
-              f = force computed using formula (*) above
-          else 
-              r = distance from particle i to 
-                     center of mass of particles in n
-              D = size of box n
-              if D/r < theta
-                  compute f using formula (*) above
-              else
-                  for all children c of n
-                      f = f + TreeForce(i,c)
-                  end for
-              end if
-          end if
-*/
+// Barnes-Hut algorithm
 const treeForceInternal = (particle: ParticleInterface, node: Quadtree) => {
   const THETA = 0.5;
   let force = { x: 0, y: 0 };
