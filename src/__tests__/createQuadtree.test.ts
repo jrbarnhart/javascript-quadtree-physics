@@ -1,5 +1,6 @@
 import { describe, expect, test } from "vitest";
 import {
+  computeMass,
   getChildForParticle,
   insertParticle,
   pruneEmptyNodes,
@@ -619,5 +620,38 @@ describe("insertParticle", () => {
     expect(
       testTree.children[0].children[0].children[0].children[3].particles.length
     ).toBe(1);
+  });
+});
+
+describe("computeMass", () => {
+  test("Node with only one particle has mass and massC = particle", () => {
+    const testRect: QuadtreeBoundary = {
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+    };
+    const testParticle: ParticleInterface = {
+      x: 25,
+      y: 25,
+      vx: 0,
+      vy: 0,
+      mass: 1,
+      radius: 1,
+      color: "yellow",
+    };
+    const testTree: Quadtree = {
+      particles: [testParticle],
+      children: [],
+      boundary: testRect,
+      parent: undefined,
+      mass: 0,
+      massCenter: { x: null, y: null },
+    };
+
+    computeMass(testTree);
+
+    expect(testTree.mass).toBe(1);
+    expect(testTree.massCenter).toBe({ x: 25, y: 25 });
   });
 });
