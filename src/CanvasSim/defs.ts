@@ -32,3 +32,14 @@ export interface Quadtree {
   massCenter: { x: number | null; y: number | null };
   treeForce: (particles: ParticleInterface[]) => void;
 }
+
+// Above are old interfaces to be replaced with interfaces with data that can be stored in typed arrays
+export interface Particle {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  mass: number;
+  radius: number;
+  colorRGB: number;
+}
