@@ -19,7 +19,7 @@ const SimCanvas = () => {
     new ArrayBuffer(initialParticleCount * 28)
   );
 
-  // State for HUD stats
+  // State for HUD
   const [mousePosX, setMousePosX] = useState<number | null>(null);
   const [mousePosY, setMousePosY] = useState<number | null>(null);
   const [totalParticles, setTotalParticles] = useState<number | null>(null);
@@ -27,6 +27,7 @@ const SimCanvas = () => {
   // State for toggling rect draws
   const [drawQuadtree, setDrawQuadtree] = useState<boolean>(false);
 
+  // Handle mouse move by updating overlay with mouse position
   const throttleRef = useRef(
     _.throttle((event: React.MouseEvent) => {
       setMousePosX(event.clientX);
@@ -37,23 +38,6 @@ const SimCanvas = () => {
   const handleMouseMove = useCallback((event: React.MouseEvent) => {
     throttleRef.current(event);
   }, []);
-
-  // Define animation loop
-  const animationLoop = useCallback(() => {
-    if (!canvasRef.current || !contextRef.current) return;
-
-    animate({
-      particleData: particleData.current,
-      canvasWidth: canvasRef.current.width,
-      canvasHeight: canvasRef.current.height,
-      ctx: contextRef.current,
-      drawQuadtree,
-    });
-
-    animationFrameRef.current = requestAnimationFrame(() => {
-      animationLoop();
-    });
-  }, [drawQuadtree]);
 
   // Handle clicks by creating a particle with random properties
   const handleClick = (event: React.MouseEvent) => {
@@ -83,7 +67,7 @@ const SimCanvas = () => {
     }
   };
 
-  // Initialize canvas by setting context ref
+  // Initialize canvas
   useEffect(() => {
     if (canvasRef.current) {
       contextRef.current = canvasRef.current.getContext("2d");
@@ -92,11 +76,28 @@ const SimCanvas = () => {
     }
   }, []);
 
+  // Define animation loop
+  const animationLoop = useCallback(() => {
+    if (!canvasRef.current || !contextRef.current) return;
+
+    animate({
+      particleData: particleData.current,
+      canvasWidth: canvasRef.current.width,
+      canvasHeight: canvasRef.current.height,
+      ctx: contextRef.current,
+      drawQuadtree,
+    });
+
+    animationFrameRef.current = requestAnimationFrame(() => {
+      animationLoop();
+    });
+  }, [drawQuadtree]);
+
   // Start the animation if canvas is initialized
   useEffect(() => {
     if (canvasInitialized) {
       // Start animation loop with requestAnimationFrame
-      animationLoop(particleData.current);
+      animationLoop();
       console.log("Animation started.");
     }
   }, [animationLoop, canvasInitialized]);
