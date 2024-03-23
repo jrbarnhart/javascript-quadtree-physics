@@ -5,7 +5,7 @@ const animate = ({
   ctx,
   drawQuadtree,
 }: {
-  particleData: ArrayBuffer;
+  particleData: DataView;
   canvasWidth: number;
   canvasHeight: number;
   ctx: CanvasRenderingContext2D;
