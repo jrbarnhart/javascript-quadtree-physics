@@ -228,6 +228,25 @@ const treeForceInternal = (particle: ParticleInterface, node: Quadtree) => {
   return force;
 };
 
+// Collision detection
+// const computeCollisions = () => {
+/*
+    traversed = {}
+    gather quadtree leaves
+    for each leaf in leaves:
+    {
+        for each element in leaf:
+        {
+              if not traversed[element]:
+              {
+                  use quad tree to check for collision against other elements
+                  traversed[element] = true                  
+              }
+        }
+    }
+  */
+// };
+
 const createQuadtree = ({
   boundary,
   particles,
