@@ -1,13 +1,11 @@
-import { ParticleInterface } from "./defs";
-
 const animate = ({
-  particles,
+  particleData,
   canvasWidth,
   canvasHeight,
   ctx,
   drawQuadtree,
 }: {
-  particles: ParticleInterface[];
+  particleData: ArrayBuffer;
   canvasWidth: number;
   canvasHeight: number;
   ctx: CanvasRenderingContext2D;
