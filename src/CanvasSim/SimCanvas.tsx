@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ParticleInterface } from "./defs";
 import createParticle from "./createParticle";
 import animate from "./animate";
 import useWindowSize from "./useWindowSize";
@@ -10,9 +9,15 @@ const SimCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
   const [canvasInitialized, setCanvasInitialized] = useState<boolean>(false);
-  const particles = useRef<ParticleInterface[]>([]);
   const animationFrameRef = useRef<number | null>(null);
   const windowSize = useWindowSize();
+
+  // Array buffer for particle data
+  // x, y, vx, vy, m, r are float32 and colorRGB is four int8 for a total of 28 bytes / particle
+  const initialParticleCount = 100;
+  const particleData = useRef<ArrayBuffer>(
+    new ArrayBuffer(initialParticleCount * 28)
+  );
 
   // State for HUD stats
   const [mousePosX, setMousePosX] = useState<number | null>(null);
@@ -35,11 +40,11 @@ const SimCanvas = () => {
 
   // Define animation loop
   const animationLoop = useCallback(
-    (particles: ParticleInterface[]) => {
+    (particleData: ArrayBuffer) => {
       if (!canvasRef.current || !contextRef.current) return;
 
       animate({
-        particles,
+        particleData,
         canvasWidth: canvasRef.current.width,
         canvasHeight: canvasRef.current.height,
         ctx: contextRef.current,
@@ -47,7 +52,7 @@ const SimCanvas = () => {
       });
 
       animationFrameRef.current = requestAnimationFrame(() => {
-        animationLoop(particles);
+        animationLoop(particleData);
       });
     },
     [drawQuadtree]
@@ -74,7 +79,6 @@ const SimCanvas = () => {
         });
 
         // Add it to particles arraye
-        particles.current.push(newParticle);
       }
 
       // Update total particles state
@@ -95,7 +99,7 @@ const SimCanvas = () => {
   useEffect(() => {
     if (canvasInitialized) {
       // Start animation loop with requestAnimationFrame
-      animationLoop(particles.current);
+      animationLoop(particleData.current);
       console.log("Animation started.");
     }
   }, [animationLoop, canvasInitialized]);
