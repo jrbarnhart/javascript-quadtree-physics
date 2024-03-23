@@ -39,24 +39,21 @@ const SimCanvas = () => {
   }, []);
 
   // Define animation loop
-  const animationLoop = useCallback(
-    (particleData: ArrayBuffer) => {
-      if (!canvasRef.current || !contextRef.current) return;
+  const animationLoop = useCallback(() => {
+    if (!canvasRef.current || !contextRef.current) return;
 
-      animate({
-        particleData,
-        canvasWidth: canvasRef.current.width,
-        canvasHeight: canvasRef.current.height,
-        ctx: contextRef.current,
-        drawQuadtree,
-      });
+    animate({
+      particleData: particleData.current,
+      canvasWidth: canvasRef.current.width,
+      canvasHeight: canvasRef.current.height,
+      ctx: contextRef.current,
+      drawQuadtree,
+    });
 
-      animationFrameRef.current = requestAnimationFrame(() => {
-        animationLoop(particleData);
-      });
-    },
-    [drawQuadtree]
-  );
+    animationFrameRef.current = requestAnimationFrame(() => {
+      animationLoop();
+    });
+  }, [drawQuadtree]);
 
   // Handle clicks by creating a particle with random properties
   const handleClick = (event: React.MouseEvent) => {
