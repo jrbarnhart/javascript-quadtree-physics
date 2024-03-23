@@ -1,5 +1,4 @@
-import { ParticleInterface, Quadtree } from "./defs";
-import createQuadtree from "./createQuadtree";
+import { ParticleInterface } from "./defs";
 
 const animate = ({
   particles,
