@@ -63,7 +63,7 @@ const SimCanvas = () => {
           color: "yellow",
         });
 
-        // Add it to particles arraye
+        // Add it to particles array buffer NYI
       }
 
       // Update total particles state
