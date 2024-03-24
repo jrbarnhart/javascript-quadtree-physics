@@ -14,10 +14,12 @@ const SimCanvas = () => {
 
   // Array buffer for particle data
   // x, y, vx, vy, m, r are float32 and colorRGB is four int8 for a total of 28 bytes / particle
-  const initialParticleCount = 100;
-  const particleData = useRef<ArrayBuffer>(
+  const initialParticleCount = 10;
+  const particleBuffer = useRef<ArrayBuffer>(
     new ArrayBuffer(initialParticleCount * 28)
   );
+  // Data view for interacting with buffer
+  const particleData = useRef<DataView>(new DataView(particleBuffer.current));
 
   // State for HUD
   const [mousePosX, setMousePosX] = useState<number | null>(null);
@@ -69,9 +71,38 @@ const SimCanvas = () => {
 
   // Initialize canvas
   useEffect(() => {
+    // Set canvas context ref
     if (canvasRef.current) {
       contextRef.current = canvasRef.current.getContext("2d");
       setCanvasInitialized(true);
+
+      // Randomize particle data
+      for (let i = 0; i < initialParticleCount; i++) {
+        const x = Math.random() * canvasRef.current.width;
+        const y = Math.random() * canvasRef.current.height;
+        const vx = Math.random() * 2 - 1;
+        const vy = Math.random() * 2 - 1;
+        const m = 1;
+        const r = Math.random() * 20 + 1;
+        const colorR = Math.random() * 255;
+        const colorG = Math.random() * 255;
+        const colorB = Math.random() * 255;
+        const colorA = 255;
+
+        // Each particle has 7 properties
+        const index = i * 7;
+
+        particleData.current.setFloat32(index, x);
+        particleData.current.setFloat32(index + 1, y);
+        particleData.current.setFloat32(index + 2, vx);
+        particleData.current.setFloat32(index + 3, vy);
+        particleData.current.setFloat32(index + 4, m);
+        particleData.current.setFloat32(index + 5, r);
+        particleData.current.setInt8(index + 6, colorR);
+        particleData.current.setInt8(index + 7, colorG);
+        particleData.current.setInt8(index + 8, colorB);
+        particleData.current.setInt8(index + 9, colorA);
+      }
       console.log("Canvas intialized.");
     }
   }, []);
