@@ -9,6 +9,8 @@ const SimCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
   const [canvasInitialized, setCanvasInitialized] = useState<boolean>(false);
+  const [particlesInitialized, setParticlesInitialized] =
+    useState<boolean>(false);
   const animationFrameRef = useRef<number | null>(null);
   const windowSize = useWindowSize();
 
@@ -75,7 +77,13 @@ const SimCanvas = () => {
     if (canvasRef.current) {
       contextRef.current = canvasRef.current.getContext("2d");
       setCanvasInitialized(true);
+      console.log("Canvas intialized.");
+    }
+  }, []);
 
+  // Initialize particle data
+  useEffect(() => {
+    if (canvasInitialized && !particlesInitialized && canvasRef.current) {
       // Randomize particle data
       for (let i = 0; i < initialParticleCount; i++) {
         const x = Math.random() * canvasRef.current.width;
@@ -93,19 +101,25 @@ const SimCanvas = () => {
         const index = i * 7;
 
         particleData.current.setFloat32(index, x);
-        particleData.current.setFloat32(index + 1, y);
-        particleData.current.setFloat32(index + 2, vx);
-        particleData.current.setFloat32(index + 3, vy);
-        particleData.current.setFloat32(index + 4, m);
-        particleData.current.setFloat32(index + 5, r);
-        particleData.current.setInt8(index + 6, colorR);
-        particleData.current.setInt8(index + 7, colorG);
-        particleData.current.setInt8(index + 8, colorB);
-        particleData.current.setInt8(index + 9, colorA);
+        particleData.current.setFloat32(index + 4, y);
+        particleData.current.setFloat32(index + 8, vx);
+        particleData.current.setFloat32(index + 12, vy);
+        particleData.current.setFloat32(index + 16, m);
+        particleData.current.setFloat32(index + 20, r);
+        particleData.current.setInt8(index + 24, colorR);
+        particleData.current.setInt8(index + 25, colorG);
+        particleData.current.setInt8(index + 26, colorB);
+        particleData.current.setInt8(index + 27, colorA);
+
+        console.log(
+          x,
+          particleData.current.getFloat32(index),
+          canvasRef.current.width
+        );
       }
-      console.log("Canvas intialized.");
+      setParticlesInitialized(true);
     }
-  }, []);
+  }, [canvasInitialized, particlesInitialized]);
 
   // Define animation loop
   const animationLoop = useCallback(() => {
@@ -126,12 +140,12 @@ const SimCanvas = () => {
 
   // Start the animation if canvas is initialized
   useEffect(() => {
-    if (canvasInitialized) {
+    if (canvasInitialized && particlesInitialized) {
       // Start animation loop with requestAnimationFrame
       animationLoop();
       console.log("Animation started.");
     }
-  }, [animationLoop, canvasInitialized]);
+  }, [animationLoop, canvasInitialized, particlesInitialized]);
 
   return (
     <div className="relative">
