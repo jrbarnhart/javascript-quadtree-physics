@@ -106,16 +106,10 @@ const SimCanvas = () => {
         particleData.current.setFloat32(index + 12, vy);
         particleData.current.setFloat32(index + 16, m);
         particleData.current.setFloat32(index + 20, r);
-        particleData.current.setInt8(index + 24, colorR);
-        particleData.current.setInt8(index + 25, colorG);
-        particleData.current.setInt8(index + 26, colorB);
-        particleData.current.setInt8(index + 27, colorA);
-
-        console.log(
-          x,
-          particleData.current.getFloat32(index),
-          canvasRef.current.width
-        );
+        particleData.current.setUint8(index + 24, colorR);
+        particleData.current.setUint8(index + 26, colorB);
+        particleData.current.setUint8(index + 25, colorG);
+        particleData.current.setUint8(index + 27, colorA);
       }
       setParticlesInitialized(true);
     }
