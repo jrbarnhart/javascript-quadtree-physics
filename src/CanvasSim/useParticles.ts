@@ -35,8 +35,8 @@ const useParticles = (particleCount: number) => {
       const colorB = Math.random() * 255;
       const colorA = 255;
 
-      // Each particle has 7 properties
-      const index = i * 7;
+      // Each particle has 28 bytes worth of properties
+      const index = i * 28;
 
       particleData.current.setFloat32(index + xI, x);
       particleData.current.setFloat32(index + yI, y);
