@@ -2,17 +2,14 @@ import { test, expect } from "vitest";
 import useParticles from "../CanvasSim/useParticles";
 import { renderHook } from "@testing-library/react";
 
-// x, y, vx, vy, m, r are float32 and colorRGB is four int8 for a total of 28 bytes / particle
+// x, y, vx, vy, m, r are float32 for a total of 24 bytes / particle
+// colorRGB is four Uint8s for a total of 4 bytes / particle
 const xI = 0;
 const yI = 4;
 const vxI = 8;
 const vyI = 12;
 const mI = 16;
 const rI = 20;
-const colorRI = 24;
-const colorGI = 25;
-const colorBI = 26;
-const colorAI = 27;
 
 test("Randomize properly randomizes particle properties", () => {
   const testWidth = 100;
@@ -27,30 +24,30 @@ test("Randomize properly randomizes particle properties", () => {
   testParticles.randomize(testWidth, testHeight);
 
   // x, y
-  expect(testParticles.data.getFloat32(xI)).toBeGreaterThanOrEqual(0);
-  expect(testParticles.data.getFloat32(xI)).toBeLessThanOrEqual(testWidth);
-  expect(testParticles.data.getFloat32(yI)).toBeGreaterThanOrEqual(0);
-  expect(testParticles.data.getFloat32(yI)).toBeLessThanOrEqual(testHeight);
+  expect(testParticles.data[xI]).toBeGreaterThanOrEqual(0);
+  expect(testParticles.data[xI]).toBeLessThanOrEqual(testWidth);
+  expect(testParticles.data[yI]).toBeGreaterThanOrEqual(0);
+  expect(testParticles.data[yI]).toBeLessThanOrEqual(testHeight);
   // vx, vy
-  expect(testParticles.data.getFloat32(vxI)).toBeLessThanOrEqual(1);
-  expect(testParticles.data.getFloat32(vxI)).toBeGreaterThanOrEqual(-1);
-  expect(testParticles.data.getFloat32(vyI)).toBeLessThanOrEqual(1);
-  expect(testParticles.data.getFloat32(vyI)).toBeGreaterThanOrEqual(-1);
+  expect(testParticles.data[vxI]).toBeLessThanOrEqual(1);
+  expect(testParticles.data[vxI]).toBeGreaterThanOrEqual(-1);
+  expect(testParticles.data[vyI]).toBeLessThanOrEqual(1);
+  expect(testParticles.data[vyI]).toBeGreaterThanOrEqual(-1);
   // m
-  expect(testParticles.data.getFloat32(mI)).toBeGreaterThanOrEqual(1);
-  expect(testParticles.data.getFloat32(mI)).toBeLessThanOrEqual(100);
+  expect(testParticles.data[mI]).toBeGreaterThanOrEqual(1);
+  expect(testParticles.data[mI]).toBeLessThanOrEqual(100);
   // r
-  expect(testParticles.data.getFloat32(rI)).toBeGreaterThanOrEqual(1);
-  expect(testParticles.data.getFloat32(rI)).toBeLessThanOrEqual(20);
+  expect(testParticles.data[rI]).toBeGreaterThanOrEqual(1);
+  expect(testParticles.data[rI]).toBeLessThanOrEqual(20);
   // colorRGBA
-  expect(testParticles.data.getUint8(colorRI)).toBeGreaterThanOrEqual(0);
-  expect(testParticles.data.getUint8(colorRI)).toBeLessThanOrEqual(255);
-  expect(testParticles.data.getUint8(colorGI)).toBeGreaterThanOrEqual(0);
-  expect(testParticles.data.getUint8(colorGI)).toBeLessThanOrEqual(255);
-  expect(testParticles.data.getUint8(colorBI)).toBeGreaterThanOrEqual(0);
-  expect(testParticles.data.getUint8(colorBI)).toBeLessThanOrEqual(255);
-  expect(testParticles.data.getUint8(colorAI)).toBeGreaterThanOrEqual(0);
-  expect(testParticles.data.getUint8(colorAI)).toBeLessThanOrEqual(255);
+  expect(testParticles.colors[0]).toBeGreaterThanOrEqual(0);
+  expect(testParticles.colors[0]).toBeLessThanOrEqual(255);
+  expect(testParticles.colors[1]).toBeGreaterThanOrEqual(0);
+  expect(testParticles.colors[1]).toBeLessThanOrEqual(255);
+  expect(testParticles.colors[2]).toBeGreaterThanOrEqual(0);
+  expect(testParticles.colors[2]).toBeLessThanOrEqual(255);
+  expect(testParticles.colors[3]).toBeGreaterThanOrEqual(0);
+  expect(testParticles.colors[3]).toBeLessThanOrEqual(255);
 });
 
 test("Randomize properly randomizes multiple particle properties", () => {
@@ -67,52 +64,29 @@ test("Randomize properly randomizes multiple particle properties", () => {
 
   // 50th particle
   // x, y
-  expect(testParticles.data.getFloat32(xI + 28 * 50)).toBeGreaterThanOrEqual(0);
-  expect(testParticles.data.getFloat32(xI + 28 * 50)).toBeLessThanOrEqual(
-    testWidth
-  );
-  expect(testParticles.data.getFloat32(yI + 28 * 50)).toBeGreaterThanOrEqual(0);
-  expect(testParticles.data.getFloat32(yI + 28 * 50)).toBeLessThanOrEqual(
-    testHeight
-  );
+  expect(testParticles.data[xI + 24 * 50]).toBeGreaterThanOrEqual(0);
+  expect(testParticles.data[xI + 24 * 50]).toBeLessThanOrEqual(testWidth);
+  expect(testParticles.data[yI + 24 * 50]).toBeGreaterThanOrEqual(0);
+  expect(testParticles.data[yI + 24 * 50]).toBeLessThanOrEqual(testHeight);
   // vx, vy
-  expect(testParticles.data.getFloat32(vxI + 28 * 50)).toBeLessThanOrEqual(1);
-  expect(testParticles.data.getFloat32(vxI + 28 * 50)).toBeGreaterThanOrEqual(
-    -1
-  );
-  expect(testParticles.data.getFloat32(vyI + 28 * 50)).toBeLessThanOrEqual(1);
-  expect(testParticles.data.getFloat32(vyI + 28 * 50)).toBeGreaterThanOrEqual(
-    -1
-  );
+  expect(testParticles.data[vxI + 24 * 50]).toBeLessThanOrEqual(1);
+  expect(testParticles.data[vxI + 24 * 50]).toBeGreaterThanOrEqual(-1);
+  expect(testParticles.data[vyI + 24 * 50]).toBeLessThanOrEqual(1);
+  expect(testParticles.data[vyI + 24 * 50]).toBeGreaterThanOrEqual(-1);
   // m
-  expect(testParticles.data.getFloat32(mI + 28 * 50)).toBeGreaterThanOrEqual(1);
-  expect(testParticles.data.getFloat32(mI + 28 * 50)).toBeLessThanOrEqual(100);
+  expect(testParticles.data[mI + 24 * 50]).toBeGreaterThanOrEqual(1);
+  expect(testParticles.data[mI + 24 * 50]).toBeLessThanOrEqual(100);
   // r
-  expect(testParticles.data.getFloat32(rI + 28 * 50)).toBeGreaterThanOrEqual(1);
-  expect(testParticles.data.getFloat32(rI + 28 * 50)).toBeLessThanOrEqual(20);
+  expect(testParticles.data[rI + 24 * 50]).toBeGreaterThanOrEqual(1);
+  expect(testParticles.data[rI + 24 * 50]).toBeLessThanOrEqual(20);
+
   // colorRGBA
-  expect(testParticles.data.getUint8(colorRI + 28 * 50)).toBeGreaterThanOrEqual(
-    0
-  );
-  expect(testParticles.data.getUint8(colorRI + 28 * 50)).toBeLessThanOrEqual(
-    255
-  );
-  expect(testParticles.data.getUint8(colorGI + 28 * 50)).toBeGreaterThanOrEqual(
-    0
-  );
-  expect(testParticles.data.getUint8(colorGI + 28 * 50)).toBeLessThanOrEqual(
-    255
-  );
-  expect(testParticles.data.getUint8(colorBI + 28 * 50)).toBeGreaterThanOrEqual(
-    0
-  );
-  expect(testParticles.data.getUint8(colorBI + 28 * 50)).toBeLessThanOrEqual(
-    255
-  );
-  expect(testParticles.data.getUint8(colorAI + 28 * 50)).toBeGreaterThanOrEqual(
-    0
-  );
-  expect(testParticles.data.getUint8(colorAI + 28 * 50)).toBeLessThanOrEqual(
-    255
-  );
+  expect(testParticles.colors[0 + 4 * 50]).toBeGreaterThanOrEqual(0);
+  expect(testParticles.colors[0 + 4 * 50]).toBeLessThanOrEqual(255);
+  expect(testParticles.colors[1 + 4 * 50]).toBeGreaterThanOrEqual(0);
+  expect(testParticles.colors[1 + 4 * 50]).toBeLessThanOrEqual(255);
+  expect(testParticles.colors[2 + 4 * 50]).toBeGreaterThanOrEqual(0);
+  expect(testParticles.colors[2 + 4 * 50]).toBeLessThanOrEqual(255);
+  expect(testParticles.colors[3 + 4 * 50]).toBeGreaterThanOrEqual(0);
+  expect(testParticles.colors[3 + 4 * 50]).toBeLessThanOrEqual(255);
 });
