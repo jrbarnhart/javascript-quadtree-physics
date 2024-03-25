@@ -41,7 +41,7 @@ const useParticles = (particleCount: number) => {
     }
   };
 
-  const particles = { data: particleData, randomize };
+  const particles = { data: particleData.current, randomize };
   return particles;
 };
 
