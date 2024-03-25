@@ -1,8 +1,18 @@
 import { useRef } from "react";
 
 const useParticles = (particleCount: number) => {
-  // Array buffer for particle data
   // x, y, vx, vy, m, r are float32 and colorRGB is four int8 for a total of 28 bytes / particle
+  const xI = 0;
+  const yI = 4;
+  const vxI = 8;
+  const vyI = 12;
+  const mI = 16;
+  const rI = 20;
+  const colorRI = 24;
+  const colorGI = 25;
+  const colorBI = 26;
+  const colorAI = 27;
+
   const particleBuffer = useRef<ArrayBuffer>(
     new ArrayBuffer(particleCount * 28)
   );
@@ -28,16 +38,16 @@ const useParticles = (particleCount: number) => {
       // Each particle has 7 properties
       const index = i * 7;
 
-      particleData.current.setFloat32(index, x);
-      particleData.current.setFloat32(index + 4, y);
-      particleData.current.setFloat32(index + 8, vx);
-      particleData.current.setFloat32(index + 12, vy);
-      particleData.current.setFloat32(index + 16, m);
-      particleData.current.setFloat32(index + 20, r);
-      particleData.current.setUint8(index + 24, colorR);
-      particleData.current.setUint8(index + 26, colorB);
-      particleData.current.setUint8(index + 25, colorG);
-      particleData.current.setUint8(index + 27, colorA);
+      particleData.current.setFloat32(index + xI, x);
+      particleData.current.setFloat32(index + yI, y);
+      particleData.current.setFloat32(index + vxI, vx);
+      particleData.current.setFloat32(index + vyI, vy);
+      particleData.current.setFloat32(index + mI, m);
+      particleData.current.setFloat32(index + rI, r);
+      particleData.current.setUint8(index + colorRI, colorR);
+      particleData.current.setUint8(index + colorGI, colorB);
+      particleData.current.setUint8(index + colorBI, colorG);
+      particleData.current.setUint8(index + colorAI, colorA);
     }
   };
 
