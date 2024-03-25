@@ -4,21 +4,15 @@ import { Particle } from "./defs";
 const useParticles = (particleCount: number) => {
   // x, y, vx, vy, m, r are float32 for a total of 24 bytes / particle
   // colorRGB is four Uint8s for a total of 4 bytes / particle
-  const xI = 0;
-  const yI = 4;
-  const vxI = 8;
-  const vyI = 12;
-  const mI = 16;
-  const rI = 20;
 
-  const particleDataBytes = 24;
-  const particleColorBytes = 4;
+  const particleDataElements = 6;
+  const particleColorElements = 4;
 
   const particleData = useRef<Float32Array>(
-    new Float32Array(particleCount * particleDataBytes)
+    new Float32Array(particleCount * particleDataElements)
   );
   const particleColorData = useRef<Uint8Array>(
-    new Uint8Array(particleCount * particleColorBytes)
+    new Uint8Array(particleCount * particleColorElements)
   );
 
   // Method for randomizing particle data
@@ -37,15 +31,15 @@ const useParticles = (particleCount: number) => {
       const colorA = 255;
 
       // Set indexes for typed arrays
-      const dataIndex = i * particleDataBytes;
-      const colorIndex = i * particleColorBytes;
+      const dataIndex = i * particleDataElements;
+      const colorIndex = i * particleColorElements;
 
-      particleData.current[dataIndex + xI] = x;
-      particleData.current[dataIndex + yI] = y;
-      particleData.current[dataIndex + vxI] = vx;
-      particleData.current[dataIndex + vyI] = vy;
-      particleData.current[dataIndex + mI] = m;
-      particleData.current[dataIndex + rI] = r;
+      particleData.current[dataIndex] = x;
+      particleData.current[dataIndex + 1] = y;
+      particleData.current[dataIndex + 2] = vx;
+      particleData.current[dataIndex + 3] = vy;
+      particleData.current[dataIndex + 4] = m;
+      particleData.current[dataIndex + 5] = r;
 
       particleColorData.current[colorIndex] = colorR;
       particleColorData.current[colorIndex + 1] = colorG;
@@ -58,26 +52,28 @@ const useParticles = (particleCount: number) => {
   const addParticles = (particles: Particle[]) => {
     // Create typed arrays and set old data
     const newParticleData = new Float32Array(
-      particleData.current.length + particles.length * particleDataBytes
+      particleData.current.length + particles.length * particleDataElements
     );
     newParticleData.set(particleData.current, 0);
     const newParticleColorData = new Uint8Array(
-      particleColorData.current.length + particles.length * particleColorBytes
+      particleColorData.current.length +
+        particles.length * particleColorElements
     );
     newParticleColorData.set(particleColorData.current, 0);
 
     // Add new data
     for (let i = 0; i < particles.length; i++) {
       // Set indexes for typed arrays
-      const dataIndex = i * particleDataBytes + particleData.current.length;
-      const colorIndex = i * particleColorBytes + particleData.current.length;
+      const dataIndex = i * particleDataElements + particleData.current.length;
+      const colorIndex =
+        i * particleColorElements + particleData.current.length;
 
-      newParticleData[dataIndex + xI] = particles[i].x;
-      newParticleData[dataIndex + yI] = particles[i].y;
-      newParticleData[dataIndex + vxI] = particles[i].vx;
-      newParticleData[dataIndex + vyI] = particles[i].vy;
-      newParticleData[dataIndex + mI] = particles[i].m;
-      newParticleData[dataIndex + rI] = particles[i].r;
+      newParticleData[dataIndex] = particles[i].x;
+      newParticleData[dataIndex + 1] = particles[i].y;
+      newParticleData[dataIndex + 2] = particles[i].vx;
+      newParticleData[dataIndex + 3] = particles[i].vy;
+      newParticleData[dataIndex + 4] = particles[i].m;
+      newParticleData[dataIndex + 5] = particles[i].r;
 
       newParticleColorData[colorIndex] = particles[i].color.r;
       newParticleColorData[colorIndex + 1] = particles[i].color.g;
@@ -88,6 +84,8 @@ const useParticles = (particleCount: number) => {
     // Update the refs
     particleData.current = newParticleData;
     particleColorData.current = newParticleColorData;
+
+    console.log(particleData.current, newParticleData);
   };
 
   const particles = {
