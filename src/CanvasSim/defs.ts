@@ -39,7 +39,7 @@ export interface Particle {
   y: number;
   vx: number;
   vy: number;
-  mass: number;
-  radius: number;
+  m: number;
+  r: number;
   colorRGB: number;
 }
