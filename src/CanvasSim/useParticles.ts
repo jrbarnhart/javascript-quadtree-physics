@@ -11,11 +11,14 @@ const useParticles = (particleCount: number) => {
   const mI = 16;
   const rI = 20;
 
+  const particleDataBytes = 24;
+  const particleColorBytes = 4;
+
   const particleData = useRef<Float32Array>(
-    new Float32Array(particleCount * 24)
+    new Float32Array(particleCount * particleDataBytes)
   );
   const particleColorData = useRef<Uint8Array>(
-    new Uint8Array(particleCount * 4)
+    new Uint8Array(particleCount * particleColorBytes)
   );
 
   // Method for randomizing particle data
@@ -34,8 +37,8 @@ const useParticles = (particleCount: number) => {
       const colorA = 255;
 
       // Set indexes for typed arrays
-      const dataIndex = i * 24;
-      const colorIndex = i * 4;
+      const dataIndex = i * particleDataBytes;
+      const colorIndex = i * particleColorBytes;
 
       particleData.current[dataIndex + xI] = x;
       particleData.current[dataIndex + yI] = y;
@@ -52,15 +55,45 @@ const useParticles = (particleCount: number) => {
   };
 
   // Method for pushing new particle or particles
-  const push = (particles: Particle | Particle[]) => {
-    // Create new buffer based on old one plus extended data
-    // Create new data view based on new buffer
+  const addParticles = (particles: Particle[]) => {
+    // Create typed arrays and set old data
+    const newParticleData = new Float32Array(
+      particleData.current.length + particles.length * particleDataBytes
+    );
+    newParticleData.set(particleData.current, 0);
+    const newParticleColorData = new Uint8Array(
+      particleColorData.current.length + particles.length * particleColorBytes
+    );
+    newParticleColorData.set(particleColorData.current, 0);
+
+    // Add new data
+    for (let i = 0; i < particles.length; i++) {
+      // Set indexes for typed arrays
+      const dataIndex = i * particleDataBytes + particleData.current.length;
+      const colorIndex = i * particleColorBytes + particleData.current.length;
+
+      newParticleData[dataIndex + xI] = particles[i].x;
+      newParticleData[dataIndex + yI] = particles[i].y;
+      newParticleData[dataIndex + vxI] = particles[i].vx;
+      newParticleData[dataIndex + vyI] = particles[i].vy;
+      newParticleData[dataIndex + mI] = particles[i].m;
+      newParticleData[dataIndex + rI] = particles[i].r;
+
+      newParticleColorData[colorIndex] = particles[i].color.r;
+      newParticleColorData[colorIndex + 1] = particles[i].color.g;
+      newParticleColorData[colorIndex + 2] = particles[i].color.b;
+      newParticleColorData[colorIndex + 3] = particles[i].color.a;
+    }
+
     // Update the refs
+    particleData.current = newParticleData;
+    particleColorData.current = newParticleColorData;
   };
 
   const particles = {
     data: particleData.current,
     colors: particleColorData.current,
+    addParticles,
     randomize,
   };
   return particles;
