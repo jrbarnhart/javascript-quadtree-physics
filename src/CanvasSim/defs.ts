@@ -41,5 +41,5 @@ export interface Particle {
   vy: number;
   m: number;
   r: number;
-  colorRGB: number;
+  color: { r: number; g: number; b: number; a: number };
 }
