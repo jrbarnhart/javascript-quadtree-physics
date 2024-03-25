@@ -1,10 +1,6 @@
 import { useRef } from "react";
 
-const useParticles = (
-  canvasWidth: number,
-  canvasHeight: number,
-  particleCount: number
-) => {
+const useParticles = (particleCount: number) => {
   // Array buffer for particle data
   // x, y, vx, vy, m, r are float32 and colorRGB is four int8 for a total of 28 bytes / particle
   const particleBuffer = useRef<ArrayBuffer>(
@@ -15,7 +11,7 @@ const useParticles = (
   const particleData = useRef<DataView>(new DataView(particleBuffer.current));
 
   // Method for randomizing particle data
-  const randomize = () => {
+  const randomize = (canvasWidth: number, canvasHeight: number) => {
     // Randomize particle data
     for (let i = 0; i < particleCount; i++) {
       const x = Math.random() * canvasWidth;
