@@ -21,6 +21,9 @@ test("Randomize properly randomizes particle properties", () => {
   // Render the hook
   const { result } = renderHook(() => useParticles(1));
   const testParticles = result.current;
+
+  // Randomize twice to test for purity
+  testParticles.randomize(testWidth, testHeight);
   testParticles.randomize(testWidth, testHeight);
 
   // x, y
@@ -57,6 +60,9 @@ test("Randomize properly randomizes multiple particle properties", () => {
   // Render the hook
   const { result } = renderHook(() => useParticles(100));
   const testParticles = result.current;
+
+  // Randomize twice to test for purity
+  testParticles.randomize(testWidth, testHeight);
   testParticles.randomize(testWidth, testHeight);
 
   // 50th particle
