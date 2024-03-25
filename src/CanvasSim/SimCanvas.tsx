@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import createParticle from "./createParticle";
 import animate from "./animate";
 import useWindowSize from "./useWindowSize";
 import HeadsUpDisplay from "./HUD";
@@ -50,20 +49,7 @@ const SimCanvas = () => {
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
 
-      for (let i = 0; i <= 10; i++) {
-        // Create random particle with x and y
-        const newParticle = createParticle({
-          x: x + Math.random() * 100 - 50,
-          y: y + Math.random() * 100 - 50,
-          vx: 0,
-          vy: 0,
-          mass: 100,
-          radius: 2,
-          color: "yellow",
-        });
-
-        // Add it to particles array buffer NYI
-      }
+      // Add to the particles using method
 
       // Update total particles state
       setTotalParticles((prev) => (prev ? prev + 10 : 10));
