@@ -28,8 +28,8 @@ const useParticles = (particleCount: number) => {
       const y = Math.random() * canvasHeight;
       const vx = Math.random() * 2 - 1;
       const vy = Math.random() * 2 - 1;
-      const m = 1;
-      const r = Math.random() * 20 + 1;
+      const m = Math.random() * 99 + 1;
+      const r = Math.random() * 19 + 1;
       const colorR = Math.random() * 255;
       const colorG = Math.random() * 255;
       const colorB = Math.random() * 255;
