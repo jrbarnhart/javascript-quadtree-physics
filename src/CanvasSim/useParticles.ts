@@ -11,16 +11,12 @@ const useParticles = (particleCount: number) => {
   const mI = 16;
   const rI = 20;
 
-  const particleBuffer = useRef<ArrayBuffer>(
-    new ArrayBuffer(particleCount * 24)
+  const particleData = useRef<Float32Array>(
+    new Float32Array(particleCount * 24)
   );
-
   const particleColorData = useRef<Uint8Array>(
     new Uint8Array(particleCount * 4)
   );
-
-  // Data view for interacting with buffer
-  const particleData = useRef<DataView>(new DataView(particleBuffer.current));
 
   // Method for randomizing particle data
   const randomize = (canvasWidth: number, canvasHeight: number) => {
@@ -41,12 +37,12 @@ const useParticles = (particleCount: number) => {
       const dataIndex = i * 24;
       const colorIndex = i * 4;
 
-      particleData.current.setFloat32(dataIndex + xI, x);
-      particleData.current.setFloat32(dataIndex + yI, y);
-      particleData.current.setFloat32(dataIndex + vxI, vx);
-      particleData.current.setFloat32(dataIndex + vyI, vy);
-      particleData.current.setFloat32(dataIndex + mI, m);
-      particleData.current.setFloat32(dataIndex + rI, r);
+      particleData.current[dataIndex + xI] = x;
+      particleData.current[dataIndex + yI] = y;
+      particleData.current[dataIndex + vxI] = vx;
+      particleData.current[dataIndex + vyI] = vy;
+      particleData.current[dataIndex + mI] = m;
+      particleData.current[dataIndex + rI] = r;
 
       particleColorData.current[colorIndex] = colorR;
       particleColorData.current[colorIndex + 1] = colorG;
