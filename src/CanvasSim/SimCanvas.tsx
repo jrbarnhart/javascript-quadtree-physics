@@ -4,6 +4,7 @@ import animate from "./animate";
 import useWindowSize from "./useWindowSize";
 import HeadsUpDisplay from "./HUD";
 import _ from "lodash";
+import useParticles from "./useParticles";
 
 const SimCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -17,11 +18,9 @@ const SimCanvas = () => {
   // Array buffer for particle data
   // x, y, vx, vy, m, r are float32 and colorRGB is four int8 for a total of 28 bytes / particle
   const initialParticleCount = 10;
-  const particleBuffer = useRef<ArrayBuffer>(
-    new ArrayBuffer(initialParticleCount * 28)
-  );
-  // Data view for interacting with buffer
-  const particleData = useRef<DataView>(new DataView(particleBuffer.current));
+
+  // Data view and methods for interacting with array buffer
+  const particles = useParticles(initialParticleCount);
 
   // State for HUD
   const [mousePosX, setMousePosX] = useState<number | null>(null);
@@ -85,42 +84,17 @@ const SimCanvas = () => {
   useEffect(() => {
     if (canvasInitialized && !particlesInitialized && canvasRef.current) {
       // Randomize particle data
-      for (let i = 0; i < initialParticleCount; i++) {
-        const x = Math.random() * canvasRef.current.width;
-        const y = Math.random() * canvasRef.current.height;
-        const vx = Math.random() * 2 - 1;
-        const vy = Math.random() * 2 - 1;
-        const m = 1;
-        const r = Math.random() * 20 + 1;
-        const colorR = Math.random() * 255;
-        const colorG = Math.random() * 255;
-        const colorB = Math.random() * 255;
-        const colorA = 255;
-
-        // Each particle has 7 properties
-        const index = i * 7;
-
-        particleData.current.setFloat32(index, x);
-        particleData.current.setFloat32(index + 4, y);
-        particleData.current.setFloat32(index + 8, vx);
-        particleData.current.setFloat32(index + 12, vy);
-        particleData.current.setFloat32(index + 16, m);
-        particleData.current.setFloat32(index + 20, r);
-        particleData.current.setUint8(index + 24, colorR);
-        particleData.current.setUint8(index + 26, colorB);
-        particleData.current.setUint8(index + 25, colorG);
-        particleData.current.setUint8(index + 27, colorA);
-      }
+      particles.randomize(canvasRef.current.width, canvasRef.current.height);
       setParticlesInitialized(true);
     }
-  }, [canvasInitialized, particlesInitialized]);
+  }, [canvasInitialized, particles, particlesInitialized]);
 
   // Define animation loop
   const animationLoop = useCallback(() => {
     if (!canvasRef.current || !contextRef.current) return;
 
     animate({
-      particleData: particleData.current,
+      particleData: particles.data,
       canvasWidth: canvasRef.current.width,
       canvasHeight: canvasRef.current.height,
       ctx: contextRef.current,
@@ -130,7 +104,7 @@ const SimCanvas = () => {
     animationFrameRef.current = requestAnimationFrame(() => {
       animationLoop();
     });
-  }, [drawQuadtree]);
+  }, [drawQuadtree, particles.data]);
 
   // Start the animation if canvas is initialized
   useEffect(() => {
