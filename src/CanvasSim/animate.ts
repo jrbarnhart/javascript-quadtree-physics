@@ -1,13 +1,13 @@
+import { ParticlesHook } from "./useParticles";
+
 const animate = ({
-  particleData,
-  particleColors,
+  particles,
   canvasWidth,
   canvasHeight,
   ctx,
   drawQuadtree,
 }: {
-  particleData: Float32Array;
-  particleColors: Uint8Array;
+  particles: ParticlesHook;
   canvasWidth: number;
   canvasHeight: number;
   ctx: CanvasRenderingContext2D;
@@ -31,6 +31,26 @@ const animate = ({
     ctx.fillStyle = particle.color; // Set fill style for the particle
     ctx.fill(); // Fill the particle shape
   }); */
+
+  for (let i = 0; i < particles.data.length / particles.dataElements; i++) {
+    const dataIndex = i * particles.dataElements;
+    const colorIndex = i * particles.colorElements;
+
+    ctx.beginPath();
+    ctx.arc(
+      particles.data[dataIndex],
+      particles.data[dataIndex + 1],
+      2,
+      0,
+      2 * Math.PI
+    );
+    ctx.fillStyle = `rgba(${particles.colors[colorIndex]}, ${
+      particles.colors[colorIndex + 1]
+    }, ${particles.colors[colorIndex + 2]}, ${
+      particles.colors[colorIndex + 3]
+    })`;
+    ctx.fill();
+  }
 
   // Draw the quadTree cells
   /*   const drawRects = (quadTree: Quadtree) => {
