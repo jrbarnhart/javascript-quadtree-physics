@@ -66,7 +66,7 @@ const useParticles = (particleCount: number) => {
       // Set indexes for typed arrays
       const dataIndex = i * particleDataElements + particleData.current.length;
       const colorIndex =
-        i * particleColorElements + particleData.current.length;
+        i * particleColorElements + particleColorData.current.length;
 
       newParticleData[dataIndex] = particles[i].x;
       newParticleData[dataIndex + 1] = particles[i].y;
