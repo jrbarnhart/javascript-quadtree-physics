@@ -36,19 +36,17 @@ const animate = ({
     const dataIndex = i * particles.dataElements;
     const colorIndex = i * particles.colorElements;
 
+    const x = particles.data[dataIndex];
+    const y = particles.data[dataIndex + 1];
+    const r = particles.data[dataIndex + 5];
+    const rColor = particles.colors[colorIndex];
+    const gColor = particles.colors[colorIndex + 1];
+    const bColor = particles.colors[colorIndex + 2];
+    const aColor = particles.colors[colorIndex + 3];
+
     ctx.beginPath();
-    ctx.arc(
-      particles.data[dataIndex],
-      particles.data[dataIndex + 1],
-      2,
-      0,
-      2 * Math.PI
-    );
-    ctx.fillStyle = `rgba(${particles.colors[colorIndex]}, ${
-      particles.colors[colorIndex + 1]
-    }, ${particles.colors[colorIndex + 2]}, ${
-      particles.colors[colorIndex + 3]
-    })`;
+    ctx.arc(x, y, r, 0, 2 * Math.PI);
+    ctx.fillStyle = `rgba(${rColor}, ${gColor}, ${bColor}, ${aColor})`;
     ctx.fill();
   }
 
