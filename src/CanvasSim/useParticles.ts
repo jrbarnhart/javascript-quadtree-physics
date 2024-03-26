@@ -89,6 +89,8 @@ const useParticles = (particleCount: number) => {
   const particles = {
     data: particleData.current,
     colors: particleColorData.current,
+    dataElements: particleDataElements,
+    colorElements: particleColorElements,
     addParticles,
     randomize,
   };
