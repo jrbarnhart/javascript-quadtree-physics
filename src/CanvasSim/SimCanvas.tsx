@@ -31,8 +31,8 @@ const SimCanvas = () => {
     if (canvasRef.current) {
       // Get mouse position on canvas
       const rect = canvasRef.current.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
+      const x = Math.round(event.clientX - rect.left);
+      const y = Math.round(event.clientY - rect.top);
 
       // Add the particle to particles data
       particles.addParticles([

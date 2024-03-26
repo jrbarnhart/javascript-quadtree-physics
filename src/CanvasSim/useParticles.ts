@@ -28,12 +28,12 @@ const useParticles = (particleCount: number) => {
   const randomize = (canvasWidth: number, canvasHeight: number) => {
     // Randomize particle data
     for (let i = 0; i < particleCount; i++) {
-      const x = Math.random() * canvasWidth;
-      const y = Math.random() * canvasHeight;
+      const x = Math.round(Math.random() * canvasWidth);
+      const y = Math.round(Math.random() * canvasHeight);
       const vx = Math.random() * 2 - 1;
       const vy = Math.random() * 2 - 1;
       const m = Math.random() * 99 + 1;
-      const r = Math.random() * 19 + 1;
+      const r = Math.round(Math.random() * 19 + 1);
       const colorR = Math.random() * 255;
       const colorG = Math.random() * 255;
       const colorB = Math.random() * 255;
