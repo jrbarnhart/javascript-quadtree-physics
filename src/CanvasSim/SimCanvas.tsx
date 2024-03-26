@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import animate from "./animate";
 import useWindowSize from "./useWindowSize";
 import HeadsUpDisplay from "./HUD";
-import _ from "lodash";
 import useParticles from "./useParticles";
 
 const SimCanvas = () => {
@@ -22,24 +21,10 @@ const SimCanvas = () => {
   const particles = useParticles(initialParticleCount);
 
   // State for HUD
-  const [mousePosX, setMousePosX] = useState<number | null>(null);
-  const [mousePosY, setMousePosY] = useState<number | null>(null);
   const [totalParticles, setTotalParticles] = useState<number | null>(null);
 
   // State for toggling rect draws
   const [drawQuadtree, setDrawQuadtree] = useState<boolean>(false);
-
-  // Handle mouse move by updating overlay with mouse position
-  const throttleRef = useRef(
-    _.throttle((event: React.MouseEvent) => {
-      setMousePosX(event.clientX);
-      setMousePosY(event.clientY);
-    }, 200)
-  );
-
-  const handleMouseMove = useCallback((event: React.MouseEvent) => {
-    throttleRef.current(event);
-  }, []);
 
   // Handle clicks by creating a particle
   const handleClick = (event: React.MouseEvent) => {
@@ -116,15 +101,12 @@ const SimCanvas = () => {
     <div className="relative">
       <canvas
         onClick={handleClick}
-        onMouseMove={handleMouseMove}
         height={windowSize.height}
         width={windowSize.width}
         className="bg-black"
         ref={canvasRef}
       ></canvas>
       <HeadsUpDisplay
-        mousePosX={mousePosX}
-        mousePosY={mousePosY}
         totalParticles={totalParticles}
         setDrawQuadtree={setDrawQuadtree}
       />
