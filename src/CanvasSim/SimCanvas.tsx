@@ -91,8 +91,7 @@ const SimCanvas = () => {
     if (!canvasRef.current || !contextRef.current) return;
 
     animate({
-      particleData: particles.data,
-      particleColors: particles.colors,
+      particles,
       canvasWidth: canvasRef.current.width,
       canvasHeight: canvasRef.current.height,
       ctx: contextRef.current,
@@ -102,7 +101,7 @@ const SimCanvas = () => {
     animationFrameRef.current = requestAnimationFrame(() => {
       animationLoop();
     });
-  }, [drawQuadtree, particles.colors, particles.data]);
+  }, [drawQuadtree, particles]);
 
   // Start the animation if canvas is initialized
   useEffect(() => {
