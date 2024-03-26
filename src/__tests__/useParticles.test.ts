@@ -130,8 +130,6 @@ describe("addParticles", () => {
     result.current.addParticles([testParticle]);
     rerender();
 
-    console.log(result.current.data);
-
     expect(result.current.data.length).toBe(dataElements);
     expect(result.current.colors.length).toBe(colorElements);
   });

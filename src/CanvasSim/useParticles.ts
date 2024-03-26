@@ -84,8 +84,6 @@ const useParticles = (particleCount: number) => {
     // Update the refs
     particleData.current = newParticleData;
     particleColorData.current = newParticleColorData;
-
-    console.log(particleData.current, newParticleData);
   };
 
   const particles = {
