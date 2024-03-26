@@ -41,7 +41,7 @@ const SimCanvas = () => {
     throttleRef.current(event);
   }, []);
 
-  // Handle clicks by creating a particle with random properties
+  // Handle clicks by creating a particle
   const handleClick = (event: React.MouseEvent) => {
     if (canvasRef.current) {
       // Get mouse position on canvas
@@ -49,7 +49,18 @@ const SimCanvas = () => {
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
 
-      // Add to the particles using method
+      // Add the particle to particles data
+      particles.addParticles([
+        {
+          x,
+          y,
+          vx: 0,
+          vy: 0,
+          m: 1,
+          r: 1,
+          color: { r: 255, g: 0, b: 0, a: 255 },
+        },
+      ]);
 
       // Update total particles state
       setTotalParticles((prev) => (prev ? prev + 10 : 10));
