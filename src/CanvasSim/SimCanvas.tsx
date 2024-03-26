@@ -34,8 +34,8 @@ const SimCanvas = () => {
         {
           x,
           y,
-          vx: 0,
-          vy: 0,
+          vx: Math.random() * 2 - 1,
+          vy: Math.random() * 2 - 1,
           m: 1,
           r: Math.round(Math.random() * 19 + 1),
           color: {
