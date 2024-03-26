@@ -42,7 +42,7 @@ const SimCanvas = () => {
           vx: 0,
           vy: 0,
           m: 1,
-          r: 1,
+          r: Math.round(Math.random() * 19 + 1),
           color: { r: 255, g: 0, b: 0, a: 255 },
         },
       ]);
@@ -95,6 +95,12 @@ const SimCanvas = () => {
       animationLoop();
       console.log("Animation started.");
     }
+
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
   }, [animationLoop, canvasInitialized, particlesInitialized]);
 
   return (
