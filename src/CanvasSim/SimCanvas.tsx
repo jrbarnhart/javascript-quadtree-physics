@@ -13,17 +13,12 @@ const SimCanvas = () => {
   const animationFrameRef = useRef<number | null>(null);
   const windowSize = useWindowSize();
 
-  // Array buffer for particle data
-  // x, y, vx, vy, m, r are float32 and colorRGB is four int8 for a total of 28 bytes / particle
+  // Particles data
   const initialParticleCount = 10;
-
-  // Data view and methods for interacting with array buffer
   const particles = useParticles(initialParticleCount);
 
   // State for HUD
   const [totalParticles, setTotalParticles] = useState<number | null>(null);
-
-  // State for toggling rect draws
   const [drawQuadtree, setDrawQuadtree] = useState<boolean>(false);
 
   // Handle clicks by creating a particle
@@ -43,12 +38,17 @@ const SimCanvas = () => {
           vy: 0,
           m: 1,
           r: Math.round(Math.random() * 19 + 1),
-          color: { r: 255, g: 0, b: 0, a: 255 },
+          color: {
+            r: Math.random() * 255,
+            g: Math.random() * 255,
+            b: Math.random() * 255,
+            a: 255,
+          },
         },
       ]);
 
       // Update total particles state
-      setTotalParticles((prev) => (prev ? prev + 10 : 10));
+      setTotalParticles((prev) => (prev ? prev + 1 : 1 + initialParticleCount));
     }
   };
 
