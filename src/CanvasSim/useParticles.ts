@@ -1,6 +1,15 @@
 import { useRef } from "react";
 import { Particle } from "./defs";
 
+export interface ParticlesHook {
+  data: Float32Array;
+  colors: Uint8Array;
+  dataElements: number;
+  colorElements: number;
+  addParticles: (particles: Particle[]) => void;
+  randomize: (canvasWidth: number, canvasHeight: number) => void;
+}
+
 const useParticles = (particleCount: number) => {
   // x, y, vx, vy, m, r are float32 for a total of 24 bytes / particle
   // colorRGB is four Uint8s for a total of 4 bytes / particle
@@ -86,7 +95,7 @@ const useParticles = (particleCount: number) => {
     particleColorData.current = newParticleColorData;
   };
 
-  const particles = {
+  const particles: ParticlesHook = {
     data: particleData.current,
     colors: particleColorData.current,
     dataElements: particleDataElements,
