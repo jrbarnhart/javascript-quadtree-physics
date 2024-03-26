@@ -1,11 +1,13 @@
 const animate = ({
   particleData,
+  particleColors,
   canvasWidth,
   canvasHeight,
   ctx,
   drawQuadtree,
 }: {
-  particleData: DataView;
+  particleData: Float32Array;
+  particleColors: Uint8Array;
   canvasWidth: number;
   canvasHeight: number;
   ctx: CanvasRenderingContext2D;
