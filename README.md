@@ -1,6 +1,6 @@
 # Physics Simulation with Barnes-Hut Algorithm and Quadtree
 
-This project is a simulation of physics involving multiple bodies implemented using Vite, React, TypeScript, and Tailwind CSS. Its goal was to simulate physics between particles using a quadtree data structure. For now I am abandoning this project for reasons listed below. It's current implementation is simply particles with data stored in typed arrays that bounce around the screen.
+This project is a simulation of physics involving multiple bodies implemented using Vite, React, TypeScript, and Tailwind CSS. Its goal was to simulate physics between particles using a quadtree data structure. For now I am abandoning this project for reasons listed below. Its current implementation is simply particles with data stored in typed arrays that bounce around the screen.
 
 ## Overview
 
