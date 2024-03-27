@@ -1,7 +1,7 @@
 import { describe, test, expect } from "vitest";
-import useParticles from "../CanvasSim/useParticles";
+import useParticles from "../SimCanvas/useParticles";
 import { renderHook } from "@testing-library/react";
-import { Particle } from "../CanvasSim/defs";
+import { Particle } from "../SimCanvas/defs";
 
 const dataElements = 6;
 const colorElements = 4;

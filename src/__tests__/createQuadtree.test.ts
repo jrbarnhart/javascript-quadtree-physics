@@ -5,12 +5,12 @@ import createQuadtree, {
   insertParticle,
   pruneEmptyNodes,
   subdivideNode,
-} from "../CanvasSim/createQuadtree";
+} from "../SimCanvas/createQuadtree";
 import {
   ParticleInterface,
   Quadtree,
   QuadtreeBoundary,
-} from "../CanvasSim/defs";
+} from "../SimCanvas/defs";
 
 describe("getChildForParticle", () => {
   // Children are counted in this order: NW, NE, SE, SW

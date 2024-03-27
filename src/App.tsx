@@ -1,4 +1,4 @@
-import SimCanvas from "./CanvasSim/SimCanvas";
+import SimCanvas from "./SimCanvas/SimCanvas";
 
 function App() {
   return (
