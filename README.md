@@ -16,7 +16,7 @@ Ultimately I have decided to abandon this project for the following reasons. Whi
 
 The "common sense" approach of storing references to elements in an array on the node leads to memory issues. Firstly due to how objects are stored in memory I am relatively certain that my quadtree approach here would lead to a very high number of cache misses every frame, reducing performance. Furthermore, the actual amount of memory used for each node is unacceptably high.
 
-While this is partially due to how I used Quadtree objects themselves to represent nodes, my reading on this issue led me to believe that objects are simply not a good solution to storing a quadtree that represents large amounts of dynamic data. There is a lot of memory overhead with objects that you wouldn't have if you just store data representing nodes into a typed array.
+While this is partially due to how I used Quadtree objects themselves to represent nodes, my reading on this issue led me to believe that objects are simply not a good solution to storing a quadtree that represents large amounts of dynamic data. There is a lot of memory overhead with objects that you wouldn't have if you just store data representing nodes in a typed array.
 
 A solution would be to use typed arrays to store more compressed quadtree nodes, however I ran into issues when trying to reason about how to build the tree. Typed arrays in Javascript are static in their length. This means that while constructing the tree you can't just push data into the array if there is no room. The dynamic nature of quadtree insertion/construction makes this a difficult problem to solve.
 
